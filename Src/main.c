@@ -198,16 +198,16 @@ extern void fsm_unsetTimer(Fsm* handle, const sc_eventid evid) {
 
 //uint32_t HX_cnt; //, hx1, hx2, hx3, hx4;
 uint32_t buffer_hx[25]; // used in IRQ routine to get measurement values from the HX711 / HX712
-volatile uint32_t HXSCK_state = 1, *pHXSCK_state = &HXSCK_state;// used in IRQ routine to set the state
-volatile uint32_t hxerrors[] = { 0, 0, 0, 0 };// used in IRQ routine to indicate errors
-volatile uint32_t HX_cnt = 0, *pHX_cnt = &HX_cnt;// used in IRQ routine to get measurement values from the HX711 / HX712
+volatile uint32_t HXSCK_state = 1, *pHXSCK_state = &HXSCK_state; // used in IRQ routine to set the state
+volatile uint32_t hxerrors[] = { 0, 0, 0, 0 }; // used in IRQ routine to indicate errors
+volatile uint32_t HX_cnt = 0, *pHX_cnt = &HX_cnt; // used in IRQ routine to get measurement values from the HX711 / HX712
 volatile uint32_t hx, hx1, hx2, hx3, hx4, *phx = &hx, *phx1 = &hx1,
-		*phx2 = &hx2, *phx3 = &hx3, *phx4 = &hx4;// used in IRQ routine to get measurement values from the HX711 / HX712
+		*phx2 = &hx2, *phx3 = &hx3, *phx4 = &hx4; // used in IRQ routine to get measurement values from the HX711 / HX712
 volatile uint32_t Messwert_long_time_average = 0, *pMesswert_long_time_average =
-		&Messwert_long_time_average;// the measurement average value
-volatile uint32_t eeprom_value_min;// saved weight min value
-volatile uint32_t eeprom_value_max;// saved weight max value
-volatile uint32_t eeprom_pump_max;// saved ON time for pump - max
+		&Messwert_long_time_average; // the measurement average value
+volatile uint32_t eeprom_value_min; // saved weight min value
+volatile uint32_t eeprom_value_max; // saved weight max value
+volatile uint32_t eeprom_pump_max; // saved ON time for pump - max
 
 //volatile uint32_t pump_max;
 uint32_t hxmax = 12000000;
@@ -244,8 +244,8 @@ volatile float hue_angel = 360;
 //long bright[3] = {
 //		3576, 3020, 4095
 //};
-uint32_t bright[3] = { 3076, 2520, 4095 };
-uint32_t bright_ad[3] = { 3076, 2520, 4095 };
+uint32_t bright[3] = { 3076, 2520, 4095 };// this are the default values
+uint32_t bright_ad[3] = { 3076, 2520, 4095 };// this are the calculated values according to ambient light
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -281,8 +281,9 @@ void LDR_Value(void);
 void LED_RGB_Set(float HSV_value);
 
 // this  function is for mapping a value from one area to another
-int map(int x, int in_min, int in_max, int out_min, int out_max);
-uint32_t map2(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
+// int map(int x, int in_min, int in_max, int out_min, int out_max);
+uint32_t map2(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min,
+		uint32_t out_max);
 // Eeprom functions
 void Save_2_Eeprom(void);
 void Read_from_Eeprom(void);
@@ -927,7 +928,7 @@ void fsmIface_hXExit(const Fsm* handle, const sc_integer eepromMinS,
 	//Assign to global vars and save them in eeprom
 	eeprom_value_min = (uint32_t) eepromMinS;
 	eeprom_value_max = (uint32_t) eepromMaxS;
-	eeprom_pump_max *=2;
+	eeprom_pump_max *= 2;
 	Save_2_Eeprom();
 	fsmIface_set_eepromPmax(&Fsm_handle, eeprom_pump_max);
 }
@@ -941,15 +942,15 @@ void fsmIface_hXExit(const Fsm* handle, const sc_integer eepromMinS,
 void fsmIface_lowPmode(const Fsm* handle, const sc_integer LpmOn) {
 	//assume its night and do nothing switch off RGB_LED and go in standby mode
 
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
-		//standbymode
-		HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
-		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
-		SysTick->CTRL = 0;
-		HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0xFFFF, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
-		HAL_PWR_EnterSTANDBYMode();
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
+	//standbymode
+	HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+	SysTick->CTRL = 0;
+	HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0xFFFF, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
+	HAL_PWR_EnterSTANDBYMode();
 }
 
 /**
@@ -1276,11 +1277,10 @@ void LDR_Value(void) {
 	 uint32_t* pData  --->   The destination Buffer address
 	 uint32_t Length  --->  The length of data to be transferred from ADC peripheral to memory.*/
 	//HAL_Delay(400);
-
 	// reload old LED global settings of PWM because next steps are too long to wait
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
 
 	if (tg_ADCValue == 0) {
 		tg_ADCValue = adc_buf[0];
@@ -1289,15 +1289,18 @@ void LDR_Value(void) {
 	HAL_ADC_Stop_DMA(&hadc);
 	//map(value, fromLow, fromHigh, toLow, toHigh)
 	//LDRvalue_min  LDRvalue_max LDR_switch
-	bright_ad[0]=map2((LDR_switch- *pLDR), LDRvalue_min, LDR_switch, 100, bright[0]);
-	bright_ad[1]=map2((LDR_switch- *pLDR), LDRvalue_min, LDR_switch, 100, bright[1]);
-	bright_ad[2]=map2((LDR_switch- *pLDR), LDRvalue_min, LDR_switch, 100, bright[2]);
+	bright_ad[0] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
+			bright[0]);
+	bright_ad[1] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
+			bright[1]);
+	bright_ad[2] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
+			bright[2]);
 	// recalculate LED values
 	LED_RGB_Set(1.0);
 	// reload new LED global settings of PWM
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
 }
 
 /**
@@ -1403,7 +1406,8 @@ int map(int x, int in_min, int in_max, int out_min, int out_max) {
 	return (((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min);
 
 }
-uint32_t map2(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {
+uint32_t map2(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min,
+		uint32_t out_max) {
 	return (((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min);
 
 }
