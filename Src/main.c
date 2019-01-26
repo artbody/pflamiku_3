@@ -165,17 +165,17 @@ extern void fsm_unsetTimer(Fsm* handle, const sc_eventid evid) {
 /* Private variables ---------------------------------------------HX712 + DIV------*/
 
 //uint32_t HX_cnt; //, hx1, hx2, hx3, hx4;
-uint32_t buffer_hx[25];
-volatile uint32_t HXSCK_state = 1, *pHXSCK_state = &HXSCK_state;
-volatile uint32_t hxerrors[] = { 0, 0, 0, 0 };
-volatile uint32_t HX_cnt = 0, *pHX_cnt = &HX_cnt;
+uint32_t buffer_hx[25]; // used in IRQ routine to get measurement values from the HX711 / HX712
+volatile uint32_t HXSCK_state = 1, *pHXSCK_state = &HXSCK_state;// used in IRQ routine to set the state
+volatile uint32_t hxerrors[] = { 0, 0, 0, 0 };// used in IRQ routine to indicate errors
+volatile uint32_t HX_cnt = 0, *pHX_cnt = &HX_cnt;// used in IRQ routine to get measurement values from the HX711 / HX712
 volatile uint32_t hx, hx1, hx2, hx3, hx4, *phx = &hx, *phx1 = &hx1,
-		*phx2 = &hx2, *phx3 = &hx3, *phx4 = &hx4;
+		*phx2 = &hx2, *phx3 = &hx3, *phx4 = &hx4;// used in IRQ routine to get measurement values from the HX711 / HX712
 volatile uint32_t Messwert_long_time_average = 0, *pMesswert_long_time_average =
-		&Messwert_long_time_average;
-volatile uint32_t eeprom_value_min;
-volatile uint32_t eeprom_value_max;
-volatile uint32_t eeprom_pump_max;
+		&Messwert_long_time_average;// the measurement average value
+volatile uint32_t eeprom_value_min;// saved weight min value
+volatile uint32_t eeprom_value_max;// saved weight max value
+volatile uint32_t eeprom_pump_max;// saved ON time for pump - max
 
 //volatile uint32_t pump_max;
 uint32_t hxmax = 12000000;
@@ -900,6 +900,12 @@ void fsmIface_hXExit(const Fsm* handle, const sc_integer eepromMinS,
 	fsmIface_set_eepromPmax(&Fsm_handle, eeprom_pump_max);
 }
 
+/**
+ * Brief   This function runs low power mode  .
+ *
+ * Param   None
+ * Retval  None
+ */
 void fsmIface_lowPmode(const Fsm* handle, const sc_integer LpmOn) {
 	//assume its night and do nothing switch off RGB_LED and go in standby mode
 
@@ -914,6 +920,12 @@ void fsmIface_lowPmode(const Fsm* handle, const sc_integer LpmOn) {
 		HAL_PWR_EnterSTANDBYMode();
 }
 
+/**
+ * Brief   This function runs at startup to set some variables in the FSM .
+ *
+ * Param   None
+ * Retval  None
+ */
 void FsmSetVars(void) {
 
 	/*
@@ -937,6 +949,12 @@ void FsmSetVars(void) {
 
 }
 
+/**
+ * Brief   This function runs only once if there is no data in the eeprom .
+ *
+ * Param   None
+ * Retval  None
+ */
 void TEST_if_first_start_then_eeprom_set_values(void) {
 	if ((*(uint32_t *) (DATA_E2_ADDR + 4) == 0)
 			|| (*(uint32_t *) (DATA_E2_ADDR + 4)
@@ -954,6 +972,13 @@ void TEST_if_first_start_then_eeprom_set_values(void) {
 	RUN_prog_ldr();
 #endif
 }
+
+/**
+ * Brief   This function debounces SW1 .
+ *
+ * Param   None
+ * Retval  uint32_t
+ */
 uint32_t shift_test_switch_is_ON(void) {
 	volatile uint32_t sw_stable;
 	volatile uint32_t tout;
@@ -981,6 +1006,13 @@ uint32_t shift_test_switch_is_ON(void) {
 	}
 	return p1;
 }
+
+/**
+ * Brief   This function tests the SW1 if Progmode.
+ *
+ * Param   None
+ * Retval  None
+ */
 void test_if_switch_is_on(void) {
 
 	uint32_t progMode_ticker;
@@ -1016,6 +1048,13 @@ void test_if_switch_is_on(void) {
 		}
 	}
 }
+
+/**
+ * Brief   This function starts the HX711. This chip was in sleepmode with a few uA.
+ *
+ * Param   None
+ * Retval  None
+ */
 void HX712_start(void) {
 	HAL_GPIO_WritePin(HXSCK_GPIO_Port, HXSCK_Pin, GPIO_PIN_SET);
 	HAL_Delay(1);
@@ -1023,22 +1062,43 @@ void HX712_start(void) {
 	HAL_Delay(600);
 
 }
+
+/**
+ * Brief   This function stops the HX711. This chip enters after 50us the sleepmode with a few uA.
+ *
+ * Param   None
+ * Retval  None
+ */
 void HX712_stop(void) {
 	HAL_GPIO_WritePin(HXSCK_GPIO_Port, HXSCK_Pin, GPIO_PIN_SET);
 }
 
+/**
+ * Brief   This function is for getting the measured data from the HX711 / HX712 serial interface - weight cells .
+ * 			this needs 24 pulses to get 24bit Data and 1 pulse to set the right GAIN of the Chips next measurement
+ * 			to run this measurement we must first call the HX_start() ..
+ * 			in the TIM21_IRQHandler we do the pulsing and read the hole port 25 times in a buffer. so therefore HXD1-HXD3/4
+ * 			must be on the same Portgroupe i.e. GPIOA.
+ * 			after the serial read out we calculate by bitoperation the real result of all three or four weight cells.
+ *
+ * Param   None
+ * Retval  None
+ */
 void HX712_run(void) {
 	HX712_start();
 	uint16_t bm = HXD1_Pin + HXD2_Pin + HXD3_Pin + HXD4_Pin;
 	uint16_t g;	// = HXD1_GPIO_Port->IDR;
 	int d;	// = g & bm;
+	//set vars to zero
 	*pHX_cnt = 0;
 	*phx1 = 0;
 	*phx2 = 0;
 	*phx3 = 0;
 	*phx4 = 0;
 	*pHXSCK_state = 0;
+	// iwdg reset
 	IWDG->KR = IWDG_KEY_RELOAD;
+	// run the measurement
 	int t;
 	do {
 		do {
@@ -1058,6 +1118,7 @@ void HX712_run(void) {
 		hx3 = 0;
 		IWDG->KR = IWDG_KEY_RELOAD;
 		//hx4 = 0;
+		// bitbanging for results
 		for (int i = 0; i < 24; i++) {
 			hx1 = hx1 << 1;
 			hx2 = hx2 << 1;
@@ -1081,6 +1142,8 @@ void HX712_run(void) {
 		*phx2 = *phx2 ^ 0x800000;
 		*phx3 = *phx3 ^ 0x800000;
 		//*phx4 = *phx4 ^ 0x800000;
+
+		//error analyser
 		t = 3;
 		if (*phx1 > hxmax) {
 			t--;
@@ -1097,7 +1160,9 @@ void HX712_run(void) {
 
 		}
 		hxerrors[3]++;
-	} while (t < 3); // so we can be shure all 4 HX712 are ok
+	} while (t < 3); // so we can be shure all 3 or 4 HX712 are ok
+
+	// long time average calculation
 	*phx = (*phx1 + *phx2 + *phx3) / t;
 
 //			|| *phx < hxmin) {
@@ -1114,6 +1179,12 @@ void HX712_run(void) {
 	HX712_stop();
 }
 
+/**
+ * Brief   This function saves the LDR min max and switch values in the eeprom.
+ *
+ * Param   None
+ * Retval  None
+ */
 void RUN_prog_ldr(void) {
 	__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
 
@@ -1142,19 +1213,17 @@ void RUN_prog_ldr(void) {
 	LockNVM();
 }
 
+/**
+ * Brief   This function measures the brightness of the ambient light with an LDR.
+ *         and calculates the max brightness values of the RGB LED
+ * Param   None
+ * Retval  None
+ */
 void LDR_Value(void) {
 	uint32_t tg_ADCValue = *pLDR;
-//			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
-//			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
-//			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
+
 // first switch off the LED so we can be sure we measure the daylight
 
-//	int tar = ar;
-//	int tag = ag;
-//	int tab = ab;
-//	ar = 0;
-//	ag = 0;
-//	ab = 0;
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
@@ -1175,10 +1244,11 @@ void LDR_Value(void) {
 	 uint32_t* pData  --->   The destination Buffer address
 	 uint32_t Length  --->  The length of data to be transferred from ADC peripheral to memory.*/
 	//HAL_Delay(400);
-	// reload LED global settings of PWM
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
+
+	// reload old LED global settings of PWM because next steps are too long to wait
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
 
 	if (tg_ADCValue == 0) {
 		tg_ADCValue = adc_buf[0];
@@ -1190,8 +1260,20 @@ void LDR_Value(void) {
 	bright_ad[0]=map2((LDR_switch- *pLDR), LDRvalue_min, LDR_switch, 100, bright[0]);
 	bright_ad[1]=map2((LDR_switch- *pLDR), LDRvalue_min, LDR_switch, 100, bright[1]);
 	bright_ad[2]=map2((LDR_switch- *pLDR), LDRvalue_min, LDR_switch, 100, bright[2]);
+	// recalculate LED values
+	LED_RGB_Set(1.0);
+	// reload new LED global settings of PWM
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
 }
 
+/**
+ * Brief   This function saves all data in the eeprom.
+ *
+ * Param   None
+ * Retval  None
+ */
 void Save_2_Eeprom(void) {
 	//eeprom_value_min
 	//eeprom_value_max
@@ -1221,6 +1303,12 @@ void Save_2_Eeprom(void) {
 	LockNVM();
 }
 
+/**
+ * Brief   This function reads all data from the eeprom.
+ *         TODO use eeprom values direct
+ * Param   None
+ * Retval  None
+ */
 void Read_from_Eeprom(void) {
 	eeprom_value_min = *(uint32_t *) (DATA_E2_ADDR);
 	eeprom_value_max = *(uint32_t *) (DATA_E2_ADDR + 4);
@@ -1232,6 +1320,12 @@ void Read_from_Eeprom(void) {
 	//eeprom_value_max=
 }
 
+/**
+ * Brief   This function handles the LED.
+ *         it sets the color according to the long time average of the weight.
+ * Param   Brightness float 0.0-1.0
+ * Retval  None
+ */
 void LED_RGB_Set(float HSV_value) {
 	uint32_t mittelwert = 0;
 #if defined test_HX712
