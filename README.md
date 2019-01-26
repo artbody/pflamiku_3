@@ -9,6 +9,9 @@ this here is the C Implementation of the functions needed by the hardware with a
 * **Minimal Memory Requirements**:  footprint of 20 kBytes.
 * **STM32L031**  a very low power microcontroller.
 
+#The Hardware is also available under the terms of CC BY SA NC 4.0 
+[PCB and Schematic on EasyEDA](https://easyeda.com/artbody/pflamiku_3er_stm_2018-09-18)
+
 TODO 
 Reimplementing the FSM with 
 # Web-Based Modeling Tool and Code Generator
