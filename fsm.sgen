@@ -1,0 +1,11 @@
+GeneratorModel for yakindu::c {
+
+	statechart fsm {
+
+		feature Outlet {
+			targetProject = "fsm_pflamiku3_v1"
+			targetFolder = "src-gen"
+			libraryTargetFolder = "Inc"
+		}
+	}
+}

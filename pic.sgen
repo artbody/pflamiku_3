@@ -1,0 +1,14 @@
+GeneratorModel for yakindu::images {
+
+	statechart fsm {
+
+		feature Outlet {
+			targetProject = "fsm_pflamiku3_v1"
+			targetFolder = "images"
+		}
+
+		feature Renderer {
+			format = "svg"
+		}
+	}
+}
