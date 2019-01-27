@@ -40,6 +40,8 @@ typedef struct {
 	uint32_t time_value;
 	uint32_t timeNextRun_value;
 	uint32_t ldr;
+	uint32_t ldr_min;
+	uint32_t ldr_max;
 	uint32_t ldr_switch;
 	uint32_t sleepMode;
 	uint32_t run_mode;//indicate the End of a substate

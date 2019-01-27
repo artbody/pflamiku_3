@@ -1,41 +1,41 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
-  *
-  * COPYRIGHT(c) 2019 STMicroelectronics
-  *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ ** This notice applies to any and all portions of this file
+ * that are not between comment pairs USER CODE BEGIN and
+ * USER CODE END. Other portions of this file, whether
+ * inserted by the user or by software development tools
+ * are owned by their respective copyright owners.
+ *
+ * COPYRIGHT(c) 2019 STMicroelectronics
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *   1. Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *   3. Neither the name of STMicroelectronics nor the names of its contributors
+ *      may be used to endorse or promote products derived from this software
+ *      without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -87,7 +87,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "fsmDefs.h"
-
 
 /** MainFsm function definitions */
 #include "MainFsm.h"
@@ -189,14 +188,11 @@ uint32_t TEST_LDR_SWITCH = 400;
 uint32_t TEST_MITTELWERT = 8001271;
 #endif
 
-
 volatile int progMode = 0, *pprogMode = &progMode;
 volatile uint32_t millis; //,*pmillis=&millis; used for pump timeout
 volatile uint32_t blink_millis; // used for blinking while pump on
 //! As we make use of time triggers (after & every) we make use of a generic timer implementation and need a defined number of timers.
 #define MAX_TIMERS 4
-
-
 
 /* Private variables ---------------------------------------------HX712 + DIV------*/
 
@@ -220,10 +216,10 @@ uint32_t hxmin = 8001271; //8000000;
 //LDR Value
 uint32_t adc[4], adc_buf[2], temperature, vrefint;  // define variables
 volatile uint32_t g_ADCValue = 0, *pLDR = &g_ADCValue;
-volatile uint32_t LDR_switch = 400;  //1800
+//volatile uint32_t LDR_switch = 400;  //1800
 //static int LDR_off = 1000;  //2000
-volatile uint32_t LDRvalue_min = 100;  //350
-volatile uint32_t LDRvalue_max = 2900;  //2250
+//volatile uint32_t LDRvalue_min = 100;  //350
+//volatile uint32_t LDRvalue_max = 2900;  //2250
 static uint32_t LDR_off = 500;  //2000
 
 #if defined test
@@ -248,8 +244,8 @@ volatile float hue_angel = 360;
 //long bright[3] = {
 //		3576, 3020, 4095
 //};
-uint32_t bright[3] = { 3076, 2520, 4095 };// this are the default values
-uint32_t bright_ad[3] = { 3076, 2520, 4095 };// this are the calculated values according to ambient light
+uint32_t bright[3] = { 3076, 2520, 4095 };  // this are the default values
+uint32_t bright_ad[3] = { 3076, 2520, 4095 }; // this are the calculated values according to ambient light
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -305,44 +301,43 @@ void EepromErase(uint32_t addr);
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
-int main(void)
-{
-  /* USER CODE BEGIN 1 */
+ * @brief  The application entry point.
+ * @retval int
+ */
+int main(void) {
+	/* USER CODE BEGIN 1 */
 
-  /* USER CODE END 1 */
+	/* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+	/* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	HAL_Init();
 
-  /* USER CODE BEGIN Init */
+	/* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+	/* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
+	/* Configure the system clock */
+	SystemClock_Config();
 
-  /* USER CODE BEGIN SysInit */
+	/* USER CODE BEGIN SysInit */
 
-  /* USER CODE END SysInit */
+	/* USER CODE END SysInit */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_ADC_Init();
-  MX_IWDG_Init();
-  MX_TIM2_Init();
-  MX_RTC_Init();
-  MX_USART2_UART_Init();
-  MX_TIM21_Init();
-  MX_LPTIM1_Init();
-  /* USER CODE BEGIN 2 */
+	/* Initialize all configured peripherals */
+	MX_GPIO_Init();
+	MX_DMA_Init();
+	MX_ADC_Init();
+	MX_IWDG_Init();
+	MX_TIM2_Init();
+	MX_RTC_Init();
+	MX_USART2_UART_Init();
+	MX_TIM21_Init();
+	MX_LPTIM1_Init();
+	/* USER CODE BEGIN 2 */
 	// TIM2 is used for RGB LED
-	HAL_TIM_Base_Start_IT(&hlptim1);
+	// HAL_TIM_Base_Start_IT(&hlptim1);
 	HAL_TIM_Base_Start(&htim2); //Starts the TIM Base generation
 	if (HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1) != HAL_OK) //Starts the PWM signal generation
 			{
@@ -360,11 +355,7 @@ int main(void)
 		Error_Handler();
 	}
 
-
-
-
 	//fsm init & start
-
 
 	// read all volues from eeprom and put them in place i.e. the vars of the finite state machine
 	Read_from_Eeprom();
@@ -374,22 +365,23 @@ int main(void)
 	TEST_if_first_start_then_eeprom_set_values();
 	uint32_t tickstart = 0U, *ptickstart = &tickstart;
 	*ptickstart = HAL_GetTick();
-/*-------------------------------------------------------------------------------------------------*/
+	/*-------------------------------------------------------------------------------------------------*/
 	/** Define the state machine descriptor (SMD) */
-		FwSmDesc_t smDesc = MainFsmCreate(NULL);
+	FwSmDesc_t smDesc = MainFsmCreate(NULL);
 
-		/** Check that the SM is properly configured */
-		if (FwSmCheckRec(smDesc) != smSuccess) {
-			printf("The state machine MainFsm is NOT properly configured ... FAILURE\n");
-			//return EXIT_FAILURE;
-		}
+	/** Check that the SM is properly configured */
+	if (FwSmCheckRec(smDesc) != smSuccess) {
+		printf(
+				"The state machine MainFsm is NOT properly configured ... FAILURE\n");
+		//return EXIT_FAILURE;
+	}
 
-		printf("The state machine MainFsm is properly configured ... SUCCESS\n");
-/*-------------------------------------------------------------------------------------------------*/
-  /* USER CODE END 2 */
+	printf("The state machine MainFsm is properly configured ... SUCCESS\n");
+	/*-------------------------------------------------------------------------------------------------*/
+	/* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+	/* Infinite loop */
+	/* USER CODE BEGIN WHILE */
 
 	while (1) {
 		__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
@@ -398,7 +390,7 @@ int main(void)
 //						tickstart = HAL_GetTick();
 //					}
 		//ldr value measurement all 60 sec*x minutes
-		if ((HAL_GetTick() - piface->timeLDR) > 60000*5) {
+		if ((HAL_GetTick() - piface->timeLDR) > 60000 * 5) {
 			LDR_Value();
 			piface->timeLDR = HAL_GetTick();
 		}
@@ -424,448 +416,426 @@ int main(void)
 
 			}
 		}
-    /* USER CODE END WHILE */
+		/* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+		/* USER CODE BEGIN 3 */
 		//TODO power reduction
 	}
-  /* USER CODE END 3 */
+	/* USER CODE END 3 */
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+ * @brief System Clock Configuration
+ * @retval None
+ */
+void SystemClock_Config(void) {
+	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
+	RCC_PeriphCLKInitTypeDef PeriphClkInit = { 0 };
 
-  /**Configure the main internal regulator output voltage 
-  */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-  /**Initializes the CPU, AHB and APB busses clocks 
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLLMUL_4;
-  RCC_OscInitStruct.PLL.PLLDIV = RCC_PLLDIV_2;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Initializes the CPU, AHB and APB busses clocks 
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+	/**Configure the main internal regulator output voltage
+	 */
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+	/**Initializes the CPU, AHB and APB busses clocks
+	 */
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI
+			| RCC_OSCILLATORTYPE_LSI;
+	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+	RCC_OscInitStruct.LSIState = RCC_LSI_ON;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+	RCC_OscInitStruct.PLL.PLLMUL = RCC_PLLMUL_4;
+	RCC_OscInitStruct.PLL.PLLDIV = RCC_PLLDIV_2;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+		Error_Handler();
+	}
+	/**Initializes the CPU, AHB and APB busses clocks
+	 */
+	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_RTC
-                              |RCC_PERIPHCLK_LPTIM1;
-  PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
-  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
-  PeriphClkInit.LptimClockSelection = RCC_LPTIM1CLKSOURCE_LSI;
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
+		Error_Handler();
+	}
+	PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2
+			| RCC_PERIPHCLK_RTC | RCC_PERIPHCLK_LPTIM1;
+	PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+	PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+	PeriphClkInit.LptimClockSelection = RCC_LPTIM1CLKSOURCE_LSI;
 
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
+		Error_Handler();
+	}
 }
 
 /**
-  * @brief ADC Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_ADC_Init(void)
-{
+ * @brief ADC Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_ADC_Init(void) {
 
-  /* USER CODE BEGIN ADC_Init 0 */
+	/* USER CODE BEGIN ADC_Init 0 */
 
-  /* USER CODE END ADC_Init 0 */
+	/* USER CODE END ADC_Init 0 */
 
-  ADC_ChannelConfTypeDef sConfig = {0};
+	ADC_ChannelConfTypeDef sConfig = { 0 };
 
-  /* USER CODE BEGIN ADC_Init 1 */
+	/* USER CODE BEGIN ADC_Init 1 */
 
-  /* USER CODE END ADC_Init 1 */
-  /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
-  */
-  hadc.Instance = ADC1;
-  hadc.Init.OversamplingMode = DISABLE;
-  hadc.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  hadc.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc.Init.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
-  hadc.Init.ScanConvMode = ADC_SCAN_DIRECTION_FORWARD;
-  hadc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc.Init.ContinuousConvMode = DISABLE;
-  hadc.Init.DiscontinuousConvMode = DISABLE;
-  hadc.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc.Init.DMAContinuousRequests = DISABLE;
-  hadc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  hadc.Init.Overrun = ADC_OVR_DATA_PRESERVED;
-  hadc.Init.LowPowerAutoWait = DISABLE;
-  hadc.Init.LowPowerFrequencyMode = DISABLE;
-  hadc.Init.LowPowerAutoPowerOff = DISABLE;
-  if (HAL_ADC_Init(&hadc) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Configure for the selected ADC regular channel to be converted. 
-  */
-  sConfig.Channel = ADC_CHANNEL_9;
-  sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
-  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN ADC_Init 2 */
+	/* USER CODE END ADC_Init 1 */
+	/**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
+	 */
+	hadc.Instance = ADC1;
+	hadc.Init.OversamplingMode = DISABLE;
+	hadc.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
+	hadc.Init.Resolution = ADC_RESOLUTION_12B;
+	hadc.Init.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+	hadc.Init.ScanConvMode = ADC_SCAN_DIRECTION_FORWARD;
+	hadc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+	hadc.Init.ContinuousConvMode = DISABLE;
+	hadc.Init.DiscontinuousConvMode = DISABLE;
+	hadc.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+	hadc.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+	hadc.Init.DMAContinuousRequests = DISABLE;
+	hadc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+	hadc.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+	hadc.Init.LowPowerAutoWait = DISABLE;
+	hadc.Init.LowPowerFrequencyMode = DISABLE;
+	hadc.Init.LowPowerAutoPowerOff = DISABLE;
+	if (HAL_ADC_Init(&hadc) != HAL_OK) {
+		Error_Handler();
+	}
+	/**Configure for the selected ADC regular channel to be converted.
+	 */
+	sConfig.Channel = ADC_CHANNEL_9;
+	sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
+	if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN ADC_Init 2 */
 
-  /* USER CODE END ADC_Init 2 */
+	/* USER CODE END ADC_Init 2 */
 
 }
 
 /**
-  * @brief IWDG Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_IWDG_Init(void)
-{
+ * @brief IWDG Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_IWDG_Init(void) {
 
-  /* USER CODE BEGIN IWDG_Init 0 */
+	/* USER CODE BEGIN IWDG_Init 0 */
 
-  /* USER CODE END IWDG_Init 0 */
+	/* USER CODE END IWDG_Init 0 */
 
-  /* USER CODE BEGIN IWDG_Init 1 */
+	/* USER CODE BEGIN IWDG_Init 1 */
 
-  /* USER CODE END IWDG_Init 1 */
-  hiwdg.Instance = IWDG;
-  hiwdg.Init.Prescaler = IWDG_PRESCALER_256;
-  hiwdg.Init.Window = 4095;
-  hiwdg.Init.Reload = 4095;
-  if (HAL_IWDG_Init(&hiwdg) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN IWDG_Init 2 */
+	/* USER CODE END IWDG_Init 1 */
+	hiwdg.Instance = IWDG;
+	hiwdg.Init.Prescaler = IWDG_PRESCALER_256;
+	hiwdg.Init.Window = 4095;
+	hiwdg.Init.Reload = 4095;
+	if (HAL_IWDG_Init(&hiwdg) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN IWDG_Init 2 */
 
-  /* USER CODE END IWDG_Init 2 */
+	/* USER CODE END IWDG_Init 2 */
 
 }
 
 /**
-  * @brief LPTIM1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_LPTIM1_Init(void)
-{
+ * @brief LPTIM1 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_LPTIM1_Init(void) {
 
-  /* USER CODE BEGIN LPTIM1_Init 0 */
+	/* USER CODE BEGIN LPTIM1_Init 0 */
 
-  /* USER CODE END LPTIM1_Init 0 */
+	/* USER CODE END LPTIM1_Init 0 */
 
-  /* USER CODE BEGIN LPTIM1_Init 1 */
+	/* USER CODE BEGIN LPTIM1_Init 1 */
 
-  /* USER CODE END LPTIM1_Init 1 */
-  hlptim1.Instance = LPTIM1;
-  hlptim1.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;
-  hlptim1.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV128;
-  hlptim1.Init.Trigger.Source = LPTIM_TRIGSOURCE_SOFTWARE;
-  hlptim1.Init.OutputPolarity = LPTIM_OUTPUTPOLARITY_HIGH;
-  hlptim1.Init.UpdateMode = LPTIM_UPDATE_IMMEDIATE;
-  hlptim1.Init.CounterSource = LPTIM_COUNTERSOURCE_INTERNAL;
-  if (HAL_LPTIM_Init(&hlptim1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN LPTIM1_Init 2 */
+	/* USER CODE END LPTIM1_Init 1 */
+	hlptim1.Instance = LPTIM1;
+	hlptim1.Init.Clock.Source = LPTIM_CLOCKSOURCE_APBCLOCK_LPOSC;
+	hlptim1.Init.Clock.Prescaler = LPTIM_PRESCALER_DIV128;
+	hlptim1.Init.Trigger.Source = LPTIM_TRIGSOURCE_SOFTWARE;
+	hlptim1.Init.OutputPolarity = LPTIM_OUTPUTPOLARITY_HIGH;
+	hlptim1.Init.UpdateMode = LPTIM_UPDATE_IMMEDIATE;
+	hlptim1.Init.CounterSource = LPTIM_COUNTERSOURCE_INTERNAL;
+	if (HAL_LPTIM_Init(&hlptim1) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN LPTIM1_Init 2 */
 
-  /* USER CODE END LPTIM1_Init 2 */
+	/* USER CODE END LPTIM1_Init 2 */
 
 }
 
 /**
-  * @brief RTC Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_RTC_Init(void)
-{
+ * @brief RTC Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_RTC_Init(void) {
 
-  /* USER CODE BEGIN RTC_Init 0 */
+	/* USER CODE BEGIN RTC_Init 0 */
 
-  /* USER CODE END RTC_Init 0 */
+	/* USER CODE END RTC_Init 0 */
 
-  RTC_TimeTypeDef sTime = {0};
-  RTC_DateTypeDef sDate = {0};
+	RTC_TimeTypeDef sTime = { 0 };
+	RTC_DateTypeDef sDate = { 0 };
 
-  /* USER CODE BEGIN RTC_Init 1 */
+	/* USER CODE BEGIN RTC_Init 1 */
 
-  /* USER CODE END RTC_Init 1 */
-  /**Initialize RTC Only 
-  */
-  hrtc.Instance = RTC;
-  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
-  hrtc.Init.AsynchPrediv = 127;
-  hrtc.Init.SynchPrediv = 255;
-  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
-  hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
-  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
-  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
-  if (HAL_RTC_Init(&hrtc) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	/* USER CODE END RTC_Init 1 */
+	/**Initialize RTC Only
+	 */
+	hrtc.Instance = RTC;
+	hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+	hrtc.Init.AsynchPrediv = 127;
+	hrtc.Init.SynchPrediv = 255;
+	hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+	hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
+	hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+	hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+	if (HAL_RTC_Init(&hrtc) != HAL_OK) {
+		Error_Handler();
+	}
 
-  /* USER CODE BEGIN Check_RTC_BKUP */
-    
-  /* USER CODE END Check_RTC_BKUP */
+	/* USER CODE BEGIN Check_RTC_BKUP */
 
-  /**Initialize RTC and set the Time and Date 
-  */
-  sTime.Hours = 0x0;
-  sTime.Minutes = 0x0;
-  sTime.Seconds = 0x0;
-  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
-  sDate.Month = RTC_MONTH_JANUARY;
-  sDate.Date = 0x1;
-  sDate.Year = 0x0;
+	/* USER CODE END Check_RTC_BKUP */
 
-  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN RTC_Init 2 */
+	/**Initialize RTC and set the Time and Date
+	 */
+	sTime.Hours = 0x0;
+	sTime.Minutes = 0x0;
+	sTime.Seconds = 0x0;
+	sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+	sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+	if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK) {
+		Error_Handler();
+	}
+	sDate.WeekDay = RTC_WEEKDAY_MONDAY;
+	sDate.Month = RTC_MONTH_JANUARY;
+	sDate.Date = 0x1;
+	sDate.Year = 0x0;
 
-  /* USER CODE END RTC_Init 2 */
+	if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN RTC_Init 2 */
+
+	/* USER CODE END RTC_Init 2 */
 
 }
 
 /**
-  * @brief TIM2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TIM2_Init(void)
-{
+ * @brief TIM2 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_TIM2_Init(void) {
 
-  /* USER CODE BEGIN TIM2_Init 0 */
+	/* USER CODE BEGIN TIM2_Init 0 */
 
-  /* USER CODE END TIM2_Init 0 */
+	/* USER CODE END TIM2_Init 0 */
 
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_OC_InitTypeDef sConfigOC = {0};
+	TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };
+	TIM_MasterConfigTypeDef sMasterConfig = { 0 };
+	TIM_OC_InitTypeDef sConfigOC = { 0 };
 
-  /* USER CODE BEGIN TIM2_Init 1 */
+	/* USER CODE BEGIN TIM2_Init 1 */
 
-  /* USER CODE END TIM2_Init 1 */
-  htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 15;
-  htim2.Init.CounterMode = TIM_COUNTERMODE_DOWN;
-  htim2.Init.Period = 4095;
-  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 1;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigOC.Pulse = 2;
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigOC.Pulse = 3;
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM2_Init 2 */
+	/* USER CODE END TIM2_Init 1 */
+	htim2.Instance = TIM2;
+	htim2.Init.Prescaler = 15;
+	htim2.Init.CounterMode = TIM_COUNTERMODE_DOWN;
+	htim2.Init.Period = 4095;
+	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {
+		Error_Handler();
+	}
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK) {
+		Error_Handler();
+	}
+	if (HAL_TIM_PWM_Init(&htim2) != HAL_OK) {
+		Error_Handler();
+	}
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig)
+			!= HAL_OK) {
+		Error_Handler();
+	}
+	sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	sConfigOC.Pulse = 1;
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1)
+			!= HAL_OK) {
+		Error_Handler();
+	}
+	sConfigOC.Pulse = 2;
+	if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2)
+			!= HAL_OK) {
+		Error_Handler();
+	}
+	sConfigOC.Pulse = 3;
+	if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_3)
+			!= HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN TIM2_Init 2 */
 
-  /* USER CODE END TIM2_Init 2 */
-  HAL_TIM_MspPostInit(&htim2);
+	/* USER CODE END TIM2_Init 2 */
+	HAL_TIM_MspPostInit(&htim2);
 
 }
 
 /**
-  * @brief TIM21 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TIM21_Init(void)
-{
+ * @brief TIM21 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_TIM21_Init(void) {
 
-  /* USER CODE BEGIN TIM21_Init 0 */
+	/* USER CODE BEGIN TIM21_Init 0 */
 
-  /* USER CODE END TIM21_Init 0 */
+	/* USER CODE END TIM21_Init 0 */
 
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
+	TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };
+	TIM_MasterConfigTypeDef sMasterConfig = { 0 };
 
-  /* USER CODE BEGIN TIM21_Init 1 */
+	/* USER CODE BEGIN TIM21_Init 1 */
 
-  /* USER CODE END TIM21_Init 1 */
-  htim21.Instance = TIM21;
-  htim21.Init.Prescaler = 32;
-  htim21.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim21.Init.Period = 6;
-  htim21.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim21.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim21) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim21, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim21, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM21_Init 2 */
+	/* USER CODE END TIM21_Init 1 */
+	htim21.Instance = TIM21;
+	htim21.Init.Prescaler = 32;
+	htim21.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim21.Init.Period = 6;
+	htim21.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim21.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	if (HAL_TIM_Base_Init(&htim21) != HAL_OK) {
+		Error_Handler();
+	}
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	if (HAL_TIM_ConfigClockSource(&htim21, &sClockSourceConfig) != HAL_OK) {
+		Error_Handler();
+	}
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	if (HAL_TIMEx_MasterConfigSynchronization(&htim21, &sMasterConfig)
+			!= HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN TIM21_Init 2 */
 
-  /* USER CODE END TIM21_Init 2 */
+	/* USER CODE END TIM21_Init 2 */
 
 }
 
 /**
-  * @brief USART2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART2_UART_Init(void)
-{
+ * @brief USART2 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_USART2_UART_Init(void) {
 
-  /* USER CODE BEGIN USART2_Init 0 */
+	/* USER CODE BEGIN USART2_Init 0 */
 
-  /* USER CODE END USART2_Init 0 */
+	/* USER CODE END USART2_Init 0 */
 
-  /* USER CODE BEGIN USART2_Init 1 */
+	/* USER CODE BEGIN USART2_Init 1 */
 
-  /* USER CODE END USART2_Init 1 */
-  huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
-  huart2.Init.StopBits = UART_STOPBITS_1;
-  huart2.Init.Parity = UART_PARITY_NONE;
-  huart2.Init.Mode = UART_MODE_TX_RX;
-  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART2_Init 2 */
+	/* USER CODE END USART2_Init 1 */
+	huart2.Instance = USART2;
+	huart2.Init.BaudRate = 115200;
+	huart2.Init.WordLength = UART_WORDLENGTH_8B;
+	huart2.Init.StopBits = UART_STOPBITS_1;
+	huart2.Init.Parity = UART_PARITY_NONE;
+	huart2.Init.Mode = UART_MODE_TX_RX;
+	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+	huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+	huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+	if (HAL_UART_Init(&huart2) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN USART2_Init 2 */
 
-  /* USER CODE END USART2_Init 2 */
+	/* USER CODE END USART2_Init 2 */
 
 }
 
 /** 
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void) 
-{
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
+ * Enable DMA controller clock
+ */
+static void MX_DMA_Init(void) {
+	/* DMA controller clock enable */
+	__HAL_RCC_DMA1_CLK_ENABLE()
+	;
 
-  /* DMA interrupt init */
-  /* DMA1_Channel1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+	/* DMA interrupt init */
+	/* DMA1_Channel1_IRQn interrupt configuration */
+	HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 
 }
 
 /**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+ * @brief GPIO Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_GPIO_Init(void) {
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
+	/* GPIO Ports Clock Enable */
+	__HAL_RCC_GPIOA_CLK_ENABLE()
+	;
+	__HAL_RCC_GPIOB_CLK_ENABLE()
+	;
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, mot_out_Pin|HXSCK_Pin, GPIO_PIN_RESET);
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(GPIOA, mot_out_Pin | HXSCK_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : mot_out_Pin HXSCK_Pin */
-  GPIO_InitStruct.Pin = mot_out_Pin|HXSCK_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	/*Configure GPIO pins : mot_out_Pin HXSCK_Pin */
+	GPIO_InitStruct.Pin = mot_out_Pin | HXSCK_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : sw2_Pin sw1_Pin HXD1_Pin HXD2_Pin 
-                           HXD3_Pin HXD4_Pin */
-  GPIO_InitStruct.Pin = sw2_Pin|sw1_Pin|HXD1_Pin|HXD2_Pin 
-                          |HXD3_Pin|HXD4_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	/*Configure GPIO pins : sw2_Pin sw1_Pin HXD1_Pin HXD2_Pin
+	 HXD3_Pin HXD4_Pin */
+	GPIO_InitStruct.Pin = sw2_Pin | sw1_Pin | HXD1_Pin | HXD2_Pin | HXD3_Pin
+			| HXD4_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LD3_Pin */
-  GPIO_InitStruct.Pin = LD3_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
+	/*Configure GPIO pin : LD3_Pin */
+	GPIO_InitStruct.Pin = LD3_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
 
 }
 
@@ -894,8 +864,9 @@ void fsm_init(FsmIFace* iface) {
 	iface->startTimHx = 0;
 	iface->timeHx = 10000;
 
-	iface->ldr = 0;
-	iface->ldr_switch = 0;
+	iface->ldr_min = 100;
+	iface->ldr_max = 2700;
+	iface->ldr_switch = 1500;
 	iface->run_mode = 0;
 
 	iface->menuFsmExitState = 0;
@@ -1130,58 +1101,58 @@ void HX712_run(void) {
 	HX712_stop();
 }
 
-void pumpOFF(void){
+void pumpOFF(void) {
 
 }
-void pumpON(void){
+void pumpON(void) {
 
 }
-void sleepMode(void){
+void sleepMode(void) {
 
 }
-void progLdrSwitchValue(void){
+void progLdrSwitchValue(void) {
 	// to prog LDR_switch value
-		// test if sw1 == 1
-		uint32_t progMode_ticker = 0;
-			uint32_t LDR_ticker = 0;
+	// test if sw1 == 1
+	uint32_t progMode_ticker = 0;
+	uint32_t LDR_ticker = 0;
 	if (shift_test_switch_is_ON() == 1) {
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+		LDR_ticker = HAL_GetTick();
+		HAL_Delay(600);
+		if (shift_test_switch_is_ON() == 1) {
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch red led off
 			LDR_ticker = HAL_GetTick();
-			HAL_Delay(600);
-			if (shift_test_switch_is_ON() == 1) {
-				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch red led off
-				LDR_ticker = HAL_GetTick();
-				HAL_Delay(100);
-				LDR_Value();
-				LDR_ticker = HAL_GetTick();
-				//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-				//do wait for 240 sec so the user can put switch off to set LDR_switch value
-				int waitms=240000;
-				while ((HAL_GetTick() - LDR_ticker) < waitms) {
+			HAL_Delay(100);
+			LDR_Value();
+			LDR_ticker = HAL_GetTick();
+			//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+			//do wait for 240 sec so the user can put switch off to set LDR_switch value
+			int waitms = 240000;
+			while ((HAL_GetTick() - LDR_ticker) < waitms) {
 
-					__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
-					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
-					HAL_Delay(500);
-					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
-					HAL_Delay(500);
-					__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
-					if (shift_test_switch_is_ON() == 0) {
-						LDR_Value();
-						__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
-						//save new Values to eeprom
-						LDR_switch = *pLDR;
-						RUN_prog_ldr();
-						LDR_ticker += waitms;
-					}
-
-				}
+				__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
+				HAL_Delay(500);
 				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
-				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-				while(1){
-					// run in watchdogtimer time out
+				HAL_Delay(500);
+				__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+				if (shift_test_switch_is_ON() == 0) {
+					LDR_Value();
+					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
+					//save new Values to eeprom
+					piface->ldr_switch = *pLDR;
+					RUN_prog_ldr();
+					LDR_ticker += waitms;
 				}
+
+			}
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+			while (1) {
+				// run in watchdogtimer time out
 			}
 		}
+	}
 }
 /**
  * Brief   This function saves the LDR min max and switch values in the eeprom.
@@ -1196,21 +1167,21 @@ void RUN_prog_ldr(void) {
 	UnlockPELOCK();
 	FLASH->PECR |= FLASH_PECR_ERRIE | FLASH_PECR_EOPIE; /* enable flash interrupts */
 
-	*(uint32_t *) (DATA_E2_ADDR + 20) = LDRvalue_min; /* (1) */
+	*(uint32_t *) (DATA_E2_ADDR + 20) = piface->ldr_min; /* (1) */
 	__WFI();
-	if (*(uint32_t *) (DATA_E2_ADDR + 20) != LDRvalue_min) {
+	if (*(uint32_t *) (DATA_E2_ADDR + 20) != piface->ldr_min) {
 		error |= ERROR_PROG_32B_WORD;
 	}
 
-	*(uint32_t *) (DATA_E2_ADDR + 24) = LDRvalue_max; /* (1) */
+	*(uint32_t *) (DATA_E2_ADDR + 24) = piface->ldr_max; /* (1) */
 	__WFI();
-	if (*(uint32_t *) (DATA_E2_ADDR + 24) != LDRvalue_max) {
+	if (*(uint32_t *) (DATA_E2_ADDR + 24) != piface->ldr_max) {
 		error |= ERROR_PROG_32B_WORD;
 	}
 
-	*(uint32_t *) (DATA_E2_ADDR + 28) = LDR_switch; /* (1) */
+	*(uint32_t *) (DATA_E2_ADDR + 28) = piface->ldr_switch; /* (1) */
 	__WFI();
-	if (*(uint32_t *) (DATA_E2_ADDR + 28) != LDR_switch) {
+	if (*(uint32_t *) (DATA_E2_ADDR + 28) != piface->ldr_switch) {
 		error |= ERROR_PROG_32B_WORD;
 	}
 
@@ -1261,17 +1232,17 @@ void LDR_Value(void) {
 	//map(value, fromLow, fromHigh, toLow, toHigh)
 	// BUG if toLow is greater then 0 this gives a wrong calculation
 	//LDRvalue_min  LDRvalue_max LDR_switch
-	if((LDR_switch>*pLDR) && (LDR_switch-*pLDR) > LDRvalue_min){
-	bright_ad[0] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
-			bright[0]);
-	bright_ad[1] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
-			bright[1]);
-	bright_ad[2] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
-			bright[2]);
-	}else{
-		bright_ad[0]=0;
-		bright_ad[1]=0;
-		bright_ad[2]=0;
+	if ((piface->ldr_switch > *pLDR) && (piface->ldr_switch - *pLDR) > piface->ldr_min) {
+		bright_ad[0] = map2((piface->ldr_switch - *pLDR), piface->ldr_min, piface->ldr_switch, 100,
+				bright[0]);
+		bright_ad[1] = map2((piface->ldr_switch - *pLDR), piface->ldr_min, piface->ldr_switch, 100,
+				bright[1]);
+		bright_ad[2] = map2((piface->ldr_switch - *pLDR), piface->ldr_min, piface->ldr_switch, 100,
+				bright[2]);
+	} else {
+		bright_ad[0] = 0;
+		bright_ad[1] = 0;
+		bright_ad[2] = 0;
 	}
 	// recalculate LED values
 	LED_RGB_Set(1.0);
@@ -1323,13 +1294,13 @@ void Save_2_Eeprom(void) {
  * Retval  None
  */
 void Read_from_Eeprom(void) {
-	eeprom_value_min = *(uint32_t *) (DATA_E2_ADDR);
-	eeprom_value_max = *(uint32_t *) (DATA_E2_ADDR + 4);
-	eeprom_pump_max = *(uint32_t *) (DATA_E2_ADDR + 8);
+	piface->eepromMin = *(uint32_t *) (DATA_E2_ADDR);
+	piface->eepromMax = *(uint32_t *) (DATA_E2_ADDR + 4);
+	piface->eepromPmax = *(uint32_t *) (DATA_E2_ADDR + 8);
 	//uint32_t *pData = 0x08080000;
-	LDRvalue_min = *(uint32_t *) (DATA_E2_ADDR + 20);
-	LDRvalue_max = *(uint32_t *) (DATA_E2_ADDR + 24);
-	LDR_switch = *(uint32_t *) (DATA_E2_ADDR + 28);
+	piface->ldr_min = *(uint32_t *) (DATA_E2_ADDR + 20);//LDRvalue_min
+	piface->ldr_max = *(uint32_t *) (DATA_E2_ADDR + 24);//LDRvalue_max
+	piface->ldr_switch = *(uint32_t *) (DATA_E2_ADDR + 28);//LDR_switch
 	//eeprom_value_max=
 }
 
@@ -1366,7 +1337,7 @@ void LED_RGB_Set(float HSV_value) {
 		ar = 0;
 		//ag=(map((hue_angel-150),150,300,0,bright[1]))*-1;
 		//ag = bright_ad[1] + (map2((300 - hue_angel), 150, 300, 0, bright_ad[1]));
-		ag=map2((300 - hue_angel), 0, 300, 0, bright_ad[1]);
+		ag = map2((300 - hue_angel), 0, 300, 0, bright_ad[1]);
 		ab = map2(hue_angel, 150, 300, 0, bright_ad[2]);
 	} else {
 		ar = 0;
@@ -1627,52 +1598,51 @@ __INLINE void EepromErase(uint32_t addr)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
-void Error_Handler(void)
-{
-  /* USER CODE BEGIN Error_Handler_Debug */
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
+void Error_Handler(void) {
+	/* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
 	while (1) {
 		uint32_t ERROR_ticker;
-			while (1) {
-				//  blink red
-				//water level low or pump defect
+		while (1) {
+			//  blink red
+			//water level low or pump defect
 
-				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-				ERROR_ticker = HAL_GetTick();
-				while ((HAL_GetTick() - ERROR_ticker) < 300) {
-					//wait 600 ms
-				}
-				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch to red led
-				ERROR_ticker = HAL_GetTick();
-				while ((HAL_GetTick() - ERROR_ticker) < 300) {
-					//wait 600 ms
-				}
-				// keep off from reseting
-				//__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+			ERROR_ticker = HAL_GetTick();
+			while ((HAL_GetTick() - ERROR_ticker) < 300) {
+				//wait 600 ms
 			}
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch to red led
+			ERROR_ticker = HAL_GetTick();
+			while ((HAL_GetTick() - ERROR_ticker) < 300) {
+				//wait 600 ms
+			}
+			// keep off from reseting
+			//__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+		}
 	}
-  /* USER CODE END Error_Handler_Debug */
+	/* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
 void assert_failed(uint8_t *file, uint32_t line)
-{ 
-  /* USER CODE BEGIN 6 */
+{
+	/* USER CODE BEGIN 6 */
 	/* User can add his own implementation to report the file name and line number,
 	 tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+	/* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
 
