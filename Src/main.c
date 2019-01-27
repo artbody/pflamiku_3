@@ -1289,12 +1289,18 @@ void LDR_Value(void) {
 	HAL_ADC_Stop_DMA(&hadc);
 	//map(value, fromLow, fromHigh, toLow, toHigh)
 	//LDRvalue_min  LDRvalue_max LDR_switch
+	if(*pLDR<LDR_switch){
 	bright_ad[0] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
 			bright[0]);
 	bright_ad[1] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
 			bright[1]);
 	bright_ad[2] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
 			bright[2]);
+	}else{
+		bright_ad[0]=0;
+		bright_ad[1]=0;
+		bright_ad[2]=0;
+	}
 	// recalculate LED values
 	LED_RGB_Set(1.0);
 	// reload new LED global settings of PWM
@@ -1387,7 +1393,8 @@ void LED_RGB_Set(float HSV_value) {
 	} else if (hue_angel <= 300) {
 		ar = 0;
 		//ag=(map((hue_angel-150),150,300,0,bright[1]))*-1;
-		ag = bright[1] + (map2((300 - hue_angel), 150, 300, 0, bright_ad[1]));
+		//ag = bright_ad[1] + (map2((300 - hue_angel), 150, 300, 0, bright_ad[1]));
+		ag=map2((300 - hue_angel), 0, 300, 0, bright_ad[1]);
 		ab = map2(hue_angel, 150, 300, 0, bright_ad[2]);
 	} else {
 		ar = 0;
