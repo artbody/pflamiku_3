@@ -847,12 +847,12 @@ void fsmIface_pumpError(const Fsm* handle) {
 
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
 		ERROR_ticker = HAL_GetTick();
-		while ((HAL_GetTick() - ERROR_ticker) < 600) {
+		while ((HAL_GetTick() - ERROR_ticker) < 300) {
 			//wait 600 ms
 		}
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch to red led
 		ERROR_ticker = HAL_GetTick();
-		while ((HAL_GetTick() - ERROR_ticker) < 600) {
+		while ((HAL_GetTick() - ERROR_ticker) < 300) {
 			//wait 600 ms
 		}
 		// keep off from reseting
@@ -1681,7 +1681,27 @@ __INLINE void EepromErase(uint32_t addr)
 void _Error_Handler(char *file, int line) {
 	/* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
 	while (1) {
+		uint32_t ERROR_ticker;
+			while (1) {
+				//  blink red
+				//water level low or pump defect
+
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+				ERROR_ticker = HAL_GetTick();
+				while ((HAL_GetTick() - ERROR_ticker) < 300) {
+					//wait 600 ms
+				}
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch to red led
+				ERROR_ticker = HAL_GetTick();
+				while ((HAL_GetTick() - ERROR_ticker) < 300) {
+					//wait 600 ms
+				}
+				// keep off from reseting
+				//__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+			}
 	}
 	/* USER CODE END Error_Handler_Debug */
 }
