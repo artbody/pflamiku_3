@@ -163,7 +163,7 @@ uint32_t TEST_MITTELWERT = 8001271;
 Fsm Fsm_handle;
 volatile int progMode = 0, *pprogMode = &progMode;
 volatile uint32_t millis; //,*pmillis=&millis; used for pump timeout
-
+volatile uint32_t blink_millis; // used for blinking while pump on
 //! As we make use of time triggers (after & every) we make use of a generic timer implementation and need a defined number of timers.
 #define MAX_TIMERS 4
 
@@ -848,12 +848,12 @@ void fsmIface_pumpError(const Fsm* handle) {
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
 		ERROR_ticker = HAL_GetTick();
 		while ((HAL_GetTick() - ERROR_ticker) < 600) {
-			//wait 60 ms
+			//wait 600 ms
 		}
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch to red led
 		ERROR_ticker = HAL_GetTick();
 		while ((HAL_GetTick() - ERROR_ticker) < 600) {
-			//wait 60 ms
+			//wait 600 ms
 		}
 		// keep off from reseting
 		__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
@@ -904,7 +904,21 @@ sc_integer fsmIface_hX712Time(const Fsm* handle) {
 #else
 
 	HX712_run();
-	LED_RGB_Set(1.0);
+	//blink blue green while pumping
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0);//red if on =off
+	if((HAL_GetTick() - blink_millis) > 600) {
+				//wait 600 ms
+
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]);//green
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);//blue
+			}
+	if((HAL_GetTick() - blink_millis) > 1200) {
+				//wait 600 ms
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);//green
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, bright[2]);//blue
+		blink_millis=HAL_GetTick();
+			}
+	//LED_RGB_Set(1.0);
 	fsmIface_set_timeOut(&Fsm_handle, millis);
 	return *phx;
 #endif
@@ -965,7 +979,7 @@ void fsmIface_lowPmode(const Fsm* handle, const sc_integer LpmOn) {
 void FsmSetVars(void) {
 
 	/*
-	 *TODO
+	 *
 	 * read Vars from Eeprom
 	 * eeprom_value_max ...
 	 */
