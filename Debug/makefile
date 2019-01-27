@@ -28,13 +28,13 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: 2019-01-10-pflamiku_3er_fsm.elf
+all: 2019-01-10-pflamiku_3er_fwfsm.elf
 
 # Tool invocations
-2019-01-10-pflamiku_3er_fsm.elf: $(OBJS) $(USER_OBJS) ../STM32L031K6Tx_FLASH.ld
+2019-01-10-pflamiku_3er_fwfsm.elf: $(OBJS) $(USER_OBJS) ../STM32L031K6Tx_FLASH.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -mfloat-abi=soft -specs=nosys.specs -specs=nano.specs -T"../STM32L031K6Tx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "2019-01-10-pflamiku_3er_fsm.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -mfloat-abi=soft -specs=nosys.specs -specs=nano.specs -T"../STM32L031K6Tx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "2019-01-10-pflamiku_3er_fwfsm.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
@@ -46,8 +46,8 @@ clean:
 
 post-build:
 	-@echo 'Generating hex and Printing size information:'
-	arm-none-eabi-objcopy -O ihex "2019-01-10-pflamiku_3er_fsm.elf" "2019-01-10-pflamiku_3er_fsm.hex"
-	arm-none-eabi-size "2019-01-10-pflamiku_3er_fsm.elf"
+	arm-none-eabi-objcopy -O ihex "2019-01-10-pflamiku_3er_fwfsm.elf" "2019-01-10-pflamiku_3er_fwfsm.hex"
+	arm-none-eabi-size "2019-01-10-pflamiku_3er_fwfsm.elf"
 	-@echo ' '
 
 .PHONY: all clean dependents

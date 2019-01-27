@@ -86,15 +86,26 @@
 #include "stdint.h"
 #include <stdio.h>
 #include <stdbool.h>
-#include "Fsm.h"
-#include "fsm_timer.h"
-#include "FsmRequired.h"
+#include "fsmDefs.h"
+
+
+/** MainFsm function definitions */
+#include "MainFsm.h"
+
+/** FW Profile function definitions */
+#include "FwSmConstants.h"
+#include "FwSmSCreate.h"
+#include "FwSmConfig.h"
+#include "FwSmCore.h"
+
 #include "sc_types.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+//typedef struct {
+FsmIFace iface;
+FsmIFace* piface = &iface;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -178,39 +189,14 @@ uint32_t TEST_LDR_SWITCH = 400;
 uint32_t TEST_MITTELWERT = 8001271;
 #endif
 
-Fsm Fsm_handle;
+
 volatile int progMode = 0, *pprogMode = &progMode;
 volatile uint32_t millis; //,*pmillis=&millis; used for pump timeout
 volatile uint32_t blink_millis; // used for blinking while pump on
 //! As we make use of time triggers (after & every) we make use of a generic timer implementation and need a defined number of timers.
 #define MAX_TIMERS 4
 
-//! We allocate the desired array of timers.
-static sc_timer_t timers[MAX_TIMERS];
 
-//! The timers are managed by a timer service. */
-static sc_timer_service_t timer_service;
-extern void fsm_setTimer(Fsm* handle, const sc_eventid evid,
-		const sc_integer time_ms, const sc_boolean periodic) {
-	sc_timer_start(&timer_service, handle, evid, time_ms, periodic);
-}
-
-sc_integer fsmIface_getLdrValue(const Fsm* handle);
-sc_integer fsmIface_pumpOn(const Fsm* handle);
-sc_integer fsmIface_pumpOff(const Fsm* handle);
-void fsmIface_pumpError(const Fsm* handle);
-sc_integer fsmIface_hX712(const Fsm* handle);
-sc_integer fsmIface_hX712mw(const Fsm* handle);
-sc_integer fsmIface_hX712Time(const Fsm* handle);
-sc_integer fsmIface_hX712TimeRM(const Fsm* handle);
-void fsmIface_hXExit(const Fsm* handle, const sc_integer eepromMinS,
-		const sc_integer eepromMaxS);
-void fsmIface_lowPmode(const Fsm* handle, const sc_integer LpmOn);
-
-//! callback implementation for canceling time events.
-extern void fsm_unsetTimer(Fsm* handle, const sc_eventid evid) {
-	sc_timer_cancel(&timer_service, evid);
-}
 
 /* Private variables ---------------------------------------------HX712 + DIV------*/
 
@@ -278,6 +264,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM21_Init(void);
 static void MX_LPTIM1_Init(void);
 /* USER CODE BEGIN PFP */
+void fsm_init(FsmIFace* iface);
 /* Private function prototypes -----------------------------------------------*/
 void FsmSetVars(void); //set start conditions of the fsm
 void TEST_if_first_start_then_eeprom_set_values(void); //setings like min max weight and ldr min max and switch
@@ -287,7 +274,11 @@ void test_if_switch_is_on(void);
 void HX712_start(void);
 void HX712_stop(void);
 void HX712_run(void);
-
+// pump run
+void pumpOFF(void);
+void pumpON(void);
+void sleepMode(void);
+void progLdrSwitchValue(void);
 // ldr measurement
 void RUN_prog_ldr(void);
 void LDR_Value(void);
@@ -369,64 +360,32 @@ int main(void)
 		Error_Handler();
 	}
 
-	uint32_t progMode_ticker = 0;
-	uint32_t LDR_ticker = 0;
-	// to prog LDR_switch value
-	// test if sw1 == 1
-	if (shift_test_switch_is_ON() == 1) {
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-		LDR_ticker = HAL_GetTick();
-		HAL_Delay(600);
-		if (shift_test_switch_is_ON() == 1) {
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch red led off
-			LDR_ticker = HAL_GetTick();
-			HAL_Delay(100);
-			LDR_Value();
-			LDR_ticker = HAL_GetTick();
-			//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-			//do wait for 240 sec so the user can put switch off to set LDR_switch value
-			int waitms=240000;
-			while ((HAL_GetTick() - LDR_ticker) < waitms) {
 
-				__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
-				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
-				HAL_Delay(500);
-				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
-				HAL_Delay(500);
-				__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
-				if (shift_test_switch_is_ON() == 0) {
-					LDR_Value();
-					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
-					//save new Values to eeprom
-					LDR_switch = *pLDR;
-					RUN_prog_ldr();
-					LDR_ticker += waitms;
-				}
 
-			}
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-			while(1){
-				// run in watchdogtimer time out
-			}
-		}
-	}
 
 	//fsm init & start
-	fsm_init(&Fsm_handle);
+
 
 	// read all volues from eeprom and put them in place i.e. the vars of the finite state machine
 	Read_from_Eeprom();
-	FsmSetVars();
+
 	LDR_Value();
-	fsm_enter(&Fsm_handle);
-	fsm_runCycle(&Fsm_handle);
-	fsm_runCycle(&Fsm_handle);
-	fsm_runCycle(&Fsm_handle);
+
 	TEST_if_first_start_then_eeprom_set_values();
 	uint32_t tickstart = 0U, *ptickstart = &tickstart;
 	*ptickstart = HAL_GetTick();
+/*-------------------------------------------------------------------------------------------------*/
+	/** Define the state machine descriptor (SMD) */
+		FwSmDesc_t smDesc = MainFsmCreate(NULL);
 
+		/** Check that the SM is properly configured */
+		if (FwSmCheckRec(smDesc) != smSuccess) {
+			printf("The state machine MainFsm is NOT properly configured ... FAILURE\n");
+			//return EXIT_FAILURE;
+		}
+
+		printf("The state machine MainFsm is properly configured ... SUCCESS\n");
+/*-------------------------------------------------------------------------------------------------*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -439,30 +398,30 @@ int main(void)
 //						tickstart = HAL_GetTick();
 //					}
 		//ldr value measurement all 60 sec*x minutes
-		if ((HAL_GetTick() - LDR_ticker) > 60000*5) {
+		if ((HAL_GetTick() - piface->timeLDR) > 60000*5) {
 			LDR_Value();
-			LDR_ticker = HAL_GetTick();
+			piface->timeLDR = HAL_GetTick();
 		}
 		//test if switch is off or in progmode ? with debounce 50ms
-		if ((HAL_GetTick() - progMode_ticker) > 100) {
-			test_if_switch_is_on();
-			progMode_ticker = HAL_GetTick();
-		}
+//		if ((HAL_GetTick() - progMode_ticker) > 100) {
+		test_if_switch_is_on();
+//			progMode_ticker = HAL_GetTick();
+//		}
 		//fsm_runCycle(&Fsm_handle);
 		//if not progmode fsm_runCycle(&Fsm_handle);
 		if (*pprogMode == 0) {
 			if ((HAL_GetTick() - tickstart) > 1300) {
-				sc_timer_service_proceed(&timer_service, 1300);
+
 				//millis = 0;
 				tickstart = HAL_GetTick();
-				fsm_runCycle(&Fsm_handle);
+
 			}
 		} else {
 			if ((HAL_GetTick() - tickstart) > 130) {
 				//sc_timer_service_proceed(&timer_service, 130);
 				//millis = 0;
 				tickstart = HAL_GetTick();
-				fsm_runCycle(&Fsm_handle);
+
 			}
 		}
     /* USER CODE END WHILE */
@@ -911,200 +870,36 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void fsm_init(FsmIFace* iface) {
 
-sc_integer fsmIface_getLdrValue(const Fsm* handle) {
+	iface->switcher_raised = 0;
+	iface->switcher_value = 0;
+	iface->started = 0;
+	iface->prog_mode = 0;
+	iface->bPumpOff = 0;
+	iface->bPumpEn = 0;
 
-#if defined test
-	LED_RGB_Set(1.0);
-	//LDR_Value();
-	return TEST_LDR_VALUE;
-#else
+	iface->lowPower = 0;
+	iface->sw1 = 0;
+	iface->eepromAbsMax = 12000000;
+	iface->eepromMin = 8201271;
+	iface->eepromMax = 10000000;
+	iface->eepromPmax = 20000;
+	iface->mittelwert = 8001271;
+	iface->hx = 0;
+	iface->timeOut = 0;
 
-	return *pLDR;
-#endif
+	iface->startTimLDR = 0;
+	iface->timeLDR = 60000;
+	iface->startTimHx = 0;
+	iface->timeHx = 10000;
 
-}
-sc_integer fsmIface_pumpOn(const Fsm* handle) {
-#if defined test_pump
-	//return 1 = pump ON
-	return 1;
-#else
-	millis = 0;
-	HAL_GPIO_WritePin(mot_out_GPIO_Port, mot_out_Pin, GPIO_PIN_SET);
-	return 1;
-#endif
-}
+	iface->ldr = 0;
+	iface->ldr_switch = 0;
+	iface->run_mode = 0;
 
-sc_integer fsmIface_pumpOff(const Fsm* handle) {
-#if defined test_pump
-	//return 0 = pump OFF
-	return 0;
-#else
-	eeprom_pump_max = millis;
-	HAL_GPIO_WritePin(mot_out_GPIO_Port, mot_out_Pin, GPIO_PIN_RESET);
-	*pMesswert_long_time_average = *phx;
-	return 0;
-#endif
-
-}
-void fsmIface_pumpError(const Fsm* handle) {
-	uint32_t ERROR_ticker;
-	while (1) {
-		// TODO blink red
-		//water level low or pump defect
-
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-		ERROR_ticker = HAL_GetTick();
-		while ((HAL_GetTick() - ERROR_ticker) < 300) {
-			//wait 600 ms
-		}
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch to red led
-		ERROR_ticker = HAL_GetTick();
-		while ((HAL_GetTick() - ERROR_ticker) < 300) {
-			//wait 600 ms
-		}
-		// keep off from reseting
-		__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
-	}
-}
-sc_integer fsmIface_hX712(const Fsm* handle) {
-#if defined test_HX712
-	//return mittelwert
-#if defined	test_HX712_w0min // water below min
-	return (TEST_MITTELWERT - 1000);
-#endif
-#if defined	test_HX712_w1min // water above min
-	return (TEST_MITTELWERT+10000);
-#endif
-#else
-	HX712_run();
-	LED_RGB_Set(1.0);
-	return *phx;
-#endif
-
-}
-
-sc_integer fsmIface_hX712mw(const Fsm* handle) {
-#if defined test_HX712
-	//return mittelwert
-#if defined	test_HX712_w0min // water below min
-	return (TEST_MITTELWERT - 1000);
-#endif
-#if defined	test_HX712_w1min // water above min
-	return (TEST_MITTELWERT+10000);
-#endif
-#else
-	HX712_run();
-	LED_RGB_Set(1.0);
-	return *pMesswert_long_time_average;
-#endif
-
-}
-
-sc_integer fsmIface_hX712Time(const Fsm* handle) {
-#if defined test_HX712
-	//return mittelwert
-#if defined	test_HX712_w0min // water below min
-	TEST_MITTELWERT += 100000;
-#endif
-	LED_RGB_Set(1.0);
-	return TEST_MITTELWERT;
-#else
-
-	HX712_run();
-	//blink blue green while pumping
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0);//red if on =off
-	if((HAL_GetTick() - blink_millis) > 600) {
-				//wait 600 ms
-
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]);//green
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);//blue
-			}
-	if((HAL_GetTick() - blink_millis) > 1200) {
-				//wait 600 ms
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);//green
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, bright[2]);//blue
-		blink_millis=HAL_GetTick();
-			}
-	//LED_RGB_Set(1.0);
-	fsmIface_set_timeOut(&Fsm_handle, millis);
-	return *phx;
-#endif
-}
-sc_integer fsmIface_hX712TimeRM(const Fsm* handle) {
-#if defined test_HX712
-	//return mittelwert
-#if defined	test_HX712_w0min // water below min
-	TEST_MITTELWERT += 100000;
-#endif
-	LED_RGB_Set(1.0);
-	return TEST_MITTELWERT;
-#else
-
-	HX712_run();
-	LED_RGB_Set(1.0);
-	fsmIface_set_eepromPmax(&Fsm_handle, *(uint32_t *) (DATA_E2_ADDR + 8));
-	fsmIface_set_timeOut(&Fsm_handle, millis);
-	return *phx;
-#endif
-}
-void fsmIface_hXExit(const Fsm* handle, const sc_integer eepromMinS,
-		const sc_integer eepromMaxS) {
-	//Assign to global vars and save them in eeprom
-	eeprom_value_min = (uint32_t) eepromMinS;
-	eeprom_value_max = (uint32_t) eepromMaxS;
-	eeprom_pump_max *= 2;
-	Save_2_Eeprom();
-	fsmIface_set_eepromPmax(&Fsm_handle, eeprom_pump_max);
-}
-
-/**
- * Brief   This function runs low power mode  .
- *
- * Param   None
- * Retval  None
- */
-void fsmIface_lowPmode(const Fsm* handle, const sc_integer LpmOn) {
-	//assume its night and do nothing switch off RGB_LED and go in standby mode
-
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, ab);
-	//standbymode
-	HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
-	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
-	SysTick->CTRL = 0;
-	HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0xFFFF, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
-	HAL_PWR_EnterSTANDBYMode();
-}
-
-/**
- * Brief   This function runs at startup to set some variables in the FSM .
- *
- * Param   None
- * Retval  None
- */
-void FsmSetVars(void) {
-
-	/*
-	 *
-	 * read Vars from Eeprom
-	 * eeprom_value_max ...
-	 */
-#if defined test
-	fsmIface_set_eepromMax(&Fsm_handle, hxmax);
-	fsmIface_set_eepromMin(&Fsm_handle, hxmin);
-	fsmIface_set_eepromPmax(&Fsm_handle, 10);
-
-	//var ldr_switch:integer
-	fsmIface_set_ldr_switch(&Fsm_handle, TEST_LDR_SWITCH);
-#else
-	fsmIface_set_eepromMax(&Fsm_handle, eeprom_value_max);
-	fsmIface_set_eepromMin(&Fsm_handle, eeprom_value_min);
-	fsmIface_set_eepromPmax(&Fsm_handle, eeprom_pump_max);
-	fsmIface_set_ldr_switch(&Fsm_handle, *(uint32_t *) (DATA_E2_ADDR + 28));
-#endif
-
+	iface->menuFsmExitState = 0;
+	//char tmp[32];
 }
 
 /**
@@ -1186,8 +981,7 @@ void test_if_switch_is_on(void) {
 					&& *pprogMode == 0) {
 				//RUN_progmode
 				*pprogMode = 1;
-				fsmIface_set_sw1(&Fsm_handle, 1);
-				fsmIface_set_prog_mode(&Fsm_handle, 1);
+
 			}
 		}
 	} else {
@@ -1200,8 +994,7 @@ void test_if_switch_is_on(void) {
 					&& *pprogMode == 1) {
 				//STOP_progmode
 				*pprogMode = 0;
-				fsmIface_set_sw1(&Fsm_handle, 0);
-				fsmIface_set_prog_mode(&Fsm_handle, 0);
+
 			}
 		}
 	}
@@ -1337,6 +1130,59 @@ void HX712_run(void) {
 	HX712_stop();
 }
 
+void pumpOFF(void){
+
+}
+void pumpON(void){
+
+}
+void sleepMode(void){
+
+}
+void progLdrSwitchValue(void){
+	// to prog LDR_switch value
+		// test if sw1 == 1
+		uint32_t progMode_ticker = 0;
+			uint32_t LDR_ticker = 0;
+	if (shift_test_switch_is_ON() == 1) {
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+			LDR_ticker = HAL_GetTick();
+			HAL_Delay(600);
+			if (shift_test_switch_is_ON() == 1) {
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch red led off
+				LDR_ticker = HAL_GetTick();
+				HAL_Delay(100);
+				LDR_Value();
+				LDR_ticker = HAL_GetTick();
+				//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+				//do wait for 240 sec so the user can put switch off to set LDR_switch value
+				int waitms=240000;
+				while ((HAL_GetTick() - LDR_ticker) < waitms) {
+
+					__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
+					HAL_Delay(500);
+					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
+					HAL_Delay(500);
+					__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+					if (shift_test_switch_is_ON() == 0) {
+						LDR_Value();
+						__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
+						//save new Values to eeprom
+						LDR_switch = *pLDR;
+						RUN_prog_ldr();
+						LDR_ticker += waitms;
+					}
+
+				}
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+				while(1){
+					// run in watchdogtimer time out
+				}
+			}
+		}
+}
 /**
  * Brief   This function saves the LDR min max and switch values in the eeprom.
  *

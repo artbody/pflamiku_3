@@ -46,10 +46,10 @@
                     "entryFunc": "f_getTime",
                     "doFunc": "",
                     "exitFunc": "",
-                    "entryType": "define function",
+                    "entryType": "run code",
                     "doType": "call function",
                     "exitType": "call function",
-                    "entryCode": "",
+                    "entryCode": "piface->time_value=HAL_GetTick();",
                     "doCode": "",
                     "exitCode": "",
                     "entryDesc": "",
@@ -82,7 +82,7 @@
                     "autoid": 1,
                     "type": "choice",
                     "note": "",
-                    "identifier": "CHOICE1"
+                    "identifier": "C_HX_prog_or_run"
                },
                "selected": false
           },
@@ -184,7 +184,7 @@
                     "autoid": 2,
                     "type": "choice",
                     "note": "",
-                    "identifier": "CHOICE2"
+                    "identifier": "C_prog_ldr_switch"
                },
                "selected": false
           },
@@ -211,10 +211,10 @@
                     "entryFunc": "f_setNewLdrSwitchValue",
                     "doFunc": "",
                     "exitFunc": "",
-                    "entryType": "define function",
+                    "entryType": "run code",
                     "doType": "call function",
                     "exitType": "call function",
-                    "entryCode": "",
+                    "entryCode": "progLdrSwitchValue();",
                     "doCode": "",
                     "exitCode": "",
                     "entryDesc": "",
@@ -250,10 +250,10 @@
                     "entryFunc": "f_getLdrValue",
                     "doFunc": "",
                     "exitFunc": "",
-                    "entryType": "define function",
+                    "entryType": "run code",
                     "doType": "call function",
                     "exitType": "call function",
-                    "entryCode": "",
+                    "entryCode": "LDR_Value();",
                     "doCode": "",
                     "exitCode": "",
                     "entryDesc": "",
@@ -286,7 +286,7 @@
                     "autoid": 3,
                     "type": "choice",
                     "note": "",
-                    "identifier": "CHOICE3"
+                    "identifier": "C_sleepmode"
                },
                "selected": false
           },
@@ -316,7 +316,7 @@
                     "entryType": "run code",
                     "doType": "call function",
                     "exitType": "call function",
-                    "entryCode": "/*do only enter this State when sw1 is on */\nif(piface->sleepMode = 1){\nreturn 1;\n}\nreturn 0;",
+                    "entryCode": "sleepMode();",
                     "doCode": "",
                     "exitCode": "",
                     "entryDesc": "",
@@ -334,7 +334,7 @@
           {
                "attrs": {
                     "fill": "none",
-                    "stroke": "#000",
+                    "stroke": "red",
                     "path": [
                          [
                               "M",
@@ -360,7 +360,7 @@
                     "guardType": "call function",
                     "actionType": "run code",
                     "guardCode": "",
-                    "actionCode": "piface->run_mode = 1;",
+                    "actionCode": "piface->run_mode = 1;\nRead_from_Eeprom();",
                     "guardDesc": "",
                     "guardAp": false,
                     "actionDesc": "",
@@ -376,7 +376,7 @@
                },
                "stateFromID": 208,
                "stateToID": 276,
-               "selected": false
+               "selected": true
           },
           {
                "attrs": {
@@ -708,9 +708,9 @@
                     "identifier": "",
                     "guardFunc": "G_sleepMode",
                     "actionFunc": "",
-                    "guardType": "define function",
+                    "guardType": "run code",
                     "actionType": "call function",
-                    "guardCode": "",
+                    "guardCode": "/*do only enter this State when sleepMode is set by f_getLdrValue on */\nif(piface->sleepMode == 1){\nreturn 1;\n}\nreturn 0;",
                     "actionCode": "",
                     "guardDesc": "",
                     "guardAp": false,
@@ -718,7 +718,7 @@
                     "actionAp": false,
                     "note": ""
                },
-               "shiftx": 0,
+               "shiftx": 1,
                "shifty": 0,
                "vertexes": [],
                "shiftxy": {
@@ -1153,7 +1153,7 @@
                          "value": ""
                     }
                ],
-               "smIncludes": "#include \"stdint.h\"\n//#include \"menu.h\"\n#include \"fsmDefs.h\"\n#include \"stm32f4xx_hal.h\"\n\nextern FsmIFace* piface;\n\n",
+               "smIncludes": "#include \"stdint.h\"\n//#include \"menu.h\"\n#include \"fsmDefs.h\"\n#include \"stm32l0xx_hal.h\"\n\nextern FsmIFace* piface;\n\nextern void HX712_run(void);\nextern void LDR_Value(void);\nextern void LED_RGB_Set(float HSV_value);\nextern void Read_from_Eeprom(void);\n\nextern void pumpOFF(void);\nextern void pumpON(void);\nextern void progLdrSwitchValue(void);\nextern void sleepMode(void);",
                "smNotes": "",
                "memalloc": "static",
                "displayInfo": 0,

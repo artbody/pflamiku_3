@@ -2,7 +2,7 @@
  * @file MainFsm.c
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 27 2019 21:28:55
+ * @date Created on: Jan 27 2019 23:48:50
  */
 
 /** MainFsm function definitions */
@@ -14,7 +14,32 @@
 
 #include <stdlib.h>
 
-/** Guard on the transition from CHOICE1 to S_pumpOn. */
+/** Entry Action for the state S_saveEeprom_pumpOff. */
+void f_pump_off(FwSmDesc_t smDesc)
+{
+	pumpOFF();
+}
+
+/** Entry Action for the state S_pumpOn. */
+void f_pumpOn(FwSmDesc_t smDesc)
+{
+	piface->startTimWater=HAL_GetTick();
+	pumpON();
+}
+
+/** Entry Action for the state S_waterLow. */
+void f_water_low(FwSmDesc_t smDesc)
+{
+	pumpOFF();
+}
+
+/** Action on the transition from Initial State to C_mwKleinerMin. */
+void A_readHX712(FwSmDesc_t smDesc)
+{
+	HX712_run();
+}
+
+/** Guard on the transition from C_mwKleinerMin to S_pumpOn. */
 FwSmBool_t G_mwKleinerMin(FwSmDesc_t smDesc)
 {
 	if((piface->mittelwert <= piface->eepromMin) && (piface->bPumpOff==0)){
@@ -23,7 +48,18 @@ FwSmBool_t G_mwKleinerMin(FwSmDesc_t smDesc)
 	return 0;
 }
 
-/** Guard on the transition from CHOICE2 to S_saveEeprom_pumpOff. */
+/** Guard on the transition from C_timeout_exit to S_waterLow. */
+FwSmBool_t G_pumpTimGrTmax(FwSmDesc_t smDesc)
+{
+	piface->timeOut=HAL_GetTick();
+		if (piface->timeOut - piface->startTimWater > piface->timeOutWater) {
+			
+		return 1;
+	}
+		return 0;
+}
+
+/** Guard on the transition from C_timeout_exit to S_saveEeprom_pumpOff. */
 FwSmBool_t G_mwGrMax(FwSmDesc_t smDesc)
 {
 	if((piface->mittelwert > piface->eepromMax) && (piface->bPumpOff==0)){
@@ -35,15 +71,15 @@ FwSmBool_t G_mwGrMax(FwSmDesc_t smDesc)
 /** Entry Action for the state ES_waterProg_enter. */
 void f_es_menuFsm_waterProg_enter(FwSmDesc_t smDesc)
 {
-	piface->enc = TIM5->CNT;
+	HX712_run();
 }
 
 /** Entry Action for the state ES_waterProg_run. */
 void f_waterProg_run(FwSmDesc_t smDesc)
 {
 	
-	main_HX712();
-	main_pump_on();// start pump
+	HX712_run();
+	pumpON();// start pump
 	//start timer
 	piface->timeOutWater=HAL_GetTick();
 }
@@ -59,19 +95,17 @@ void f_waterProg_exit(FwSmDesc_t smDesc)
 /** Entry Action for the state ES_waterProg_stopping. */
 void f_waterProg_stop(FwSmDesc_t smDesc)
 {
-	main_pump_off();
+	pumpOFF();
 	piface->eepromPmax=HAL_GetTick()-piface->timeOutWater;
 	
-	main_HX712();
+	HX712_run();
 	//this is set only after //watering a plant;
 }
 
 /** Action on the transition from Initial State to ES_waterProg_enter. */
 void f_waterProg_preenter(FwSmDesc_t smDesc)
 {
-	TIM5->CNT = 0;
-	piface->enc=0;
-	piface->sw1 = 0;
+	piface->prog_mode = 0;
 }
 
 /** Guard on the transition from C_waterProg_run to ES_waterProg_run. */
@@ -107,23 +141,38 @@ FwSmBool_t G_switchOff(FwSmDesc_t smDesc)
 	return 0;
 }
 
+/** Entry Action for the state S_START. */
+void f_getTime(FwSmDesc_t smDesc)
+{
+	piface->time_value=HAL_GetTick();
+}
+
+/** Entry Action for the state S_progLdrSwitchValue. */
+void f_setNewLdrSwitchValue(FwSmDesc_t smDesc)
+{
+	progLdrSwitchValue();
+}
+
+/** Entry Action for the state S_getLdrValue. */
+void f_getLdrValue(FwSmDesc_t smDesc)
+{
+	LDR_Value();
+}
+
 /** Entry Action for the state S_sleepMode. */
 void f_sleepMode(FwSmDesc_t smDesc)
 {
-	/*do only enter this State when sw1 is on */
-	if(piface->sleepMode = 1){
-	return 1;
-	}
-	return 0;
+	sleepMode();
 }
 
-/** Action on the transition from Initial State to CHOICE2. */
+/** Action on the transition from Initial State to C_prog_ldr_switch. */
 void A_INIT(FwSmDesc_t smDesc)
 {
 	piface->run_mode = 1;
+	Read_from_Eeprom();
 }
 
-/** Guard on the transition from CHOICE1 to S_progHX712. */
+/** Guard on the transition from C_HX_prog_or_run to S_progHX712. */
 FwSmBool_t G_progHX712Mode(FwSmDesc_t smDesc)
 {
 	/*do only enter this State when sw1 is on */
@@ -133,7 +182,7 @@ FwSmBool_t G_progHX712Mode(FwSmDesc_t smDesc)
 	return 0;
 }
 
-/** Guard on the transition from CHOICE1 to S_runHX712. */
+/** Guard on the transition from C_HX_prog_or_run to S_runHX712. */
 FwSmBool_t G_runHX712_atTime(FwSmDesc_t smDesc)
 {
 	/*do only enter this State when time has passed */
@@ -143,7 +192,7 @@ FwSmBool_t G_runHX712_atTime(FwSmDesc_t smDesc)
 	return 0;
 }
 
-/** Guard on the transition from CHOICE1 to S_getLdrValue. */
+/** Guard on the transition from C_HX_prog_or_run to S_getLdrValue. */
 FwSmBool_t G_runLDR_atTime(FwSmDesc_t smDesc)
 {
 	/*do only enter this State when time has passed */
@@ -153,7 +202,7 @@ FwSmBool_t G_runLDR_atTime(FwSmDesc_t smDesc)
 	return 0;
 }
 
-/** Guard on the transition from CHOICE2 to S_progLdrSwitchValue. */
+/** Guard on the transition from C_prog_ldr_switch to S_progLdrSwitchValue. */
 FwSmBool_t G_run_ldr_switch_value_update(FwSmDesc_t smDesc)
 {
 	/*do only enter this State when sw1 is on */
@@ -163,7 +212,7 @@ FwSmBool_t G_run_ldr_switch_value_update(FwSmDesc_t smDesc)
 	return 0;
 }
 
-/** Guard on the transition from CHOICE2 to S_getLdrValue. */
+/** Guard on the transition from C_prog_ldr_switch to S_getLdrValue. */
 FwSmBool_t G_enter_all(FwSmDesc_t smDesc)
 {
 	/*do not enter the FSM when sw1 is on */
@@ -173,17 +222,27 @@ FwSmBool_t G_enter_all(FwSmDesc_t smDesc)
 	return 0;
 }
 
+/** Guard on the transition from C_sleepmode to S_sleepMode. */
+FwSmBool_t G_sleepMode(FwSmDesc_t smDesc)
+{
+	/*do only enter this State when sleepMode is set by f_getLdrValue on */
+	if(piface->sleepMode == 1){
+	return 1;
+	}
+	return 0;
+}
+
 /* ----------------------------------------------------------------------------------------------------------------- */
 FwSmDesc_t MainFsmCreate(void* smData)
 {
 	const FwSmCounterU2_t N_OUT_OF_S_setRGB = 1;	/* The number of transitions out of state S_setRGB */
-	const FwSmCounterU2_t CHOICE1 = 1;		/* The identifier of choice pseudo-state CHOICE1 in State Machine MainFsm */
-	const FwSmCounterU2_t N_OUT_OF_CHOICE1 = 2;	/* The number of transitions out of the choice-pseudo state CHOICE1 */
+	const FwSmCounterU2_t C_mwKleinerMin = 1;		/* The identifier of choice pseudo-state C_mwKleinerMin in State Machine MainFsm */
+	const FwSmCounterU2_t N_OUT_OF_C_mwKleinerMin = 2;	/* The number of transitions out of the choice-pseudo state C_mwKleinerMin */
 	const FwSmCounterU2_t N_OUT_OF_S_saveEeprom_pumpOff = 1;	/* The number of transitions out of state S_saveEeprom_pumpOff */
 	const FwSmCounterU2_t N_OUT_OF_S_pumpOn = 1;	/* The number of transitions out of state S_pumpOn */
 	const FwSmCounterU2_t N_OUT_OF_S_measureHX = 1;	/* The number of transitions out of state S_measureHX */
-	const FwSmCounterU2_t CHOICE2 = 2;		/* The identifier of choice pseudo-state CHOICE2 in State Machine MainFsm */
-	const FwSmCounterU2_t N_OUT_OF_CHOICE2 = 3;	/* The number of transitions out of the choice-pseudo state CHOICE2 */
+	const FwSmCounterU2_t C_timeout_exit = 2;		/* The identifier of choice pseudo-state C_timeout_exit in State Machine MainFsm */
+	const FwSmCounterU2_t N_OUT_OF_C_timeout_exit = 3;	/* The number of transitions out of the choice-pseudo state C_timeout_exit */
 	const FwSmCounterU2_t N_OUT_OF_S_waterLow = 1;	/* The number of transitions out of state S_waterLow */
 
 	/** Create state machine EsmDescId2940, which is embedded in S_runHX712 */
@@ -191,7 +250,7 @@ FwSmDesc_t MainFsmCreate(void* smData)
 		5,	/* NSTATES - The number of states */
 		2,	/* NCPS - The number of choice pseudo-states */
 		11,	/* NTRANS - The number of transitions */
-		2,	/* NACTIONS - The number of state and transition actions */
+		4,	/* NACTIONS - The number of state and transition actions */
 		3	/* NGUARDS - The number of transition guards */
 	);
 	FwSmInit(&EsmDescId2940);
@@ -199,22 +258,22 @@ FwSmDesc_t MainFsmCreate(void* smData)
 	/** Configure the state machine EsmDescId2940, which is embedded in S_runHX712 */
 	FwSmSetData(&EsmDescId2940, smData);
 	FwSmAddState(&EsmDescId2940, MainFsm_S_setRGB, N_OUT_OF_S_setRGB, NULL, NULL, NULL, NULL);
-	FwSmAddChoicePseudoState(&EsmDescId2940, CHOICE1, N_OUT_OF_CHOICE1);
-	FwSmAddState(&EsmDescId2940, MainFsm_S_saveEeprom_pumpOff, N_OUT_OF_S_saveEeprom_pumpOff, &f_save2Eeprom_pump_off, NULL, NULL, NULL);
-	FwSmAddState(&EsmDescId2940, MainFsm_S_pumpOn, N_OUT_OF_S_pumpOn, NULL, NULL, NULL, NULL);
+	FwSmAddChoicePseudoState(&EsmDescId2940, C_mwKleinerMin, N_OUT_OF_C_mwKleinerMin);
+	FwSmAddState(&EsmDescId2940, MainFsm_S_saveEeprom_pumpOff, N_OUT_OF_S_saveEeprom_pumpOff, &f_pump_off, NULL, NULL, NULL);
+	FwSmAddState(&EsmDescId2940, MainFsm_S_pumpOn, N_OUT_OF_S_pumpOn, &f_pumpOn, NULL, NULL, NULL);
 	FwSmAddState(&EsmDescId2940, MainFsm_S_measureHX, N_OUT_OF_S_measureHX, NULL, NULL, NULL, NULL);
-	FwSmAddChoicePseudoState(&EsmDescId2940, CHOICE2, N_OUT_OF_CHOICE2);
-	FwSmAddState(&EsmDescId2940, MainFsm_S_waterLow, N_OUT_OF_S_waterLow, NULL, NULL, NULL, NULL);
-	FwSmAddTransIpsToCps(&EsmDescId2940, CHOICE1, &A_readHX712);
+	FwSmAddChoicePseudoState(&EsmDescId2940, C_timeout_exit, N_OUT_OF_C_timeout_exit);
+	FwSmAddState(&EsmDescId2940, MainFsm_S_waterLow, N_OUT_OF_S_waterLow, &f_water_low, NULL, NULL, NULL);
+	FwSmAddTransIpsToCps(&EsmDescId2940, C_mwKleinerMin, &A_readHX712);
 	FwSmAddTransStaToFps(&EsmDescId2940, TCLK, MainFsm_S_setRGB, NULL, NULL);
-	FwSmAddTransCpsToSta(&EsmDescId2940, CHOICE1, MainFsm_S_pumpOn, NULL, &G_mwKleinerMin);
-	FwSmAddTransCpsToSta(&EsmDescId2940, CHOICE1, MainFsm_S_setRGB, NULL, NULL);
+	FwSmAddTransCpsToSta(&EsmDescId2940, C_mwKleinerMin, MainFsm_S_pumpOn, NULL, &G_mwKleinerMin);
+	FwSmAddTransCpsToSta(&EsmDescId2940, C_mwKleinerMin, MainFsm_S_setRGB, NULL, NULL);
 	FwSmAddTransStaToSta(&EsmDescId2940, TCLK, MainFsm_S_saveEeprom_pumpOff, MainFsm_S_setRGB, NULL, NULL);
 	FwSmAddTransStaToSta(&EsmDescId2940, TCLK, MainFsm_S_pumpOn, MainFsm_S_measureHX, NULL, NULL);
-	FwSmAddTransStaToCps(&EsmDescId2940, TCLK, MainFsm_S_measureHX, CHOICE2, NULL, NULL);
-	FwSmAddTransCpsToSta(&EsmDescId2940, CHOICE2, MainFsm_S_waterLow, NULL, &G_pumpTimGrTmax);
-	FwSmAddTransCpsToSta(&EsmDescId2940, CHOICE2, MainFsm_S_saveEeprom_pumpOff, NULL, &G_mwGrMax);
-	FwSmAddTransCpsToSta(&EsmDescId2940, CHOICE2, MainFsm_S_measureHX, NULL, NULL);
+	FwSmAddTransStaToCps(&EsmDescId2940, TCLK, MainFsm_S_measureHX, C_timeout_exit, NULL, NULL);
+	FwSmAddTransCpsToSta(&EsmDescId2940, C_timeout_exit, MainFsm_S_waterLow, NULL, &G_pumpTimGrTmax);
+	FwSmAddTransCpsToSta(&EsmDescId2940, C_timeout_exit, MainFsm_S_saveEeprom_pumpOff, NULL, &G_mwGrMax);
+	FwSmAddTransCpsToSta(&EsmDescId2940, C_timeout_exit, MainFsm_S_measureHX, NULL, NULL);
 	FwSmAddTransStaToSta(&EsmDescId2940, TCLK, MainFsm_S_waterLow, MainFsm_S_waterLow, NULL, NULL);
 
 	const FwSmCounterU2_t N_OUT_OF_ES_waterProg_enter = 1;	/* The number of transitions out of state ES_waterProg_enter */
@@ -255,16 +314,16 @@ FwSmDesc_t MainFsmCreate(void* smData)
 	FwSmAddTransStaToSta(&EsmDescId2939, TCLK, MainFsm_ES_waterProg_stopping, MainFsm_ES_waterProg_exit, NULL, NULL);
 
 	const FwSmCounterU2_t N_OUT_OF_S_START = 1;	/* The number of transitions out of state S_START */
-	const FwSmCounterU2_t CHOICE1 = 1;		/* The identifier of choice pseudo-state CHOICE1 in State Machine MainFsm */
-	const FwSmCounterU2_t N_OUT_OF_CHOICE1 = 4;	/* The number of transitions out of the choice-pseudo state CHOICE1 */
+	const FwSmCounterU2_t C_HX_prog_or_run = 1;		/* The identifier of choice pseudo-state C_HX_prog_or_run in State Machine MainFsm */
+	const FwSmCounterU2_t N_OUT_OF_C_HX_prog_or_run = 4;	/* The number of transitions out of the choice-pseudo state C_HX_prog_or_run */
 	const FwSmCounterU2_t N_OUT_OF_S_runHX712 = 1;	/* The number of transitions out of state S_runHX712 */
 	const FwSmCounterU2_t N_OUT_OF_S_progHX712 = 1;	/* The number of transitions out of state S_progHX712 */
-	const FwSmCounterU2_t CHOICE2 = 2;		/* The identifier of choice pseudo-state CHOICE2 in State Machine MainFsm */
-	const FwSmCounterU2_t N_OUT_OF_CHOICE2 = 2;	/* The number of transitions out of the choice-pseudo state CHOICE2 */
+	const FwSmCounterU2_t C_prog_ldr_switch = 2;		/* The identifier of choice pseudo-state C_prog_ldr_switch in State Machine MainFsm */
+	const FwSmCounterU2_t N_OUT_OF_C_prog_ldr_switch = 2;	/* The number of transitions out of the choice-pseudo state C_prog_ldr_switch */
 	const FwSmCounterU2_t N_OUT_OF_S_progLdrSwitchValue = 1;	/* The number of transitions out of state S_progLdrSwitchValue */
 	const FwSmCounterU2_t N_OUT_OF_S_getLdrValue = 1;	/* The number of transitions out of state S_getLdrValue */
-	const FwSmCounterU2_t CHOICE3 = 3;		/* The identifier of choice pseudo-state CHOICE3 in State Machine MainFsm */
-	const FwSmCounterU2_t N_OUT_OF_CHOICE3 = 2;	/* The number of transitions out of the choice-pseudo state CHOICE3 */
+	const FwSmCounterU2_t C_sleepmode = 3;		/* The identifier of choice pseudo-state C_sleepmode in State Machine MainFsm */
+	const FwSmCounterU2_t N_OUT_OF_C_sleepmode = 2;	/* The number of transitions out of the choice-pseudo state C_sleepmode */
 	const FwSmCounterU2_t N_OUT_OF_S_sleepMode = 0;	/* The number of transitions out of state S_sleepMode */
 
 	/** Create state machine smDesc */
@@ -280,28 +339,28 @@ FwSmDesc_t MainFsmCreate(void* smData)
 	/** Configure the state machine smDesc */
 	FwSmSetData(&smDesc, smData);
 	FwSmAddState(&smDesc, MainFsm_S_START, N_OUT_OF_S_START, &f_getTime, NULL, NULL, NULL);
-	FwSmAddChoicePseudoState(&smDesc, CHOICE1, N_OUT_OF_CHOICE1);
+	FwSmAddChoicePseudoState(&smDesc, C_HX_prog_or_run, N_OUT_OF_C_HX_prog_or_run);
 	FwSmAddState(&smDesc, MainFsm_S_runHX712, N_OUT_OF_S_runHX712, NULL, NULL, NULL, &EsmDescId2940);
 	FwSmAddState(&smDesc, MainFsm_S_progHX712, N_OUT_OF_S_progHX712, NULL, NULL, NULL, &EsmDescId2939);
-	FwSmAddChoicePseudoState(&smDesc, CHOICE2, N_OUT_OF_CHOICE2);
+	FwSmAddChoicePseudoState(&smDesc, C_prog_ldr_switch, N_OUT_OF_C_prog_ldr_switch);
 	FwSmAddState(&smDesc, MainFsm_S_progLdrSwitchValue, N_OUT_OF_S_progLdrSwitchValue, &f_setNewLdrSwitchValue, NULL, NULL, NULL);
 	FwSmAddState(&smDesc, MainFsm_S_getLdrValue, N_OUT_OF_S_getLdrValue, &f_getLdrValue, NULL, NULL, NULL);
-	FwSmAddChoicePseudoState(&smDesc, CHOICE3, N_OUT_OF_CHOICE3);
+	FwSmAddChoicePseudoState(&smDesc, C_sleepmode, N_OUT_OF_C_sleepmode);
 	FwSmAddState(&smDesc, MainFsm_S_sleepMode, N_OUT_OF_S_sleepMode, &f_sleepMode, NULL, NULL, NULL);
-	FwSmAddTransIpsToCps(&smDesc, CHOICE2, &A_INIT);
-	FwSmAddTransStaToCps(&smDesc, TCLK, MainFsm_S_START, CHOICE1, NULL, NULL);
-	FwSmAddTransCpsToSta(&smDesc, CHOICE1, MainFsm_S_progHX712, NULL, &G_progHX712Mode);
-	FwSmAddTransCpsToSta(&smDesc, CHOICE1, MainFsm_S_runHX712, NULL, &G_runHX712_atTime);
-	FwSmAddTransCpsToSta(&smDesc, CHOICE1, MainFsm_S_getLdrValue, NULL, &G_runLDR_atTime);
-	FwSmAddTransCpsToSta(&smDesc, CHOICE1, MainFsm_S_START, NULL, NULL);
+	FwSmAddTransIpsToCps(&smDesc, C_prog_ldr_switch, &A_INIT);
+	FwSmAddTransStaToCps(&smDesc, TCLK, MainFsm_S_START, C_HX_prog_or_run, NULL, NULL);
+	FwSmAddTransCpsToSta(&smDesc, C_HX_prog_or_run, MainFsm_S_progHX712, NULL, &G_progHX712Mode);
+	FwSmAddTransCpsToSta(&smDesc, C_HX_prog_or_run, MainFsm_S_runHX712, NULL, &G_runHX712_atTime);
+	FwSmAddTransCpsToSta(&smDesc, C_HX_prog_or_run, MainFsm_S_getLdrValue, NULL, &G_runLDR_atTime);
+	FwSmAddTransCpsToSta(&smDesc, C_HX_prog_or_run, MainFsm_S_START, NULL, NULL);
 	FwSmAddTransStaToSta(&smDesc, TCLAK, MainFsm_S_runHX712, MainFsm_S_START, NULL, NULL);
 	FwSmAddTransStaToSta(&smDesc, TCLAK, MainFsm_S_progHX712, MainFsm_S_START, NULL, NULL);
-	FwSmAddTransCpsToSta(&smDesc, CHOICE2, MainFsm_S_progLdrSwitchValue, NULL, &G_run_ldr_switch_value_update);
-	FwSmAddTransCpsToSta(&smDesc, CHOICE2, MainFsm_S_getLdrValue, NULL, &G_enter_all);
+	FwSmAddTransCpsToSta(&smDesc, C_prog_ldr_switch, MainFsm_S_progLdrSwitchValue, NULL, &G_run_ldr_switch_value_update);
+	FwSmAddTransCpsToSta(&smDesc, C_prog_ldr_switch, MainFsm_S_getLdrValue, NULL, &G_enter_all);
 	FwSmAddTransStaToSta(&smDesc, TCLK, MainFsm_S_progLdrSwitchValue, MainFsm_S_getLdrValue, NULL, NULL);
-	FwSmAddTransStaToCps(&smDesc, TCLK, MainFsm_S_getLdrValue, CHOICE3, NULL, NULL);
-	FwSmAddTransCpsToSta(&smDesc, CHOICE3, MainFsm_S_sleepMode, NULL, &G_sleepMode);
-	FwSmAddTransCpsToSta(&smDesc, CHOICE3, MainFsm_S_START, NULL, NULL);
+	FwSmAddTransStaToCps(&smDesc, TCLK, MainFsm_S_getLdrValue, C_sleepmode, NULL, NULL);
+	FwSmAddTransCpsToSta(&smDesc, C_sleepmode, MainFsm_S_sleepMode, NULL, &G_sleepMode);
+	FwSmAddTransCpsToSta(&smDesc, C_sleepmode, MainFsm_S_START, NULL, NULL);
 
 	return &smDesc;
 }

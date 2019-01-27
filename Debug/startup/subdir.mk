@@ -15,7 +15,7 @@ startup/%.o: ../startup/%.s
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Assembler'
 	@echo $(PWD)
-	arm-none-eabi-as -mcpu=cortex-m0plus -mthumb -mfloat-abi=soft -g -o "$@" "$<"
+	arm-none-eabi-as -mcpu=cortex-m0plus -mthumb -mfloat-abi=soft -I../fwFsm/Src -g -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

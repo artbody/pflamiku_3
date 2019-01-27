@@ -12,7 +12,7 @@
  * @image html MainFsm.png
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 27 2019 21:28:55
+ * @date Created on: Jan 27 2019 23:48:50
  */
 
 /* Make sure to include this header file only once */
@@ -44,8 +44,16 @@
 #include "stdint.h"
 //#include "menu.h"
 #include "fsmDefs.h"
-#include "stm32f4xx_hal.h"
+#include "stm32l0xx_hal.h"
 extern FsmIFace* piface;
+extern void HX712_run(void);
+extern void LDR_Value(void);
+extern void LED_RGB_Set(float HSV_value);
+extern void Read_from_Eeprom(void);
+extern void pumpOFF(void);
+extern void pumpON(void);
+extern void progLdrSwitchValue(void);
+extern void sleepMode(void);
 
 /* The identifiers of transition commands (triggers) */
 #define Execute (0) /**< The identifier of the Execute transition trigger */
@@ -69,23 +77,42 @@ FwSmDesc_t MainFsmCreate(void* smData);
  * Entry Action for the state S_saveEeprom_pumpOff.
  * @param smDesc the state machine descriptor
  */
-void f_save2Eeprom_pump_off(FwSmDesc_t smDesc);
+void f_pump_off(FwSmDesc_t smDesc);
 
 /**
- * Action on the transition from Initial State to CHOICE1.
+ * Entry Action for the state S_pumpOn.
+ * @param smDesc the state machine descriptor
+ */
+void f_pumpOn(FwSmDesc_t smDesc);
+
+/**
+ * Entry Action for the state S_waterLow.
+ * @param smDesc the state machine descriptor
+ */
+void f_water_low(FwSmDesc_t smDesc);
+
+/**
+ * Action on the transition from Initial State to C_mwKleinerMin.
  * @param smDesc the state machine descriptor
  */
 void A_readHX712(FwSmDesc_t smDesc);
 
 /**
- * Guard on the transition from CHOICE1 to S_pumpOn.
+ * Guard on the transition from C_mwKleinerMin to S_pumpOn.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
 FwSmBool_t G_mwKleinerMin(FwSmDesc_t smDesc);
 
 /**
- * Guard on the transition from CHOICE2 to S_saveEeprom_pumpOff.
+ * Guard on the transition from C_timeout_exit to S_waterLow.
+ * @param smDesc the state machine descriptor
+ * @return 1 if the guard is fulfilled, otherwise 0.
+ */
+FwSmBool_t G_pumpTimGrTmax(FwSmDesc_t smDesc);
+
+/**
+ * Guard on the transition from C_timeout_exit to S_saveEeprom_pumpOff.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
@@ -167,48 +194,48 @@ void f_getLdrValue(FwSmDesc_t smDesc);
 void f_sleepMode(FwSmDesc_t smDesc);
 
 /**
- * Action on the transition from Initial State to CHOICE2.
+ * Action on the transition from Initial State to C_prog_ldr_switch.
  * @param smDesc the state machine descriptor
  */
 void A_INIT(FwSmDesc_t smDesc);
 
 /**
- * Guard on the transition from CHOICE1 to S_progHX712.
+ * Guard on the transition from C_HX_prog_or_run to S_progHX712.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
 FwSmBool_t G_progHX712Mode(FwSmDesc_t smDesc);
 
 /**
- * Guard on the transition from CHOICE1 to S_runHX712.
+ * Guard on the transition from C_HX_prog_or_run to S_runHX712.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
 FwSmBool_t G_runHX712_atTime(FwSmDesc_t smDesc);
 
 /**
- * Guard on the transition from CHOICE1 to S_getLdrValue.
+ * Guard on the transition from C_HX_prog_or_run to S_getLdrValue.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
 FwSmBool_t G_runLDR_atTime(FwSmDesc_t smDesc);
 
 /**
- * Guard on the transition from CHOICE2 to S_progLdrSwitchValue.
+ * Guard on the transition from C_prog_ldr_switch to S_progLdrSwitchValue.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
 FwSmBool_t G_run_ldr_switch_value_update(FwSmDesc_t smDesc);
 
 /**
- * Guard on the transition from CHOICE2 to S_getLdrValue.
+ * Guard on the transition from C_prog_ldr_switch to S_getLdrValue.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
 FwSmBool_t G_enter_all(FwSmDesc_t smDesc);
 
 /**
- * Guard on the transition from CHOICE3 to S_sleepMode.
+ * Guard on the transition from C_sleepmode to S_sleepMode.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
