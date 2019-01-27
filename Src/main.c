@@ -360,20 +360,23 @@ int main(void) {
 	if (shift_test_switch_is_ON() == 1) {
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
 		LDR_ticker = HAL_GetTick();
-		while ((HAL_GetTick() - LDR_ticker) < 600) {
-			//wait 60 ms
-		}
+		HAL_Delay(600);
 		if (shift_test_switch_is_ON() == 1) {
 			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0); // switch red led off
 			LDR_ticker = HAL_GetTick();
-			while ((HAL_GetTick() - LDR_ticker) < 60) {
-				//wait 60 ms
-			}
+			HAL_Delay(100);
 			LDR_Value();
 			LDR_ticker = HAL_GetTick();
 			//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-			while ((HAL_GetTick() - LDR_ticker) < 60000) {
-				//do wait for 50 sec so the user can put switch off to set LDR_switch value
+			//do wait for 120 sec so the user can put switch off to set LDR_switch value
+			int waitms=120000;
+			while ((HAL_GetTick() - LDR_ticker) < waitms) {
+
+				__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
+				HAL_Delay(500);
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
+				HAL_Delay(500);
 				__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
 				if (shift_test_switch_is_ON() == 0) {
 					LDR_Value();
@@ -381,7 +384,7 @@ int main(void) {
 					//save new Values to eeprom
 					LDR_switch = *pLDR;
 					RUN_prog_ldr();
-					LDR_ticker += 60000;
+					LDR_ticker += waitms;
 				}
 
 			}
@@ -415,8 +418,8 @@ int main(void) {
 //						LDR_Value();
 //						tickstart = HAL_GetTick();
 //					}
-		//ldr value measurement all 60 sec
-		if ((HAL_GetTick() - LDR_ticker) > 60000) {
+		//ldr value measurement all 60 sec*x minutes
+		if ((HAL_GetTick() - LDR_ticker) > 60000*5) {
 			LDR_Value();
 			LDR_ticker = HAL_GetTick();
 		}
@@ -445,7 +448,7 @@ int main(void) {
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
-
+		//TODO power reduction
 	}
 	/* USER CODE END 3 */
 
@@ -1288,8 +1291,9 @@ void LDR_Value(void) {
 	*pLDR = ((tg_ADCValue * 7) + adc_buf[0]) / 8;
 	HAL_ADC_Stop_DMA(&hadc);
 	//map(value, fromLow, fromHigh, toLow, toHigh)
+	// BUG if toLow is greater then 0 this gives a wrong calculation
 	//LDRvalue_min  LDRvalue_max LDR_switch
-	if(*pLDR<LDR_switch){
+	if((LDR_switch>*pLDR) && (LDR_switch-*pLDR) > LDRvalue_min){
 	bright_ad[0] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
 			bright[0]);
 	bright_ad[1] = map2((LDR_switch - *pLDR), LDRvalue_min, LDR_switch, 100,
