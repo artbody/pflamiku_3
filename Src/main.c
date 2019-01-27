@@ -368,8 +368,8 @@ int main(void) {
 			LDR_Value();
 			LDR_ticker = HAL_GetTick();
 			//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
-			//do wait for 120 sec so the user can put switch off to set LDR_switch value
-			int waitms=120000;
+			//do wait for 240 sec so the user can put switch off to set LDR_switch value
+			int waitms=240000;
 			while ((HAL_GetTick() - LDR_ticker) < waitms) {
 
 				__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
@@ -389,6 +389,10 @@ int main(void) {
 
 			}
 			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0); // switch green led off
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
+			while(1){
+				// run in watchdogtimer time out
+			}
 		}
 	}
 
