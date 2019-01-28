@@ -1,0 +1,1042 @@
+{
+     "editorVersion": "5.22",
+     "states": [
+          {
+               "id": 1,
+               "attrs": {
+                    "x": 666,
+                    "y": 79,
+                    "width": 30,
+                    "height": 30,
+                    "r": 15,
+                    "rx": 15,
+                    "ry": 15,
+                    "fill": "#fff",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100
+               },
+               "fwprop": {
+                    "autoid": 1,
+                    "type": "init",
+                    "note": ""
+               },
+               "selected": false
+          },
+          {
+               "id": 2,
+               "attrs": {
+                    "x": 620,
+                    "y": 805,
+                    "width": 122,
+                    "height": 100,
+                    "r": 10,
+                    "rx": 10,
+                    "ry": 10,
+                    "fill": "#fff",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100
+               },
+               "fwprop": {
+                    "autoid": 1,
+                    "type": "state",
+                    "note": "",
+                    "identifier": "S_setRGB",
+                    "entryFunc": "f_setRGB",
+                    "doFunc": "",
+                    "exitFunc": "",
+                    "entryType": "run code",
+                    "doType": "call function",
+                    "exitType": "call function",
+                    "entryCode": "LED_RGB_Set(1.0);\npiface->run_mode = 3;\n",
+                    "doCode": "",
+                    "exitCode": "",
+                    "entryDesc": "",
+                    "doDesc": "",
+                    "exitDesc": "",
+                    "entryAp": false,
+                    "doAp": false,
+                    "exitAp": false,
+                    "embedSmId": "0"
+               },
+               "selected": false
+          },
+          {
+               "id": 5,
+               "attrs": {
+                    "x": 666,
+                    "y": 159,
+                    "width": 30,
+                    "height": 30,
+                    "r": 0,
+                    "rx": 0,
+                    "ry": 0,
+                    "fill": "#ccffaa",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100,
+                    "transform": "r45"
+               },
+               "fwprop": {
+                    "autoid": 1,
+                    "type": "choice",
+                    "note": "",
+                    "identifier": "C_mwKleinerMin"
+               },
+               "selected": false
+          },
+          {
+               "id": 6,
+               "attrs": {
+                    "x": 572,
+                    "y": 655,
+                    "width": 218,
+                    "height": 100,
+                    "r": 10,
+                    "rx": 10,
+                    "ry": 10,
+                    "fill": "#ffff99",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100
+               },
+               "fwprop": {
+                    "autoid": 2,
+                    "type": "state",
+                    "note": "",
+                    "identifier": "S_saveEeprom_pumpOff",
+                    "entryFunc": "f_pump_off",
+                    "doFunc": "",
+                    "exitFunc": "",
+                    "entryType": "run code",
+                    "doType": "call function",
+                    "exitType": "call function",
+                    "entryCode": "pumpOFF();\npiface->mittelwert=piface->hx;\npiface->bPumpOn=0;\n",
+                    "doCode": "",
+                    "exitCode": "",
+                    "entryDesc": "",
+                    "doDesc": "",
+                    "exitDesc": "",
+                    "entryAp": false,
+                    "doAp": false,
+                    "exitAp": false,
+                    "embedSmId": "0"
+               },
+               "selected": false
+          },
+          {
+               "id": 9,
+               "attrs": {
+                    "x": 617,
+                    "y": 288,
+                    "width": 128,
+                    "height": 100,
+                    "r": 10,
+                    "rx": 10,
+                    "ry": 10,
+                    "fill": "#ccffff",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100
+               },
+               "fwprop": {
+                    "autoid": 3,
+                    "type": "state",
+                    "note": "",
+                    "identifier": "S_pumpOn",
+                    "entryFunc": "f_pumpOn",
+                    "doFunc": "",
+                    "exitFunc": "",
+                    "entryType": "run code",
+                    "doType": "call function",
+                    "exitType": "call function",
+                    "entryCode": "piface->startTimWater=HAL_GetTick();\npumpON();\npiface->bPumpOn=1;",
+                    "doCode": "",
+                    "exitCode": "",
+                    "entryDesc": "",
+                    "doDesc": "",
+                    "exitDesc": "",
+                    "entryAp": false,
+                    "doAp": false,
+                    "exitAp": false,
+                    "embedSmId": "0"
+               },
+               "selected": false
+          },
+          {
+               "id": 12,
+               "attrs": {
+                    "x": 606,
+                    "y": 427,
+                    "width": 150,
+                    "height": 100,
+                    "r": 10,
+                    "rx": 10,
+                    "ry": 10,
+                    "fill": "#fff",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100
+               },
+               "fwprop": {
+                    "autoid": 4,
+                    "type": "state",
+                    "note": "",
+                    "identifier": "S_measureHX",
+                    "entryFunc": "f_readHX712",
+                    "doFunc": "",
+                    "exitFunc": "",
+                    "entryType": "run code",
+                    "doType": "call function",
+                    "exitType": "call function",
+                    "entryCode": "//measure the weight\nHX712_run();\npiface->timeOut=HAL_GetTick();\n// set the color of the RGBLED according to measurement value\npiface->mittelwert=piface->hx;\nLED_RGB_Set(1.0);",
+                    "doCode": "",
+                    "exitCode": "",
+                    "entryDesc": "",
+                    "doDesc": "",
+                    "exitDesc": "",
+                    "entryAp": false,
+                    "doAp": false,
+                    "exitAp": false,
+                    "embedSmId": "0"
+               },
+               "selected": false
+          },
+          {
+               "id": 15,
+               "attrs": {
+                    "x": 666,
+                    "y": 579,
+                    "width": 30,
+                    "height": 30,
+                    "r": 0,
+                    "rx": 0,
+                    "ry": 0,
+                    "fill": "#ccffaa",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100,
+                    "transform": "r45"
+               },
+               "fwprop": {
+                    "autoid": 2,
+                    "type": "choice",
+                    "note": "",
+                    "identifier": "C_timeout_exit"
+               },
+               "selected": false
+          },
+          {
+               "id": 16,
+               "attrs": {
+                    "x": 235,
+                    "y": 545,
+                    "width": 242,
+                    "height": 98,
+                    "r": 10,
+                    "rx": 10,
+                    "ry": 10,
+                    "fill": "#fff",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100
+               },
+               "fwprop": {
+                    "autoid": 5,
+                    "type": "state",
+                    "note": "",
+                    "identifier": "S_waterLow",
+                    "entryFunc": "f_water_low",
+                    "doFunc": "",
+                    "exitFunc": "",
+                    "entryType": "run code",
+                    "doType": "call function",
+                    "exitType": "call function",
+                    "entryCode": "pumpOFF();\nError_Handler();",
+                    "doCode": "",
+                    "exitCode": "",
+                    "entryDesc": "",
+                    "doDesc": "",
+                    "exitDesc": "",
+                    "entryAp": false,
+                    "doAp": false,
+                    "exitAp": false,
+                    "embedSmId": "0"
+               },
+               "selected": false
+          },
+          {
+               "id": 19,
+               "attrs": {
+                    "x": 668,
+                    "y": 949,
+                    "width": 26,
+                    "height": 26,
+                    "r": 13,
+                    "rx": 13,
+                    "ry": 13,
+                    "fill": "#000",
+                    "stroke": "#666",
+                    "stroke-width": 1,
+                    "fill-opacity": 100
+               },
+               "fwprop": {
+                    "autoid": 1,
+                    "type": "final",
+                    "note": ""
+               },
+               "selected": false
+          }
+     ],
+     "connections": [
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              681,
+                              114
+                         ],
+                         [
+                              "L",
+                              681,
+                              141
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": "1",
+                    "identifier": "",
+                    "guardFunc": "",
+                    "actionFunc": "A_readHX712",
+                    "guardType": "call function",
+                    "actionType": "run code",
+                    "guardCode": "",
+                    "actionCode": "HX712_run();",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 1,
+               "shifty": -1,
+               "vertexes": [],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 1,
+               "stateToID": 5,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              681,
+                              760
+                         ],
+                         [
+                              "L",
+                              681,
+                              797
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": 1,
+                    "identifier": "TCLK",
+                    "guardFunc": "",
+                    "actionFunc": "",
+                    "guardType": "call function",
+                    "actionType": "call function",
+                    "guardCode": "",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 0,
+               "shifty": 1,
+               "vertexes": [],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 6,
+               "stateToID": 2,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              681,
+                              204
+                         ],
+                         [
+                              "L",
+                              681,
+                              280
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": "1",
+                    "identifier": "",
+                    "guardFunc": "G_mwKleinerMin",
+                    "actionFunc": "",
+                    "guardType": "run code",
+                    "actionType": "call function",
+                    "guardCode": "if((piface->mittelwert <= piface->eepromMin) && (piface->bPumpOn==0)){\nreturn 1;\n}\nreturn 0;\n",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 1,
+               "shifty": 0,
+               "vertexes": [],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 5,
+               "stateToID": 9,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              681,
+                              393
+                         ],
+                         [
+                              "L",
+                              681,
+                              419
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": "1",
+                    "identifier": "TCLK",
+                    "guardFunc": "",
+                    "actionFunc": "",
+                    "guardType": "call function",
+                    "actionType": "call function",
+                    "guardCode": "",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 26,
+               "shifty": 8,
+               "vertexes": [],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 9,
+               "stateToID": 12,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              636.4430379746835,
+                              532
+                         ],
+                         [
+                              "L",
+                              617,
+                              556
+                         ],
+                         [
+                              "L",
+                              659.6343118377555,
+                              581.3141226536674
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": "1",
+                    "identifier": "TCLK",
+                    "guardFunc": "",
+                    "actionFunc": "",
+                    "guardType": "call function",
+                    "actionType": "call function",
+                    "guardCode": "",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 23,
+               "shifty": 8,
+               "vertexes": [
+                    {
+                         "x": 617,
+                         "y": 556,
+                         "hasMoved": true
+                    }
+               ],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 12,
+               "stateToID": 15,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              681,
+                              624
+                         ],
+                         [
+                              "L",
+                              681,
+                              647
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": 3,
+                    "identifier": "",
+                    "guardFunc": "G_mwGrMax",
+                    "actionFunc": "",
+                    "guardType": "run code",
+                    "actionType": "call function",
+                    "guardCode": "if((piface->hx > piface->eepromMax) && (piface->bPumpOn==1)){\nreturn 1;\n}\nreturn 0;\n",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 0,
+               "shifty": 0,
+               "vertexes": [],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 15,
+               "stateToID": 6,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              696.9690006829912,
+                              579.5889506031542
+                         ],
+                         [
+                              "L",
+                              722,
+                              557
+                         ],
+                         [
+                              "L",
+                              710.725,
+                              535
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": 4,
+                    "identifier": "",
+                    "guardFunc": "",
+                    "actionFunc": "",
+                    "guardType": "call function",
+                    "actionType": "call function",
+                    "guardCode": "",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 0,
+               "shifty": 0,
+               "vertexes": [
+                    {
+                         "x": 722,
+                         "y": 557,
+                         "hasMoved": true
+                    }
+               ],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 15,
+               "stateToID": 12,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              651,
+                              594
+                         ],
+                         [
+                              "L",
+                              485,
+                              594
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": 2,
+                    "identifier": "",
+                    "guardFunc": "G_pumpTimGrTmax",
+                    "actionFunc": "",
+                    "guardType": "run code",
+                    "actionType": "call function",
+                    "guardCode": "//test if pump has run to long\nif (piface->timeOut - piface->startTimWater > piface->eepromPmax) {\n//piface->startTimWater=HAL_GetTick();\n\treturn 1;\n}\n\treturn 0;\n\t\t",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 0,
+               "shifty": 0,
+               "vertexes": [],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 15,
+               "stateToID": 16,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              230,
+                              559.1489361702128
+                         ],
+                         [
+                              "L",
+                              215,
+                              555
+                         ],
+                         [
+                              "L",
+                              245,
+                              525
+                         ],
+                         [
+                              "L",
+                              264.304347826087,
+                              537
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": "1",
+                    "identifier": "TCLK",
+                    "guardFunc": "",
+                    "actionFunc": "",
+                    "guardType": "call function",
+                    "actionType": "call function",
+                    "guardCode": "",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 20,
+               "shifty": -15,
+               "vertexes": [
+                    {
+                         "x": 215,
+                         "y": 555
+                    },
+                    {
+                         "x": 245,
+                         "y": 525
+                    }
+               ],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 16,
+               "stateToID": 16,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              711,
+                              174
+                         ],
+                         [
+                              "L",
+                              840,
+                              174
+                         ],
+                         [
+                              "L",
+                              840,
+                              850
+                         ],
+                         [
+                              "L",
+                              750,
+                              852.8301886792452
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": 3,
+                    "identifier": "",
+                    "guardFunc": "",
+                    "actionFunc": "",
+                    "guardType": "call function",
+                    "actionType": "call function",
+                    "guardCode": "",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 0,
+               "shifty": 0,
+               "vertexes": [
+                    {
+                         "x": 840,
+                         "y": 174,
+                         "hasMoved": true
+                    },
+                    {
+                         "x": 840,
+                         "y": 850,
+                         "hasMoved": true
+                    }
+               ],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 5,
+               "stateToID": 2,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              681,
+                              910
+                         ],
+                         [
+                              "L",
+                              681,
+                              941
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": "1",
+                    "identifier": "TCLK",
+                    "guardFunc": "",
+                    "actionFunc": "",
+                    "guardType": "call function",
+                    "actionType": "call function",
+                    "guardCode": "",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 0,
+               "shifty": 1,
+               "vertexes": [],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 2,
+               "stateToID": 19,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              651,
+                              174
+                         ],
+                         [
+                              "L",
+                              540,
+                              174
+                         ],
+                         [
+                              "L",
+                              540,
+                              477
+                         ],
+                         [
+                              "L",
+                              598,
+                              477
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": "2",
+                    "identifier": "",
+                    "guardFunc": "G_mwKlMaxUpumpOn",
+                    "actionFunc": "",
+                    "guardType": "run code",
+                    "actionType": "call function",
+                    "guardCode": "if((piface->mittelwert <= piface->eepromMax) && (piface->bPumpOn==1)){\nreturn 1;\n}\nreturn 0;\n",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": 0,
+               "shifty": 0,
+               "vertexes": [
+                    {
+                         "x": 540,
+                         "y": 174,
+                         "hasMoved": true
+                    },
+                    {
+                         "x": 540,
+                         "y": 477,
+                         "hasMoved": true
+                    }
+               ],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 5,
+               "stateToID": 12,
+               "selected": false
+          },
+          {
+               "attrs": {
+                    "fill": "none",
+                    "stroke": "#000",
+                    "path": [
+                         [
+                              "M",
+                              711,
+                              594
+                         ],
+                         [
+                              "L",
+                              815,
+                              594
+                         ],
+                         [
+                              "L",
+                              815,
+                              805
+                         ],
+                         [
+                              "L",
+                              750,
+                              829.2537313432834
+                         ]
+                    ],
+                    "stroke-width": 2,
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-dasharray": ""
+               },
+               "fwprop": {
+                    "order": "1",
+                    "identifier": "",
+                    "guardFunc": "G_switch_on",
+                    "actionFunc": "",
+                    "guardType": "run code",
+                    "actionType": "call function",
+                    "guardCode": "if(piface->sw1_value>0){\nreturn 1;\n}\nreturn 0;\n",
+                    "actionCode": "",
+                    "guardDesc": "",
+                    "guardAp": false,
+                    "actionDesc": "",
+                    "actionAp": false,
+                    "note": ""
+               },
+               "shiftx": -44,
+               "shifty": -91,
+               "vertexes": [
+                    {
+                         "x": 815,
+                         "y": 594,
+                         "hasMoved": true
+                    },
+                    {
+                         "x": 815,
+                         "y": 805,
+                         "hasMoved": true
+                    }
+               ],
+               "shiftxy": {
+                    "x": 0,
+                    "y": 0
+               },
+               "stateFromID": 15,
+               "stateToID": 2,
+               "selected": false
+          }
+     ],
+     "globals": {
+          "paperPanX": 0,
+          "paperPanY": 0,
+          "attrs": {
+               "x": 0,
+               "y": 0,
+               "width": 1873,
+               "height": 1036,
+               "r": 0,
+               "rx": 0,
+               "ry": 0,
+               "fill": "#eee",
+               "stroke": "#000",
+               "stroke-width": 0
+          },
+          "fwprop": {
+               "smName": "ES_runHX712",
+               "editorType": "Sm",
+               "globalvar": [
+                    {
+                         "type": "int",
+                         "name": "",
+                         "value": ""
+                    }
+               ],
+               "smIncludes": "",
+               "smNotes": "",
+               "memalloc": "dynamic",
+               "displayInfo": 0,
+               "displayOrder": 1,
+               "smTags": "pflamiku_3"
+          }
+     }
+}
