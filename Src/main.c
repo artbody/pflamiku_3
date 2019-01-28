@@ -102,7 +102,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-//typedef struct {
+//typedef struct is in fsmDefs.h
 FsmIFace iface;
 FsmIFace* piface = &iface;
 /* USER CODE END PTD */
@@ -192,8 +192,7 @@ uint32_t TEST_MITTELWERT = 8001271;
 volatile int progMode = 0, *pprogMode = &progMode;
 volatile uint32_t millis; //,*pmillis=&millis; used for pump timeout
 volatile uint32_t blink_millis; // used for blinking while pump on
-//! As we make use of time triggers (after & every) we make use of a generic timer implementation and need a defined number of timers.
-#define MAX_TIMERS 4
+
 
 /* Private variables ---------------------------------------------HX712 + DIV------*/
 
@@ -206,28 +205,16 @@ volatile uint32_t hx, hx1, hx2, hx3, hx4, *phx = &hx, *phx1 = &hx1,
 		*phx2 = &hx2, *phx3 = &hx3, *phx4 = &hx4; // used in IRQ routine to get measurement values from the HX711 / HX712
 volatile uint32_t Messwert_long_time_average = 0, *pMesswert_long_time_average =
 		&Messwert_long_time_average; // the measurement average value
-//volatile uint32_t eeprom_value_min; // saved weight min value
-//volatile uint32_t eeprom_value_max; // saved weight max value
-//volatile uint32_t eeprom_pump_max; // saved ON time for pump - max
 
-//volatile uint32_t pump_max;
+
 uint32_t hxmax = 12000000;
 uint32_t hxmin = 8001271; //8000000;
 
 //LDR Value
 uint32_t adc[4], adc_buf[2], temperature, vrefint;  // define variables
 volatile uint32_t g_ADCValue = 0, *pLDR = &g_ADCValue;
-//volatile uint32_t LDR_switch = 400;  //1800
-//static int LDR_off = 1000;  //2000
-//volatile uint32_t LDRvalue_min = 100;  //350
-//volatile uint32_t LDRvalue_max = 2900;  //2250
-static uint32_t LDR_off = 500;  //2000
 
-#if defined test
-int LDR_Delay = 6000; //300000; //delay in ms for measurement of light intensity
-#else
-int LDR_Delay = 60000;  //300000; //delay in ms
-#endif
+
 
 //led color
 volatile int ar = 0;
@@ -407,37 +394,9 @@ int main(void) {
 			FwSmMakeTrans(smDesc, TCLAK);
 			piface->run_mode = 1;
 		}
-//		if ((HAL_GetTick() - tickstart) > LDR_Delay) {
-//						LDR_Value();
-//						tickstart = HAL_GetTick();
-//					}
-		//ldr value measurement all 60 sec*x minutes
-//		if ((HAL_GetTick() - piface->timeLDR) > 60000 * 5) {
-//			LDR_Value();
-//			piface->timeLDR = HAL_GetTick();
-//		}
-		//test if switch is off or in progmode ? with debounce 50ms
-//		if ((HAL_GetTick() - progMode_ticker) > 100) {
+
 		test_if_switch_is_on();
-//			progMode_ticker = HAL_GetTick();
-//		}
-		//fsm_runCycle(&Fsm_handle);
-		//if not progmode fsm_runCycle(&Fsm_handle);
-//		if (*pprogMode == 0) {
-//			if ((HAL_GetTick() - tickstart) > 1300) {
-//
-//				//millis = 0;
-//				tickstart = HAL_GetTick();
-//
-//			}
-//		} else {
-//			if ((HAL_GetTick() - tickstart) > 130) {
-//				//sc_timer_service_proceed(&timer_service, 130);
-//				//millis = 0;
-//				tickstart = HAL_GetTick();
-//
-//			}
-//		}
+
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
@@ -1109,9 +1068,7 @@ void HX712_run(void) {
 	// long time average calculation
 	*phx = (*phx1 + *phx2 + *phx3) / t;
 
-//			|| *phx < hxmin) {
-//		*phx = *pMesswert_long_time_average;
-//	} else {
+
 	if (*pMesswert_long_time_average == 0) {
 		*pMesswert_long_time_average = *phx;
 	}
@@ -1120,8 +1077,7 @@ void HX712_run(void) {
 			/ 32;
 	piface->mittelwert=*pMesswert_long_time_average;
 	piface->hx=*phx;
-//	}
-	//HAL_Delay(20000);
+
 	HX712_stop();
 }
 
@@ -1327,7 +1283,7 @@ void Save_2_Eeprom(void) {
 
 /**
  * Brief   This function reads all data from the eeprom.
- *         TODO use eeprom values direct
+ *
  * Param   None
  * Retval  None
  */
@@ -1390,10 +1346,24 @@ void LED_RGB_Set(float HSV_value) {
 
 }
 
+/**
+ * Brief   This function handles a given value and calculates from one range int another
+ *
+ *         usage; map(value, fromLow, fromHigh, toLow, toHigh)
+ * Param   value, fromLow, fromHigh, toLow, toHigh
+ * Retval  int
+ */
 int map(int x, int in_min, int in_max, int out_min, int out_max) {
 	return (((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min);
 
 }
+/**
+ * Brief   This function handles a given value and calculates from one range int another
+ * 			make sure there is no negative calculation
+ *         usage; map(value, fromLow, fromHigh, toLow, toHigh)
+ * Param   value, fromLow, fromHigh, toLow, toHigh
+ * Retval  uint32_t
+ */
 uint32_t map2(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min,
 		uint32_t out_max) {
 	return (((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min);
