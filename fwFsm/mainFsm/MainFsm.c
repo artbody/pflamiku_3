@@ -2,7 +2,7 @@
  * @file MainFsm.c
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 28 2019 12:36:42
+ * @date Created on: Jan 28 2019 15:51:0
  */
 
 /** MainFsm function definitions */
@@ -79,6 +79,15 @@ FwSmBool_t G_mwKlMaxUpumpOn(FwSmDesc_t smDesc)
 	return 0;
 }
 
+/** Guard on the transition from C_timeout_exit to S_setRGB. */
+FwSmBool_t G_switch_on(FwSmDesc_t smDesc)
+{
+	if(piface->sw1_value>0){
+	return 1;
+	}
+	return 0;
+}
+
 /** Guard on the transition from C_timeout_exit to S_waterLow. */
 FwSmBool_t G_pumpTimGrTmax(FwSmDesc_t smDesc)
 {
@@ -103,6 +112,8 @@ FwSmBool_t G_mwGrMax(FwSmDesc_t smDesc)
 void f_es_menuFsm_waterProg_enter(FwSmDesc_t smDesc)
 {
 	HX712_run();
+	
+	piface->eepromMin=piface->hx;
 }
 
 /** Entry Action for the state ES_waterProg_run. */
@@ -111,6 +122,7 @@ void f_waterProg_run(FwSmDesc_t smDesc)
 	
 	HX712_run();
 	pumpON();// start pump
+	piface->bPumpOn=1;
 	//start timer
 	piface->timeOutWater=HAL_GetTick();
 }
@@ -118,19 +130,30 @@ void f_waterProg_run(FwSmDesc_t smDesc)
 /** Entry Action for the state ES_waterProg_exit. */
 void f_waterProg_exit(FwSmDesc_t smDesc)
 {
-	piface->run_mode = 0;
-	
-	//piface->sw1=1;
+	piface->run_mode = 3;
+}
+
+/** Entry Action for the state ES_waterProg_runing. */
+void f_getSwitch(FwSmDesc_t smDesc)
+{
+	piface->sw1_value=shift_test_switch_is_ON();
 }
 
 /** Entry Action for the state ES_waterProg_stopping. */
 void f_waterProg_stop(FwSmDesc_t smDesc)
 {
 	pumpOFF();
-	piface->eepromPmax=HAL_GetTick()-piface->timeOutWater;
-	
-	HX712_run();
-	//this is set only after //watering a plant;
+		piface->bPumpOn=0;
+		piface->eepromPmax=HAL_GetTick()-piface->timeOutWater;
+		
+		HX712_run();
+		//this is set only after //watering a plant
+		piface->eepromMax=piface->hx;
+		if(piface->eepromMax>(piface->eepromMin+3000)){
+		//Save_2_Eeprom();
+		}else{
+			Error_Handler();
+		};
 }
 
 /** Action on the transition from Initial State to ES_waterProg_enter. */
@@ -142,7 +165,7 @@ void f_waterProg_preenter(FwSmDesc_t smDesc)
 /** Guard on the transition from C_waterProg_run to ES_waterProg_run. */
 FwSmBool_t G_waterProg_run(FwSmDesc_t smDesc)
 {
-	if(piface->sw1==1){
+	if(piface->sw1_value==1){
 	
 	return 1;
 	
@@ -153,7 +176,7 @@ FwSmBool_t G_waterProg_run(FwSmDesc_t smDesc)
 /** Guard on the transition from C_waterProg_run to ES_waterProg_exit. */
 FwSmBool_t G_waterProg_exit(FwSmDesc_t smDesc)
 {
-	if(piface->sw1==0){
+	if(piface->sw1_value==0){
 	
 	return 1;
 	
@@ -164,7 +187,7 @@ FwSmBool_t G_waterProg_exit(FwSmDesc_t smDesc)
 /** Guard on the transition from ES_waterProg_runing to ES_waterProg_stopping. */
 FwSmBool_t G_switchOff(FwSmDesc_t smDesc)
 {
-	if(piface->sw1==1){
+	if(piface->sw1_value==0){
 	
 	return 1;
 	
@@ -178,6 +201,11 @@ void f_getTime(FwSmDesc_t smDesc)
 	//piface->time_value=HAL_GetTick();
 	
 	piface->timeOut=HAL_GetTick();
+	
+	//TODO for debug only
+	//piface->sw1_value=1;
+	
+	piface->sw1_value=shift_test_switch_is_ON();
 }
 
 /** Entry Action for the state S_progLdrSwitchValue. */
@@ -282,16 +310,16 @@ FwSmDesc_t MainFsmCreate(void* smData)
 	const FwSmCounterU2_t N_OUT_OF_S_pumpOn = 1;	/* The number of transitions out of state S_pumpOn */
 	const FwSmCounterU2_t N_OUT_OF_S_measureHX = 1;	/* The number of transitions out of state S_measureHX */
 	const FwSmCounterU2_t C_timeout_exit = 2;		/* The identifier of choice pseudo-state C_timeout_exit in State Machine MainFsm */
-	const FwSmCounterU2_t N_OUT_OF_C_timeout_exit = 3;	/* The number of transitions out of the choice-pseudo state C_timeout_exit */
+	const FwSmCounterU2_t N_OUT_OF_C_timeout_exit = 4;	/* The number of transitions out of the choice-pseudo state C_timeout_exit */
 	const FwSmCounterU2_t N_OUT_OF_S_waterLow = 1;	/* The number of transitions out of state S_waterLow */
 
 	/** Create state machine EsmDescId2940, which is embedded in S_runHX712 */
 	FW_SM_INST(EsmDescId2940,
 		5,	/* NSTATES - The number of states */
 		2,	/* NCPS - The number of choice pseudo-states */
-		12,	/* NTRANS - The number of transitions */
+		13,	/* NTRANS - The number of transitions */
 		6,	/* NACTIONS - The number of state and transition actions */
-		4	/* NGUARDS - The number of transition guards */
+		5	/* NGUARDS - The number of transition guards */
 	);
 	FwSmInit(&EsmDescId2940);
 
@@ -312,6 +340,7 @@ FwSmDesc_t MainFsmCreate(void* smData)
 	FwSmAddTransStaToSta(&EsmDescId2940, TCLK, MainFsm_S_saveEeprom_pumpOff, MainFsm_S_setRGB, NULL, NULL);
 	FwSmAddTransStaToSta(&EsmDescId2940, TCLK, MainFsm_S_pumpOn, MainFsm_S_measureHX, NULL, NULL);
 	FwSmAddTransStaToCps(&EsmDescId2940, TCLK, MainFsm_S_measureHX, C_timeout_exit, NULL, NULL);
+	FwSmAddTransCpsToSta(&EsmDescId2940, C_timeout_exit, MainFsm_S_setRGB, NULL, &G_switch_on);
 	FwSmAddTransCpsToSta(&EsmDescId2940, C_timeout_exit, MainFsm_S_waterLow, NULL, &G_pumpTimGrTmax);
 	FwSmAddTransCpsToSta(&EsmDescId2940, C_timeout_exit, MainFsm_S_saveEeprom_pumpOff, NULL, &G_mwGrMax);
 	FwSmAddTransCpsToSta(&EsmDescId2940, C_timeout_exit, MainFsm_S_measureHX, NULL, NULL);
@@ -330,7 +359,7 @@ FwSmDesc_t MainFsmCreate(void* smData)
 		5,	/* NSTATES - The number of states */
 		1,	/* NCPS - The number of choice pseudo-states */
 		10,	/* NTRANS - The number of transitions */
-		5,	/* NACTIONS - The number of state and transition actions */
+		6,	/* NACTIONS - The number of state and transition actions */
 		3	/* NGUARDS - The number of transition guards */
 	);
 	FwSmInit(&EsmDescId2939);
@@ -341,7 +370,7 @@ FwSmDesc_t MainFsmCreate(void* smData)
 	FwSmAddState(&EsmDescId2939, MainFsm_ES_waterProg_run, N_OUT_OF_ES_waterProg_run, &f_waterProg_run, NULL, NULL, NULL);
 	FwSmAddChoicePseudoState(&EsmDescId2939, C_waterProg_run, N_OUT_OF_C_waterProg_run);
 	FwSmAddState(&EsmDescId2939, MainFsm_ES_waterProg_exit, N_OUT_OF_ES_waterProg_exit, &f_waterProg_exit, NULL, NULL, NULL);
-	FwSmAddState(&EsmDescId2939, MainFsm_ES_waterProg_runing, N_OUT_OF_ES_waterProg_runing, NULL, NULL, NULL, NULL);
+	FwSmAddState(&EsmDescId2939, MainFsm_ES_waterProg_runing, N_OUT_OF_ES_waterProg_runing, &f_getSwitch, NULL, NULL, NULL);
 	FwSmAddState(&EsmDescId2939, MainFsm_ES_waterProg_stopping, N_OUT_OF_ES_waterProg_stopping, &f_waterProg_stop, NULL, NULL, NULL);
 	FwSmAddTransIpsToSta(&EsmDescId2939, MainFsm_ES_waterProg_enter, &f_waterProg_preenter);
 	FwSmAddTransStaToCps(&EsmDescId2939, TCLK, MainFsm_ES_waterProg_enter, C_waterProg_run, NULL, NULL);
@@ -350,8 +379,8 @@ FwSmDesc_t MainFsmCreate(void* smData)
 	FwSmAddTransCpsToSta(&EsmDescId2939, C_waterProg_run, MainFsm_ES_waterProg_exit, NULL, &G_waterProg_exit);
 	FwSmAddTransCpsToSta(&EsmDescId2939, C_waterProg_run, MainFsm_ES_waterProg_enter, NULL, NULL);
 	FwSmAddTransStaToFps(&EsmDescId2939, TCLK, MainFsm_ES_waterProg_exit, NULL, NULL);
-	FwSmAddTransStaToSta(&EsmDescId2939, TCLK, MainFsm_ES_waterProg_runing, MainFsm_ES_waterProg_runing, NULL, NULL);
 	FwSmAddTransStaToSta(&EsmDescId2939, TCLK, MainFsm_ES_waterProg_runing, MainFsm_ES_waterProg_stopping, NULL, &G_switchOff);
+	FwSmAddTransStaToSta(&EsmDescId2939, TCLK, MainFsm_ES_waterProg_runing, MainFsm_ES_waterProg_runing, NULL, NULL);
 	FwSmAddTransStaToSta(&EsmDescId2939, TCLK, MainFsm_ES_waterProg_stopping, MainFsm_ES_waterProg_exit, NULL, NULL);
 
 	const FwSmCounterU2_t N_OUT_OF_S_START = 1;	/* The number of transitions out of state S_START */

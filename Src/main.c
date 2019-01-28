@@ -1126,13 +1126,24 @@ void HX712_run(void) {
 }
 
 void pumpOFF(void) {
-
+	*pMesswert_long_time_average=piface->hx=*phx;
+	HAL_GPIO_WritePin(mot_out_GPIO_Port, mot_out_Pin, GPIO_PIN_RESET);
 }
 void pumpON(void) {
-
+	HAL_GPIO_WritePin(mot_out_GPIO_Port, mot_out_Pin, GPIO_PIN_SET);
 }
 void sleepMode(void) {
+	//assume its night and so do nothing, switch off RGB_LED and go in standby mode
 
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
+		//standbymode
+		HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
+		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+		SysTick->CTRL = 0;
+		HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0xFFFF, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
+		HAL_PWR_EnterSTANDBYMode();
 }
 void progLdrSwitchValue(void) {
 	// to prog LDR_switch value

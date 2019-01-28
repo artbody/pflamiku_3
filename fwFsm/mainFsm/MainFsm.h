@@ -12,7 +12,7 @@
  * @image html MainFsm.png
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 28 2019 12:36:42
+ * @date Created on: Jan 28 2019 15:51:0
  */
 
 /* Make sure to include this header file only once */
@@ -50,11 +50,13 @@ extern void HX712_run(void);
 extern void LDR_Value(void);
 extern void LED_RGB_Set(float HSV_value);
 extern void Read_from_Eeprom(void);
+extern void Save_2_Eeprom(void);
 extern void pumpOFF(void);
 extern void pumpON(void);
 extern void progLdrSwitchValue(void);
 extern void sleepMode(void);
 extern void Error_Handler(void);
+extern uint32_t shift_test_switch_is_ON(void);
 
 /* The identifiers of transition commands (triggers) */
 #define Execute (0) /**< The identifier of the Execute transition trigger */
@@ -125,6 +127,13 @@ FwSmBool_t G_mwKleinerMin(FwSmDesc_t smDesc);
 FwSmBool_t G_mwKlMaxUpumpOn(FwSmDesc_t smDesc);
 
 /**
+ * Guard on the transition from C_timeout_exit to S_setRGB.
+ * @param smDesc the state machine descriptor
+ * @return 1 if the guard is fulfilled, otherwise 0.
+ */
+FwSmBool_t G_switch_on(FwSmDesc_t smDesc);
+
+/**
  * Guard on the transition from C_timeout_exit to S_waterLow.
  * @param smDesc the state machine descriptor
  * @return 1 if the guard is fulfilled, otherwise 0.
@@ -155,6 +164,12 @@ void f_waterProg_run(FwSmDesc_t smDesc);
  * @param smDesc the state machine descriptor
  */
 void f_waterProg_exit(FwSmDesc_t smDesc);
+
+/**
+ * Entry Action for the state ES_waterProg_runing.
+ * @param smDesc the state machine descriptor
+ */
+void f_getSwitch(FwSmDesc_t smDesc);
 
 /**
  * Entry Action for the state ES_waterProg_stopping.
