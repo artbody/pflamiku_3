@@ -179,6 +179,7 @@ UART_HandleTypeDef huart2;
 #define ERROR_CLKSWITCH_TIMEOUT 0xBB
 
 volatile uint16_t error = 0;
+
 /* Private variables -----------------------------------------------FSM----*/
 //special for testing
 #if defined test
@@ -205,9 +206,9 @@ volatile uint32_t hx, hx1, hx2, hx3, hx4, *phx = &hx, *phx1 = &hx1,
 		*phx2 = &hx2, *phx3 = &hx3, *phx4 = &hx4; // used in IRQ routine to get measurement values from the HX711 / HX712
 volatile uint32_t Messwert_long_time_average = 0, *pMesswert_long_time_average =
 		&Messwert_long_time_average; // the measurement average value
-volatile uint32_t eeprom_value_min; // saved weight min value
-volatile uint32_t eeprom_value_max; // saved weight max value
-volatile uint32_t eeprom_pump_max; // saved ON time for pump - max
+//volatile uint32_t eeprom_value_min; // saved weight min value
+//volatile uint32_t eeprom_value_max; // saved weight max value
+//volatile uint32_t eeprom_pump_max; // saved ON time for pump - max
 
 //volatile uint32_t pump_max;
 uint32_t hxmax = 12000000;
@@ -260,8 +261,11 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM21_Init(void);
 static void MX_LPTIM1_Init(void);
 /* USER CODE BEGIN PFP */
-void fsm_init(FsmIFace* iface);
 /* Private function prototypes -----------------------------------------------*/
+
+
+void fsm_init(FsmIFace* iface);
+
 void FsmSetVars(void); //set start conditions of the fsm
 void TEST_if_first_start_then_eeprom_set_values(void); //setings like min max weight and ldr min max and switch
 uint32_t shift_test_switch_is_ON(void);
@@ -355,17 +359,25 @@ int main(void) {
 		Error_Handler();
 	}
 
-	//fsm init & start
+	//fsm_init(FsmIFace* iface) init the vars of the finite state machine
+	fsm_init(&iface);
 
-	// read all volues from eeprom and put them in place i.e. the vars of the finite state machine
-	Read_from_Eeprom();
+	//look if switch is in progMode
+	piface->sw1_value=shift_test_switch_is_ON();
+
+	// read all volues from eeprom and put them in place THIS is now in fsm_init() the vars of the finite state machine
+	// Read_from_Eeprom();
 
 	LDR_Value();
 
+	//this is called to preinit the microcontroller only at first start up
 	TEST_if_first_start_then_eeprom_set_values();
+
+
 	uint32_t tickstart = 0U, *ptickstart = &tickstart;
 	*ptickstart = HAL_GetTick();
-	/*-------------------------------------------------------------------------------------------------*/
+
+	/*------------------------------------------fsm init & start-------------------------------------*/
 	/** Define the state machine descriptor (SMD) */
 	FwSmDesc_t smDesc = MainFsmCreate(NULL);
 
@@ -377,6 +389,9 @@ int main(void) {
 	}
 
 	printf("The state machine MainFsm is properly configured ... SUCCESS\n");
+	/** Start the SM, send a few transition commands to it, and execute it */
+	FwSmStart(smDesc);
+	FwSmMakeTrans(smDesc, TCLK);
 	/*-------------------------------------------------------------------------------------------------*/
 	/* USER CODE END 2 */
 
@@ -385,15 +400,22 @@ int main(void) {
 
 	while (1) {
 		__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
+		FwSmMakeTrans(smDesc, TCLK);
+		// this is needed to jump out of substates
+		if(piface->run_mode == 3){
+			FwSmMakeTrans(smDesc, TCLK);
+			FwSmMakeTrans(smDesc, TCLAK);
+			piface->run_mode = 1;
+		}
 //		if ((HAL_GetTick() - tickstart) > LDR_Delay) {
 //						LDR_Value();
 //						tickstart = HAL_GetTick();
 //					}
 		//ldr value measurement all 60 sec*x minutes
-		if ((HAL_GetTick() - piface->timeLDR) > 60000 * 5) {
-			LDR_Value();
-			piface->timeLDR = HAL_GetTick();
-		}
+//		if ((HAL_GetTick() - piface->timeLDR) > 60000 * 5) {
+//			LDR_Value();
+//			piface->timeLDR = HAL_GetTick();
+//		}
 		//test if switch is off or in progmode ? with debounce 50ms
 //		if ((HAL_GetTick() - progMode_ticker) > 100) {
 		test_if_switch_is_on();
@@ -401,21 +423,21 @@ int main(void) {
 //		}
 		//fsm_runCycle(&Fsm_handle);
 		//if not progmode fsm_runCycle(&Fsm_handle);
-		if (*pprogMode == 0) {
-			if ((HAL_GetTick() - tickstart) > 1300) {
-
-				//millis = 0;
-				tickstart = HAL_GetTick();
-
-			}
-		} else {
-			if ((HAL_GetTick() - tickstart) > 130) {
-				//sc_timer_service_proceed(&timer_service, 130);
-				//millis = 0;
-				tickstart = HAL_GetTick();
-
-			}
-		}
+//		if (*pprogMode == 0) {
+//			if ((HAL_GetTick() - tickstart) > 1300) {
+//
+//				//millis = 0;
+//				tickstart = HAL_GetTick();
+//
+//			}
+//		} else {
+//			if ((HAL_GetTick() - tickstart) > 130) {
+//				//sc_timer_service_proceed(&timer_service, 130);
+//				//millis = 0;
+//				tickstart = HAL_GetTick();
+//
+//			}
+//		}
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
@@ -846,15 +868,15 @@ void fsm_init(FsmIFace* iface) {
 	iface->switcher_value = 0;
 	iface->started = 0;
 	iface->prog_mode = 0;
-	iface->bPumpOff = 0;
+	iface->bPumpOn = 0;
 	iface->bPumpEn = 0;
 
 	iface->lowPower = 0;
 	iface->sw1 = 0;
 	iface->eepromAbsMax = 12000000;
-	iface->eepromMin = 8201271;
-	iface->eepromMax = 10000000;
-	iface->eepromPmax = 20000;
+	iface->eepromMin = *(uint32_t *) (DATA_E2_ADDR);
+	iface->eepromMax = *(uint32_t *) (DATA_E2_ADDR + 4);
+	iface->eepromPmax =  *(uint32_t *) (DATA_E2_ADDR + 8);
 	iface->mittelwert = 8001271;
 	iface->hx = 0;
 	iface->timeOut = 0;
@@ -864,9 +886,9 @@ void fsm_init(FsmIFace* iface) {
 	iface->startTimHx = 0;
 	iface->timeHx = 10000;
 
-	iface->ldr_min = 100;
-	iface->ldr_max = 2700;
-	iface->ldr_switch = 1500;
+	iface->ldr_min = *(uint32_t *) (DATA_E2_ADDR + 20);
+	iface->ldr_max = *(uint32_t *) (DATA_E2_ADDR + 24);
+	iface->ldr_switch = *(uint32_t *) (DATA_E2_ADDR + 28);
 	iface->run_mode = 0;
 
 	iface->menuFsmExitState = 0;
@@ -883,9 +905,9 @@ void TEST_if_first_start_then_eeprom_set_values(void) {
 	if ((*(uint32_t *) (DATA_E2_ADDR + 4) == 0)
 			|| (*(uint32_t *) (DATA_E2_ADDR + 4)
 					== *(uint32_t *) (DATA_E2_ADDR + 16))) {
-		// value to write in the eeprom min 8200000 max 10000000 ca 11kg
-		eeprom_value_min = hxmin;
-		eeprom_value_max = hxmax;
+		// value to write in the eeprom min 8200000 max 12000000 ca 11kg
+		piface->eepromMin = hxmin;
+		piface->eepromMax = hxmax;
 		Save_2_Eeprom();
 		RUN_prog_ldr();
 	}
@@ -918,7 +940,7 @@ uint32_t shift_test_switch_is_ON(void) {
 			} else {
 				p1 = GPIO_PIN_RESET;
 			}
-
+			HAL_Delay(1);
 			sw_stable = (sw_stable << 1) + p1;
 		}
 		tout++;
@@ -1096,6 +1118,8 @@ void HX712_run(void) {
 
 	*pMesswert_long_time_average = (*pMesswert_long_time_average * 31 + *phx)
 			/ 32;
+	piface->mittelwert=*pMesswert_long_time_average;
+	piface->hx=*phx;
 //	}
 	//HAL_Delay(20000);
 	HX712_stop();
@@ -1229,6 +1253,9 @@ void LDR_Value(void) {
 	}
 	*pLDR = ((tg_ADCValue * 7) + adc_buf[0]) / 8;
 	HAL_ADC_Stop_DMA(&hadc);
+	piface->ldr_value = ((tg_ADCValue * 7) + adc_buf[0]) / 8;
+	// this part calculates the brightness according to the ambientlight
+	// the darker it is the less the brightness of the LED
 	//map(value, fromLow, fromHigh, toLow, toHigh)
 	// BUG if toLow is greater then 0 this gives a wrong calculation
 	//LDRvalue_min  LDRvalue_max LDR_switch
@@ -1266,21 +1293,21 @@ void Save_2_Eeprom(void) {
 	UnlockPELOCK();
 	FLASH->PECR |= FLASH_PECR_ERRIE | FLASH_PECR_EOPIE; /* enable flash interrupts */
 
-	*(uint32_t *) (DATA_E2_ADDR) = eeprom_value_min; /* (1) */
+	*(uint32_t *) (DATA_E2_ADDR) = piface->eepromMin; /* (1) */
 	__WFI();
-	if (*(uint32_t *) (DATA_E2_ADDR) != eeprom_value_min) {
+	if (*(uint32_t *) (DATA_E2_ADDR) != piface->eepromMin) {
 		error |= ERROR_PROG_32B_WORD;
 	}
 
-	*(uint32_t *) (DATA_E2_ADDR + 4) = eeprom_value_max; /* (1) */
+	*(uint32_t *) (DATA_E2_ADDR + 4) = piface->eepromMax; /* (1) */
 	__WFI();
-	if (*(uint32_t *) (DATA_E2_ADDR + 4) != eeprom_value_max) {
+	if (*(uint32_t *) (DATA_E2_ADDR + 4) != piface->eepromMax) {
 		error |= ERROR_PROG_32B_WORD;
 	}
 
-	*(uint32_t *) (DATA_E2_ADDR + 8) = eeprom_pump_max; /* (1) */
+	*(uint32_t *) (DATA_E2_ADDR + 8) = piface->eepromPmax; /* (1) */
 	__WFI();
-	if (*(uint32_t *) (DATA_E2_ADDR + 8) != eeprom_pump_max) {
+	if (*(uint32_t *) (DATA_E2_ADDR + 8) != piface->eepromPmax) {
 		error |= ERROR_PROG_32B_WORD;
 	}
 
@@ -1611,7 +1638,7 @@ void Error_Handler(void) {
 		while (1) {
 			//  blink red
 			//water level low or pump defect
-
+			__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
 			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, bright[0]); // switch to red led
 			ERROR_ticker = HAL_GetTick();
 			while ((HAL_GetTick() - ERROR_ticker) < 300) {

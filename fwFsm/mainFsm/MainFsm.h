@@ -12,7 +12,7 @@
  * @image html MainFsm.png
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 27 2019 23:48:50
+ * @date Created on: Jan 28 2019 12:36:42
  */
 
 /* Make sure to include this header file only once */
@@ -54,6 +54,7 @@ extern void pumpOFF(void);
 extern void pumpON(void);
 extern void progLdrSwitchValue(void);
 extern void sleepMode(void);
+extern void Error_Handler(void);
 
 /* The identifiers of transition commands (triggers) */
 #define Execute (0) /**< The identifier of the Execute transition trigger */
@@ -74,6 +75,12 @@ extern void sleepMode(void);
 FwSmDesc_t MainFsmCreate(void* smData);
 
 /**
+ * Entry Action for the state S_setRGB.
+ * @param smDesc the state machine descriptor
+ */
+void f_setRGB(FwSmDesc_t smDesc);
+
+/**
  * Entry Action for the state S_saveEeprom_pumpOff.
  * @param smDesc the state machine descriptor
  */
@@ -84,6 +91,12 @@ void f_pump_off(FwSmDesc_t smDesc);
  * @param smDesc the state machine descriptor
  */
 void f_pumpOn(FwSmDesc_t smDesc);
+
+/**
+ * Entry Action for the state S_measureHX.
+ * @param smDesc the state machine descriptor
+ */
+void f_readHX712(FwSmDesc_t smDesc);
 
 /**
  * Entry Action for the state S_waterLow.
@@ -103,6 +116,13 @@ void A_readHX712(FwSmDesc_t smDesc);
  * @return 1 if the guard is fulfilled, otherwise 0.
  */
 FwSmBool_t G_mwKleinerMin(FwSmDesc_t smDesc);
+
+/**
+ * Guard on the transition from C_mwKleinerMin to S_measureHX.
+ * @param smDesc the state machine descriptor
+ * @return 1 if the guard is fulfilled, otherwise 0.
+ */
+FwSmBool_t G_mwKlMaxUpumpOn(FwSmDesc_t smDesc);
 
 /**
  * Guard on the transition from C_timeout_exit to S_waterLow.

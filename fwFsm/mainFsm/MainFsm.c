@@ -2,7 +2,7 @@
  * @file MainFsm.c
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 27 2019 23:48:50
+ * @date Created on: Jan 28 2019 12:36:42
  */
 
 /** MainFsm function definitions */
@@ -14,10 +14,19 @@
 
 #include <stdlib.h>
 
+/** Entry Action for the state S_setRGB. */
+void f_setRGB(FwSmDesc_t smDesc)
+{
+	LED_RGB_Set(1.0);
+	piface->run_mode = 3;
+}
+
 /** Entry Action for the state S_saveEeprom_pumpOff. */
 void f_pump_off(FwSmDesc_t smDesc)
 {
 	pumpOFF();
+	piface->mittelwert=piface->hx;
+	piface->bPumpOn=0;
 }
 
 /** Entry Action for the state S_pumpOn. */
@@ -25,12 +34,25 @@ void f_pumpOn(FwSmDesc_t smDesc)
 {
 	piface->startTimWater=HAL_GetTick();
 	pumpON();
+	piface->bPumpOn=1;
+}
+
+/** Entry Action for the state S_measureHX. */
+void f_readHX712(FwSmDesc_t smDesc)
+{
+	//measure the weight
+	HX712_run();
+	piface->timeOut=HAL_GetTick();
+	// set the color of the RGBLED according to measurement value
+	piface->mittelwert=piface->hx;
+	LED_RGB_Set(1.0);
 }
 
 /** Entry Action for the state S_waterLow. */
 void f_water_low(FwSmDesc_t smDesc)
 {
 	pumpOFF();
+	Error_Handler();
 }
 
 /** Action on the transition from Initial State to C_mwKleinerMin. */
@@ -42,7 +64,16 @@ void A_readHX712(FwSmDesc_t smDesc)
 /** Guard on the transition from C_mwKleinerMin to S_pumpOn. */
 FwSmBool_t G_mwKleinerMin(FwSmDesc_t smDesc)
 {
-	if((piface->mittelwert <= piface->eepromMin) && (piface->bPumpOff==0)){
+	if((piface->mittelwert <= piface->eepromMin) && (piface->bPumpOn==0)){
+	return 1;
+	}
+	return 0;
+}
+
+/** Guard on the transition from C_mwKleinerMin to S_measureHX. */
+FwSmBool_t G_mwKlMaxUpumpOn(FwSmDesc_t smDesc)
+{
+	if((piface->mittelwert <= piface->eepromMax) && (piface->bPumpOn==1)){
 	return 1;
 	}
 	return 0;
@@ -51,9 +82,9 @@ FwSmBool_t G_mwKleinerMin(FwSmDesc_t smDesc)
 /** Guard on the transition from C_timeout_exit to S_waterLow. */
 FwSmBool_t G_pumpTimGrTmax(FwSmDesc_t smDesc)
 {
-	piface->timeOut=HAL_GetTick();
-		if (piface->timeOut - piface->startTimWater > piface->timeOutWater) {
-			
+	//test if pump has run to long
+	if (piface->timeOut - piface->startTimWater > piface->eepromPmax) {
+	//piface->startTimWater=HAL_GetTick();
 		return 1;
 	}
 		return 0;
@@ -62,7 +93,7 @@ FwSmBool_t G_pumpTimGrTmax(FwSmDesc_t smDesc)
 /** Guard on the transition from C_timeout_exit to S_saveEeprom_pumpOff. */
 FwSmBool_t G_mwGrMax(FwSmDesc_t smDesc)
 {
-	if((piface->mittelwert > piface->eepromMax) && (piface->bPumpOff==0)){
+	if((piface->hx > piface->eepromMax) && (piface->bPumpOn==1)){
 	return 1;
 	}
 	return 0;
@@ -144,7 +175,9 @@ FwSmBool_t G_switchOff(FwSmDesc_t smDesc)
 /** Entry Action for the state S_START. */
 void f_getTime(FwSmDesc_t smDesc)
 {
-	piface->time_value=HAL_GetTick();
+	//piface->time_value=HAL_GetTick();
+	
+	piface->timeOut=HAL_GetTick();
 }
 
 /** Entry Action for the state S_progLdrSwitchValue. */
@@ -169,7 +202,6 @@ void f_sleepMode(FwSmDesc_t smDesc)
 void A_INIT(FwSmDesc_t smDesc)
 {
 	piface->run_mode = 1;
-	Read_from_Eeprom();
 }
 
 /** Guard on the transition from C_HX_prog_or_run to S_progHX712. */
@@ -186,20 +218,28 @@ FwSmBool_t G_progHX712Mode(FwSmDesc_t smDesc)
 FwSmBool_t G_runHX712_atTime(FwSmDesc_t smDesc)
 {
 	/*do only enter this State when time has passed */
-	if(piface->time_value > piface->timeNextRun_value){
-	return 1;
+	
+	
+	if (piface->timeOut - piface->startTimHx > piface->timeHx) {
+		piface->run_mode = 2;
+	piface->startTimHx=HAL_GetTick();
+		return 1;
 	}
-	return 0;
+		return 0;
 }
 
 /** Guard on the transition from C_HX_prog_or_run to S_getLdrValue. */
 FwSmBool_t G_runLDR_atTime(FwSmDesc_t smDesc)
 {
 	/*do only enter this State when time has passed */
-	if(piface->time_value > piface->timeNextRun_value){
-	return 1;
+	/*do only enter this State when time has passed */
+	
+	
+	if (piface->timeOut - piface->startTimLDR > piface->timeLDR) {
+			piface->startTimLDR=HAL_GetTick();
+		return 1;
 	}
-	return 0;
+		return 0;
 }
 
 /** Guard on the transition from C_prog_ldr_switch to S_progLdrSwitchValue. */
@@ -237,7 +277,7 @@ FwSmDesc_t MainFsmCreate(void* smData)
 {
 	const FwSmCounterU2_t N_OUT_OF_S_setRGB = 1;	/* The number of transitions out of state S_setRGB */
 	const FwSmCounterU2_t C_mwKleinerMin = 1;		/* The identifier of choice pseudo-state C_mwKleinerMin in State Machine MainFsm */
-	const FwSmCounterU2_t N_OUT_OF_C_mwKleinerMin = 2;	/* The number of transitions out of the choice-pseudo state C_mwKleinerMin */
+	const FwSmCounterU2_t N_OUT_OF_C_mwKleinerMin = 3;	/* The number of transitions out of the choice-pseudo state C_mwKleinerMin */
 	const FwSmCounterU2_t N_OUT_OF_S_saveEeprom_pumpOff = 1;	/* The number of transitions out of state S_saveEeprom_pumpOff */
 	const FwSmCounterU2_t N_OUT_OF_S_pumpOn = 1;	/* The number of transitions out of state S_pumpOn */
 	const FwSmCounterU2_t N_OUT_OF_S_measureHX = 1;	/* The number of transitions out of state S_measureHX */
@@ -249,24 +289,25 @@ FwSmDesc_t MainFsmCreate(void* smData)
 	FW_SM_INST(EsmDescId2940,
 		5,	/* NSTATES - The number of states */
 		2,	/* NCPS - The number of choice pseudo-states */
-		11,	/* NTRANS - The number of transitions */
-		4,	/* NACTIONS - The number of state and transition actions */
-		3	/* NGUARDS - The number of transition guards */
+		12,	/* NTRANS - The number of transitions */
+		6,	/* NACTIONS - The number of state and transition actions */
+		4	/* NGUARDS - The number of transition guards */
 	);
 	FwSmInit(&EsmDescId2940);
 
 	/** Configure the state machine EsmDescId2940, which is embedded in S_runHX712 */
 	FwSmSetData(&EsmDescId2940, smData);
-	FwSmAddState(&EsmDescId2940, MainFsm_S_setRGB, N_OUT_OF_S_setRGB, NULL, NULL, NULL, NULL);
+	FwSmAddState(&EsmDescId2940, MainFsm_S_setRGB, N_OUT_OF_S_setRGB, &f_setRGB, NULL, NULL, NULL);
 	FwSmAddChoicePseudoState(&EsmDescId2940, C_mwKleinerMin, N_OUT_OF_C_mwKleinerMin);
 	FwSmAddState(&EsmDescId2940, MainFsm_S_saveEeprom_pumpOff, N_OUT_OF_S_saveEeprom_pumpOff, &f_pump_off, NULL, NULL, NULL);
 	FwSmAddState(&EsmDescId2940, MainFsm_S_pumpOn, N_OUT_OF_S_pumpOn, &f_pumpOn, NULL, NULL, NULL);
-	FwSmAddState(&EsmDescId2940, MainFsm_S_measureHX, N_OUT_OF_S_measureHX, NULL, NULL, NULL, NULL);
+	FwSmAddState(&EsmDescId2940, MainFsm_S_measureHX, N_OUT_OF_S_measureHX, &f_readHX712, NULL, NULL, NULL);
 	FwSmAddChoicePseudoState(&EsmDescId2940, C_timeout_exit, N_OUT_OF_C_timeout_exit);
 	FwSmAddState(&EsmDescId2940, MainFsm_S_waterLow, N_OUT_OF_S_waterLow, &f_water_low, NULL, NULL, NULL);
 	FwSmAddTransIpsToCps(&EsmDescId2940, C_mwKleinerMin, &A_readHX712);
 	FwSmAddTransStaToFps(&EsmDescId2940, TCLK, MainFsm_S_setRGB, NULL, NULL);
 	FwSmAddTransCpsToSta(&EsmDescId2940, C_mwKleinerMin, MainFsm_S_pumpOn, NULL, &G_mwKleinerMin);
+	FwSmAddTransCpsToSta(&EsmDescId2940, C_mwKleinerMin, MainFsm_S_measureHX, NULL, &G_mwKlMaxUpumpOn);
 	FwSmAddTransCpsToSta(&EsmDescId2940, C_mwKleinerMin, MainFsm_S_setRGB, NULL, NULL);
 	FwSmAddTransStaToSta(&EsmDescId2940, TCLK, MainFsm_S_saveEeprom_pumpOff, MainFsm_S_setRGB, NULL, NULL);
 	FwSmAddTransStaToSta(&EsmDescId2940, TCLK, MainFsm_S_pumpOn, MainFsm_S_measureHX, NULL, NULL);

@@ -14,7 +14,7 @@ typedef struct {
 	uint32_t switcher_value;
 	uint32_t started;
 	uint32_t prog_mode;
-	uint32_t bPumpOff;
+	uint32_t bPumpOn;
 	uint32_t bPumpEn;
 	//uint32_t varWaterLevel;
 	//uint32_t waterLevelMin;
@@ -40,6 +40,7 @@ typedef struct {
 	uint32_t time_value;
 	uint32_t timeNextRun_value;
 	uint32_t ldr;
+	uint32_t ldr_value;
 	uint32_t ldr_min;
 	uint32_t ldr_max;
 	uint32_t ldr_switch;
