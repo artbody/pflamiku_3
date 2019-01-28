@@ -2,7 +2,7 @@
  * @file MainFsm.c
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 28 2019 15:51:0
+ * @date Created on: Jan 28 2019 23:30:11
  */
 
 /** MainFsm function definitions */
@@ -206,6 +206,7 @@ void f_getTime(FwSmDesc_t smDesc)
 	//piface->sw1_value=1;
 	
 	piface->sw1_value=shift_test_switch_is_ON();
+	piface->started =1;
 }
 
 /** Entry Action for the state S_progLdrSwitchValue. */
@@ -218,6 +219,11 @@ void f_setNewLdrSwitchValue(FwSmDesc_t smDesc)
 void f_getLdrValue(FwSmDesc_t smDesc)
 {
 	LDR_Value();
+	if(piface->ldr_value>piface->ldr_switch){
+	piface->sleepMode=1;
+	}else{
+	piface->sleepMode=0;
+	};
 }
 
 /** Entry Action for the state S_sleepMode. */

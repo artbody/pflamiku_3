@@ -193,7 +193,6 @@ volatile int progMode = 0, *pprogMode = &progMode;
 volatile uint32_t millis; //,*pmillis=&millis; used for pump timeout
 volatile uint32_t blink_millis; // used for blinking while pump on
 
-
 /* Private variables ---------------------------------------------HX712 + DIV------*/
 
 //uint32_t HX_cnt; //, hx1, hx2, hx3, hx4;
@@ -206,15 +205,12 @@ volatile uint32_t hx, hx1, hx2, hx3, hx4, *phx = &hx, *phx1 = &hx1,
 volatile uint32_t Messwert_long_time_average = 0, *pMesswert_long_time_average =
 		&Messwert_long_time_average; // the measurement average value
 
-
 uint32_t hxmax = 12000000;
 uint32_t hxmin = 8001271; //8000000;
 
 //LDR Value
 uint32_t adc[4], adc_buf[2], temperature, vrefint;  // define variables
 volatile uint32_t g_ADCValue = 0, *pLDR = &g_ADCValue;
-
-
 
 //led color
 volatile int ar = 0;
@@ -249,7 +245,6 @@ static void MX_TIM21_Init(void);
 static void MX_LPTIM1_Init(void);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
 
 void fsm_init(FsmIFace* iface);
 
@@ -350,16 +345,15 @@ int main(void) {
 	fsm_init(&iface);
 
 	//look if switch is in progMode
-	piface->sw1_value=shift_test_switch_is_ON();
+	piface->sw1_value = shift_test_switch_is_ON();
 
 	// read all volues from eeprom and put them in place THIS is now in fsm_init() the vars of the finite state machine
-	// Read_from_Eeprom();
-
+	Read_from_Eeprom();
+	HX712_run();
 	LDR_Value();
 
 	//this is called to preinit the microcontroller only at first start up
 	TEST_if_first_start_then_eeprom_set_values();
-
 
 	uint32_t tickstart = 0U, *ptickstart = &tickstart;
 	*ptickstart = HAL_GetTick();
@@ -389,7 +383,7 @@ int main(void) {
 		__HAL_IWDG_RELOAD_COUNTER(&hiwdg);
 		FwSmMakeTrans(smDesc, TCLK);
 		// this is needed to jump out of substates
-		if(piface->run_mode == 3){
+		if (piface->run_mode == 3) {
 			FwSmMakeTrans(smDesc, TCLK);
 			FwSmMakeTrans(smDesc, TCLAK);
 			piface->run_mode = 1;
@@ -835,12 +829,12 @@ void fsm_init(FsmIFace* iface) {
 	iface->eepromAbsMax = 12000000;
 	iface->eepromMin = *(uint32_t *) (DATA_E2_ADDR);
 	iface->eepromMax = *(uint32_t *) (DATA_E2_ADDR + 4);
-	iface->eepromPmax =  *(uint32_t *) (DATA_E2_ADDR + 8);
+	iface->eepromPmax = *(uint32_t *) (DATA_E2_ADDR + 8);
 	iface->mittelwert = 8001271;
 	iface->hx = 0;
 	iface->timeOut = 0;
 
-	iface->startTimLDR = 0;
+	iface->startTimLDR = 60000;
 	iface->timeLDR = 60000;
 	iface->startTimHx = 0;
 	iface->timeHx = 10000;
@@ -1068,21 +1062,20 @@ void HX712_run(void) {
 	// long time average calculation
 	*phx = (*phx1 + *phx2 + *phx3) / t;
 
-
 	if (*pMesswert_long_time_average == 0) {
 		*pMesswert_long_time_average = *phx;
 	}
 
 	*pMesswert_long_time_average = (*pMesswert_long_time_average * 31 + *phx)
 			/ 32;
-	piface->mittelwert=*pMesswert_long_time_average;
-	piface->hx=*phx;
+	piface->mittelwert = *pMesswert_long_time_average;
+	piface->hx = *phx;
 
 	HX712_stop();
 }
 
 void pumpOFF(void) {
-	*pMesswert_long_time_average=piface->hx=*phx;
+	*pMesswert_long_time_average = piface->hx = *phx;
 	HAL_GPIO_WritePin(mot_out_GPIO_Port, mot_out_Pin, GPIO_PIN_RESET);
 }
 void pumpON(void) {
@@ -1091,15 +1084,15 @@ void pumpON(void) {
 void sleepMode(void) {
 	//assume its night and so do nothing, switch off RGB_LED and go in standby mode
 
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0);
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
-		//standbymode
-		HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
-		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
-		SysTick->CTRL = 0;
-		HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0xFFFF, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
-		HAL_PWR_EnterSTANDBYMode();
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 0);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0);
+	//standbymode
+	HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+	SysTick->CTRL = 0;
+	HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0xFFFF, RTC_WAKEUPCLOCK_RTCCLK_DIV16);
+	HAL_PWR_EnterSTANDBYMode();
 }
 void progLdrSwitchValue(void) {
 	// to prog LDR_switch value
@@ -1226,20 +1219,23 @@ void LDR_Value(void) {
 	//map(value, fromLow, fromHigh, toLow, toHigh)
 	// BUG if toLow is greater then 0 this gives a wrong calculation
 	//LDRvalue_min  LDRvalue_max LDR_switch
-	if ((piface->ldr_switch > *pLDR) && (piface->ldr_switch - *pLDR) > piface->ldr_min) {
-		bright_ad[0] = map2((piface->ldr_switch - *pLDR), piface->ldr_min, piface->ldr_switch, 100,
-				bright[0]);
-		bright_ad[1] = map2((piface->ldr_switch - *pLDR), piface->ldr_min, piface->ldr_switch, 100,
-				bright[1]);
-		bright_ad[2] = map2((piface->ldr_switch - *pLDR), piface->ldr_min, piface->ldr_switch, 100,
-				bright[2]);
+	if ((piface->ldr_switch > *pLDR)
+			&& (piface->ldr_switch - *pLDR) > piface->ldr_min) {
+		bright_ad[0] = map2((piface->ldr_switch - *pLDR), piface->ldr_min,
+				piface->ldr_switch, 100, bright[0]);
+		bright_ad[1] = map2((piface->ldr_switch - *pLDR), piface->ldr_min,
+				piface->ldr_switch, 100, bright[1]);
+		bright_ad[2] = map2((piface->ldr_switch - *pLDR), piface->ldr_min,
+				piface->ldr_switch, 100, bright[2]);
 	} else {
 		bright_ad[0] = 0;
 		bright_ad[1] = 0;
 		bright_ad[2] = 0;
 	}
 	// recalculate LED values
-	LED_RGB_Set(1.0);
+	if (piface->started == 1) {
+		LED_RGB_Set(1.0);
+	}
 	// reload new LED global settings of PWM
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, ar);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, ag);
@@ -1292,9 +1288,9 @@ void Read_from_Eeprom(void) {
 	piface->eepromMax = *(uint32_t *) (DATA_E2_ADDR + 4);
 	piface->eepromPmax = *(uint32_t *) (DATA_E2_ADDR + 8);
 	//uint32_t *pData = 0x08080000;
-	piface->ldr_min = *(uint32_t *) (DATA_E2_ADDR + 20);//LDRvalue_min
-	piface->ldr_max = *(uint32_t *) (DATA_E2_ADDR + 24);//LDRvalue_max
-	piface->ldr_switch = *(uint32_t *) (DATA_E2_ADDR + 28);//LDR_switch
+	piface->ldr_min = *(uint32_t *) (DATA_E2_ADDR + 20);	//LDRvalue_min
+	piface->ldr_max = *(uint32_t *) (DATA_E2_ADDR + 24);	//LDRvalue_max
+	piface->ldr_switch = *(uint32_t *) (DATA_E2_ADDR + 28);	//LDR_switch
 	//eeprom_value_max=
 }
 
