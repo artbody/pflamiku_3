@@ -6,7 +6,7 @@ this here is the C Implementation of the functions needed by the hardware with a
 # Its main features are:
 
 * **FSM based user interface and workflow**: clearly and unambiguously defined behaviour.
-* **Minimal Memory Requirements**:  footprint of 20 kBytes.
+* **Minimal Memory Requirements**:  footprint of 25 kBytes.
 * **STM32L031K6Tx.cpu**  a very low power microcontroller.
 
 * Brief   
