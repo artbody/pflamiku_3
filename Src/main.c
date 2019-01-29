@@ -75,6 +75,8 @@
  * 			in respect to the ambient light.
  *
  */
+
+/*********************DEBUGGING***************************/
 //#define test
 //#define test_LDR
 //#define test_HX712	// water below min
@@ -83,6 +85,8 @@
 //#define test_HX712_w2max // water above max
 //#define test_eeprom_write_firstTimeValues
 //#define test_pump
+
+/********************INCLUDES****************************/
 #include "stdint.h"
 #include <stdio.h>
 #include <stdbool.h>
@@ -205,12 +209,16 @@ volatile uint32_t hx, hx1, hx2, hx3, hx4, *phx = &hx, *phx1 = &hx1,
 volatile uint32_t Messwert_long_time_average = 0, *pMesswert_long_time_average =
 		&Messwert_long_time_average; // the measurement average value
 
+//start values that are programmed into the eeprom at first run
 uint32_t hxmax = 12000000;
 uint32_t hxmin = 8001271; //8000000;
+uint32_t ldrmin=100;
+uint32_t ldrmax=2900;
+uint32_t ldrsw=1300;
 
 //LDR Value
 uint32_t adc[4], adc_buf[2], temperature, vrefint;  // define variables
-volatile uint32_t g_ADCValue = 0, *pLDR = &g_ADCValue;
+volatile uint32_t g_ADCValue = 0;
 
 //led color
 volatile int ar = 0;
@@ -229,7 +237,8 @@ volatile float hue_angel = 360;
 //		3576, 3020, 4095
 //};
 uint32_t bright[3] = { 3076, 2520, 4095 };  // this are the default values
-uint32_t bright_ad[3] = { 3076, 2520, 4095 }; // this are the calculated values according to ambient light
+uint32_t bright_ad[3] = { 3076, 2520, 4095 }; // this are the calculated values according to ambient light see LDR_Value()
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -245,22 +254,26 @@ static void MX_TIM21_Init(void);
 static void MX_LPTIM1_Init(void);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
+// type def for FSM vars
 void fsm_init(FsmIFace* iface);
 
-void FsmSetVars(void); //set start conditions of the fsm
-void TEST_if_first_start_then_eeprom_set_values(void); //setings like min max weight and ldr min max and switch
-uint32_t shift_test_switch_is_ON(void);
-void test_if_switch_is_on(void);
+
+void TEST_if_first_start_then_eeprom_set_values(void); //setings like min max weight and ldr min max and light switch value
+
+uint32_t shift_test_switch_is_ON(void);// test switch 1 with a software debounce
+void test_if_switch_is_on(void);// test switch 1 with a software debounce
+
 //hx712 measurement
 void HX712_start(void);
 void HX712_stop(void);
 void HX712_run(void);
+
 // pump run
 void pumpOFF(void);
 void pumpON(void);
 void sleepMode(void);
 void progLdrSwitchValue(void);
+
 // ldr measurement
 void RUN_prog_ldr(void);
 void LDR_Value(void);
@@ -272,6 +285,7 @@ void LED_RGB_Set(float HSV_value);
 // int map(int x, int in_min, int in_max, int out_min, int out_max);
 uint32_t map2(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min,
 		uint32_t out_max);
+
 // Eeprom functions
 void Save_2_Eeprom(void);
 void Read_from_Eeprom(void);
@@ -322,8 +336,8 @@ int main(void) {
 	MX_TIM21_Init();
 	MX_LPTIM1_Init();
 	/* USER CODE BEGIN 2 */
+
 	// TIM2 is used for RGB LED
-	// HAL_TIM_Base_Start_IT(&hlptim1);
 	HAL_TIM_Base_Start(&htim2); //Starts the TIM Base generation
 	if (HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1) != HAL_OK) //Starts the PWM signal generation
 			{
@@ -347,16 +361,24 @@ int main(void) {
 	//look if switch is in progMode
 	piface->sw1_value = shift_test_switch_is_ON();
 
-	// read all volues from eeprom and put them in place THIS is now in fsm_init() the vars of the finite state machine
+	// read all volues from eeprom and put them in place
+	//THIS is now in fsm_init()
+	// FsmIFace iface; all vars of the finite state machine go here
+	// piface->eepromMin piface->eepromMax piface->eepromPmax
 	Read_from_Eeprom();
+	//read the weightscales piface->hx and piface->mittelwert
 	HX712_run();
+	//test if weight is above the absolute maximum
+	if(piface->mittelwert>piface->eepromAbsMax){
+		Error_Handler();
+	}
+	//read the LDR Value piface->ldr_value ...
 	LDR_Value();
 
 	//this is called to preinit the microcontroller only at first start up
 	TEST_if_first_start_then_eeprom_set_values();
 
-	uint32_t tickstart = 0U, *ptickstart = &tickstart;
-	*ptickstart = HAL_GetTick();
+
 
 	/*------------------------------------------fsm init & start-------------------------------------*/
 	/** Define the state machine descriptor (SMD) */
@@ -815,37 +837,42 @@ static void MX_GPIO_Init(void) {
 }
 
 /* USER CODE BEGIN 4 */
+// Data exchange between main and fsm
 void fsm_init(FsmIFace* iface) {
 
-	iface->switcher_raised = 0;
-	iface->switcher_value = 0;
-	iface->started = 0;
-	iface->prog_mode = 0;
-	iface->bPumpOn = 0;
-	iface->bPumpEn = 0;
+	//FSM intern switch case vars
+	iface->started = 0; // is used at startup for no led until S_START is reached
+	iface->prog_mode = 0;//indicates programming mode
+	iface->bPumpOn = 0; //indicates if Pump is running
+	iface->lowPower = 0;// LDR gives high values if its dark, so if switchlevel is reached this var is set
+	iface->sw1_value = 0;//indicates is SW1 is on or off
 
-	iface->lowPower = 0;
-	iface->sw1 = 0;
-	iface->eepromAbsMax = 12000000;
+	//eeprom values
+	iface->eepromAbsMax = 12000000;//is the absolute maximum weight
 	iface->eepromMin = *(uint32_t *) (DATA_E2_ADDR);
 	iface->eepromMax = *(uint32_t *) (DATA_E2_ADDR + 4);
 	iface->eepromPmax = *(uint32_t *) (DATA_E2_ADDR + 8);
-	iface->mittelwert = 8001271;
-	iface->hx = 0;
+
+	//measurement values HX712
+	iface->mittelwert = 8001271;//average weight
+	iface->hx = 0;//one measurement value of weight
+
+	//timers for the fsm
 	iface->timeOut = 0;
 
-	iface->startTimLDR = 60000;
-	iface->timeLDR = 60000;
+	iface->startTimLDR = 60000;//is set to a high value so it has to start at the beginning
+	iface->timeLDR = 60000;//time between two LDR measurements
 	iface->startTimHx = 0;
-	iface->timeHx = 10000;
+	iface->timeHx = 10000;//time between two HX712 measurements
 
+	//LDR
 	iface->ldr_min = *(uint32_t *) (DATA_E2_ADDR + 20);
 	iface->ldr_max = *(uint32_t *) (DATA_E2_ADDR + 24);
-	iface->ldr_switch = *(uint32_t *) (DATA_E2_ADDR + 28);
+	iface->ldr_switch = *(uint32_t *) (DATA_E2_ADDR + 28);// saved switchlevel LDR
+
 	iface->run_mode = 0;
 
-	iface->menuFsmExitState = 0;
-	//char tmp[32];
+
 }
 
 /**
@@ -858,9 +885,12 @@ void TEST_if_first_start_then_eeprom_set_values(void) {
 	if ((*(uint32_t *) (DATA_E2_ADDR + 4) == 0)
 			|| (*(uint32_t *) (DATA_E2_ADDR + 4)
 					== *(uint32_t *) (DATA_E2_ADDR + 16))) {
-		// value to write in the eeprom min 8200000 max 12000000 ca 11kg
+		// values to write in the eeprom at very first start up min 8200000 max 12000000 ca 11kg
 		piface->eepromMin = hxmin;
 		piface->eepromMax = hxmax;
+		piface->ldr_min = ldrmin;
+		piface->ldr_max = ldrmax;
+		piface->ldr_switch = ldrsw;
 		Save_2_Eeprom();
 		RUN_prog_ldr();
 	}
@@ -1124,7 +1154,7 @@ void progLdrSwitchValue(void) {
 					LDR_Value();
 					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, bright[1]); // switch to green led
 					//save new Values to eeprom
-					piface->ldr_switch = *pLDR;
+					piface->ldr_switch = piface->ldr_value;
 					RUN_prog_ldr();
 					LDR_ticker += waitms;
 				}
@@ -1179,7 +1209,7 @@ void RUN_prog_ldr(void) {
  * Retval  None
  */
 void LDR_Value(void) {
-	uint32_t tg_ADCValue = *pLDR;
+	uint32_t tg_ADCValue = piface->ldr_value;
 
 // first switch off the LED so we can be sure we measure the daylight
 
@@ -1211,21 +1241,23 @@ void LDR_Value(void) {
 	if (tg_ADCValue == 0) {
 		tg_ADCValue = adc_buf[0];
 	}
-	*pLDR = ((tg_ADCValue * 7) + adc_buf[0]) / 8;
+
+
 	HAL_ADC_Stop_DMA(&hadc);
+	//calculate a filter so that ambientlight light distubtions are eliminated
 	piface->ldr_value = ((tg_ADCValue * 7) + adc_buf[0]) / 8;
 	// this part calculates the brightness according to the ambientlight
 	// the darker it is the less the brightness of the LED
 	//map(value, fromLow, fromHigh, toLow, toHigh)
 	// BUG if toLow is greater then 0 this gives a wrong calculation
 	//LDRvalue_min  LDRvalue_max LDR_switch
-	if ((piface->ldr_switch > *pLDR)
-			&& (piface->ldr_switch - *pLDR) > piface->ldr_min) {
-		bright_ad[0] = map2((piface->ldr_switch - *pLDR), piface->ldr_min,
+	if ((piface->ldr_switch > piface->ldr_value)
+			&& (piface->ldr_switch - piface->ldr_value) > piface->ldr_min) {
+		bright_ad[0] = map2((piface->ldr_switch - piface->ldr_value), piface->ldr_min,
 				piface->ldr_switch, 100, bright[0]);
-		bright_ad[1] = map2((piface->ldr_switch - *pLDR), piface->ldr_min,
+		bright_ad[1] = map2((piface->ldr_switch - piface->ldr_value), piface->ldr_min,
 				piface->ldr_switch, 100, bright[1]);
-		bright_ad[2] = map2((piface->ldr_switch - *pLDR), piface->ldr_min,
+		bright_ad[2] = map2((piface->ldr_switch - piface->ldr_value), piface->ldr_min,
 				piface->ldr_switch, 100, bright[2]);
 	} else {
 		bright_ad[0] = 0;

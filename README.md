@@ -7,7 +7,7 @@ this here is the C Implementation of the functions needed by the hardware with a
 
 * **FSM based user interface and workflow**: clearly and unambiguously defined behaviour.
 * **Minimal Memory Requirements**:  footprint of 20 kBytes.
-* **STM32L031**  a very low power microcontroller.
+* **STM32L031K6Tx.cpu**  a very low power microcontroller.
 
 * Brief   
  This software is for measure 3 or 4 weight scales.
@@ -40,13 +40,17 @@ this here is the C Implementation of the functions needed by the hardware with a
 #The Hardware is also available under the terms of CC BY SA NC 4.0 
 [PCB and Schematic on EasyEDA](https://easyeda.com/artbody/pflamiku_3er_stm_2018-09-18)
 
-TODO 
-Reimplementing the FSM with 
+# The Finite State Machine on which the software is build up
+is now based on FW Profile - which is a very cool of software.
 # Web-Based Modeling Tool and Code Generator
 The FW Profile Editor is available as a web-based tool to help design FW Profile state machines and procedures and to automate the generation of the C-code which configures them. The tool can be accessed from [here](http://pnp-software.com/fwprofile/editor/).
 
 If you want to help me to bring this Produkt to market please contact the developers at this [e-mail address](mailto:artbody@gmail.com).
 
+# to build and compile we use STMCubeMX
+this software is available for free on the ST homepage
+[STM32CubeMX](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-configurators-and-code-generators/stm32cubemx.html)
+ and [ST4STM32 AC6 IDE](http://www.openstm32.org/HomePage)
 
 # Ownership
 The owner of the project is [Atelier Merath](http://artbody.de/).
