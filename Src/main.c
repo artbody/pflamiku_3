@@ -208,6 +208,8 @@ volatile uint32_t hx, hx1, hx2, hx3, hx4, *phx = &hx, *phx1 = &hx1,
 		*phx2 = &hx2, *phx3 = &hx3, *phx4 = &hx4; // used in IRQ routine to get measurement values from the HX711 / HX712
 volatile uint32_t Messwert_long_time_average = 0, *pMesswert_long_time_average =
 		&Messwert_long_time_average; // the measurement average value
+volatile int weightkg=0;
+const int weightzero=8563970;
 
 //start values that are programmed into the eeprom at first run
 uint32_t hxmax = 12000000;
@@ -1102,6 +1104,13 @@ void HX712_run(void) {
 	piface->hx = *phx;
 
 	HX712_stop();
+
+	//do the calibration at startup - very first time
+	if(*(uint32_t *) (DATA_E2_ADDR + 12)==0){
+		//weightzero=8563970;
+		float weight= (float)*phx-(float)weightzero;
+		weightkg=(int)(weight/125.51);
+	}
 }
 
 void pumpOFF(void) {
@@ -1333,7 +1342,8 @@ void Read_from_Eeprom(void) {
  * Retval  None
  */
 void LED_RGB_Set(float HSV_value) {
-	uint32_t mittelwert = 0;
+	volatile uint32_t mittelwert = 0;
+	uint32_t mWoverVal =0;
 #if defined test_HX712
 	//return mittelwert
 	mittelwert = TEST_MITTELWERT;
@@ -1345,7 +1355,10 @@ void LED_RGB_Set(float HSV_value) {
 	if (mittelwert <= *(uint32_t *) (DATA_E2_ADDR)) {
 		hue_angel = 1;
 	} else if (mittelwert >= *(uint32_t *) (DATA_E2_ADDR + 4)) {
-		hue_angel = 301;
+		//mWoverVal=mittelwert - *(uint32_t *) (DATA_E2_ADDR + 4);
+		mWoverVal= map2(mittelwert, *(uint32_t *) (DATA_E2_ADDR +4),
+				piface->eepromAbsMax, 0, 60);
+		hue_angel = 301+mWoverVal;
 	} else {
 		hue_angel = map2(mittelwert, *(uint32_t *) (DATA_E2_ADDR),
 				*(uint32_t *) (DATA_E2_ADDR + 4), 0, 300);
@@ -1362,7 +1375,7 @@ void LED_RGB_Set(float HSV_value) {
 		ag = map2((300 - hue_angel), 0, 300, 0, bright_ad[1]);
 		ab = map2(hue_angel, 150, 300, 0, bright_ad[2]);
 	} else {
-		ar = 0;
+		ar = 800+map2((360 - hue_angel), 0, 360, 0, bright_ad[1]);
 		ag = 0;
 		ab = bright_ad[2];
 
