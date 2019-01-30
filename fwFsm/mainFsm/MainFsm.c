@@ -2,7 +2,7 @@
  * @file MainFsm.c
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 28 2019 23:30:11
+ * @date Created on: Jan 30 2019 11:4:52
  */
 
 /** MainFsm function definitions */
@@ -207,6 +207,7 @@ void f_getTime(FwSmDesc_t smDesc)
 	
 	piface->sw1_value=shift_test_switch_is_ON();
 	piface->started =1;
+	reducePwr();
 }
 
 /** Entry Action for the state S_progLdrSwitchValue. */
@@ -243,6 +244,7 @@ FwSmBool_t G_progHX712Mode(FwSmDesc_t smDesc)
 {
 	/*do only enter this State when sw1 is on */
 	if(piface->sw1_value > 0){
+	fullPwr();
 	return 1;
 	}
 	return 0;
@@ -256,6 +258,7 @@ FwSmBool_t G_runHX712_atTime(FwSmDesc_t smDesc)
 	
 	if (piface->timeOut - piface->startTimHx > piface->timeHx) {
 		piface->run_mode = 2;
+	fullPwr();
 	piface->startTimHx=HAL_GetTick();
 		return 1;
 	}
@@ -270,7 +273,7 @@ FwSmBool_t G_runLDR_atTime(FwSmDesc_t smDesc)
 	
 	
 	if (piface->timeOut - piface->startTimLDR > piface->timeLDR) {
-			piface->startTimLDR=HAL_GetTick();
+		fullPwr();	piface->startTimLDR=HAL_GetTick();
 		return 1;
 	}
 		return 0;

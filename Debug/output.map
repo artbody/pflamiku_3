@@ -4941,7 +4941,7 @@ LOAD /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.l
                 0x0000000008000000                g_pfnVectors
                 0x00000000080000c0                . = ALIGN (0x4)
 
-.text           0x00000000080000c0     0x65e0
+.text           0x00000000080000c0     0x6630
                 0x00000000080000c0                . = ALIGN (0x4)
  *(.text)
  .text          0x00000000080000c0       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
@@ -5344,393 +5344,398 @@ LOAD /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.l
                 0x0000000008004194                G_switchOff
  .text.A_INIT   0x00000000080041ac       0x10 Src/MainFsm.o
                 0x00000000080041ac                A_INIT
- .text.G_progHX712Mode
-                0x00000000080041bc       0x18 Src/MainFsm.o
-                0x00000000080041bc                G_progHX712Mode
  .text.G_run_ldr_switch_value_update
-                0x00000000080041d4       0x18 Src/MainFsm.o
-                0x00000000080041d4                G_run_ldr_switch_value_update
+                0x00000000080041bc       0x18 Src/MainFsm.o
+                0x00000000080041bc                G_run_ldr_switch_value_update
  .text.G_enter_all
-                0x00000000080041ec       0x18 Src/MainFsm.o
-                0x00000000080041ec                G_enter_all
+                0x00000000080041d4       0x18 Src/MainFsm.o
+                0x00000000080041d4                G_enter_all
  .text.G_sleepMode
-                0x0000000008004204       0x18 Src/MainFsm.o
-                0x0000000008004204                G_sleepMode
+                0x00000000080041ec       0x18 Src/MainFsm.o
+                0x00000000080041ec                G_sleepMode
  .text.f_setRGB
-                0x000000000800421c       0x18 Src/MainFsm.o
-                0x000000000800421c                f_setRGB
+                0x0000000008004204       0x18 Src/MainFsm.o
+                0x0000000008004204                f_setRGB
  .text.f_pump_off
-                0x0000000008004234       0x18 Src/MainFsm.o
-                0x0000000008004234                f_pump_off
- .text.G_runHX712_atTime
-                0x000000000800424c       0x28 Src/MainFsm.o
-                0x000000000800424c                G_runHX712_atTime
- .text.G_runLDR_atTime
-                0x0000000008004274       0x24 Src/MainFsm.o
-                0x0000000008004274                G_runLDR_atTime
+                0x000000000800421c       0x18 Src/MainFsm.o
+                0x000000000800421c                f_pump_off
  .text.f_pumpOn
-                0x0000000008004298       0x1c Src/MainFsm.o
-                0x0000000008004298                f_pumpOn
+                0x0000000008004234       0x1c Src/MainFsm.o
+                0x0000000008004234                f_pumpOn
  .text.f_readHX712
-                0x00000000080042b4       0x24 Src/MainFsm.o
-                0x00000000080042b4                f_readHX712
+                0x0000000008004250       0x24 Src/MainFsm.o
+                0x0000000008004250                f_readHX712
  .text.A_readHX712
-                0x00000000080042d8        0x8 Src/MainFsm.o
-                0x00000000080042d8                A_readHX712
+                0x0000000008004274        0x8 Src/MainFsm.o
+                0x0000000008004274                A_readHX712
  .text.f_es_menuFsm_waterProg_enter
-                0x00000000080042e0       0x14 Src/MainFsm.o
-                0x00000000080042e0                f_es_menuFsm_waterProg_enter
+                0x000000000800427c       0x14 Src/MainFsm.o
+                0x000000000800427c                f_es_menuFsm_waterProg_enter
  .text.f_waterProg_run
-                0x00000000080042f4       0x20 Src/MainFsm.o
-                0x00000000080042f4                f_waterProg_run
+                0x0000000008004290       0x20 Src/MainFsm.o
+                0x0000000008004290                f_waterProg_run
  .text.f_water_low
-                0x0000000008004314        0xc Src/MainFsm.o
-                0x0000000008004314                f_water_low
+                0x00000000080042b0        0xc Src/MainFsm.o
+                0x00000000080042b0                f_water_low
  .text.f_waterProg_stop
-                0x0000000008004320       0x40 Src/MainFsm.o
-                0x0000000008004320                f_waterProg_stop
+                0x00000000080042bc       0x40 Src/MainFsm.o
+                0x00000000080042bc                f_waterProg_stop
  .text.f_getSwitch
-                0x0000000008004360       0x14 Src/MainFsm.o
-                0x0000000008004360                f_getSwitch
+                0x00000000080042fc       0x14 Src/MainFsm.o
+                0x00000000080042fc                f_getSwitch
  .text.f_getTime
-                0x0000000008004374       0x20 Src/MainFsm.o
-                0x0000000008004374                f_getTime
+                0x0000000008004310       0x24 Src/MainFsm.o
+                0x0000000008004310                f_getTime
  .text.f_setNewLdrSwitchValue
-                0x0000000008004394        0x8 Src/MainFsm.o
-                0x0000000008004394                f_setNewLdrSwitchValue
+                0x0000000008004334        0x8 Src/MainFsm.o
+                0x0000000008004334                f_setNewLdrSwitchValue
  .text.f_getLdrValue
-                0x000000000800439c       0x24 Src/MainFsm.o
-                0x000000000800439c                f_getLdrValue
+                0x000000000800433c       0x24 Src/MainFsm.o
+                0x000000000800433c                f_getLdrValue
  .text.f_sleepMode
-                0x00000000080043c0        0x8 Src/MainFsm.o
-                0x00000000080043c0                f_sleepMode
+                0x0000000008004360        0x8 Src/MainFsm.o
+                0x0000000008004360                f_sleepMode
+ .text.G_progHX712Mode
+                0x0000000008004368       0x1c Src/MainFsm.o
+                0x0000000008004368                G_progHX712Mode
+ .text.G_runHX712_atTime
+                0x0000000008004384       0x30 Src/MainFsm.o
+                0x0000000008004384                G_runHX712_atTime
+ .text.G_runLDR_atTime
+                0x00000000080043b4       0x2c Src/MainFsm.o
+                0x00000000080043b4                G_runLDR_atTime
  .text.MainFsmCreate
-                0x00000000080043c8      0x454 Src/MainFsm.o
-                0x00000000080043c8                MainFsmCreate
+                0x00000000080043e0      0x454 Src/MainFsm.o
+                0x00000000080043e0                MainFsmCreate
  .text.MX_GPIO_Init
-                0x000000000800481c       0x90 Src/main.o
+                0x0000000008004834       0x90 Src/main.o
  .text.MX_DMA_Init
-                0x00000000080048ac       0x30 Src/main.o
+                0x00000000080048c4       0x30 Src/main.o
  .text.fsm_init
-                0x00000000080048dc       0x74 Src/main.o
-                0x00000000080048dc                fsm_init
+                0x00000000080048f4       0x74 Src/main.o
+                0x00000000080048f4                fsm_init
  .text.shift_test_switch_is_ON
-                0x0000000008004950       0x7e Src/main.o
-                0x0000000008004950                shift_test_switch_is_ON
- *fill*         0x00000000080049ce        0x2 
+                0x0000000008004968       0x7e Src/main.o
+                0x0000000008004968                shift_test_switch_is_ON
+ *fill*         0x00000000080049e6        0x2 
  .text.test_if_switch_is_on
-                0x00000000080049d0       0x9c Src/main.o
-                0x00000000080049d0                test_if_switch_is_on
+                0x00000000080049e8       0x9c Src/main.o
+                0x00000000080049e8                test_if_switch_is_on
  .text.HX712_start
-                0x0000000008004a6c       0x2e Src/main.o
-                0x0000000008004a6c                HX712_start
+                0x0000000008004a84       0x2e Src/main.o
+                0x0000000008004a84                HX712_start
  .text.HX712_stop
-                0x0000000008004a9a       0x12 Src/main.o
-                0x0000000008004a9a                HX712_stop
+                0x0000000008004ab2       0x12 Src/main.o
+                0x0000000008004ab2                HX712_stop
  .text.HX712_run
-                0x0000000008004aac      0x1dc Src/main.o
-                0x0000000008004aac                HX712_run
- .text.pumpOFF  0x0000000008004c88       0x24 Src/main.o
-                0x0000000008004c88                pumpOFF
- .text.pumpON   0x0000000008004cac       0x10 Src/main.o
-                0x0000000008004cac                pumpON
+                0x0000000008004ac4      0x1dc Src/main.o
+                0x0000000008004ac4                HX712_run
+ .text.reducePwr
+                0x0000000008004ca0       0x1c Src/main.o
+                0x0000000008004ca0                reducePwr
+ .text.fullPwr  0x0000000008004cbc       0x1c Src/main.o
+                0x0000000008004cbc                fullPwr
+ .text.pumpOFF  0x0000000008004cd8       0x24 Src/main.o
+                0x0000000008004cd8                pumpOFF
+ .text.pumpON   0x0000000008004cfc       0x10 Src/main.o
+                0x0000000008004cfc                pumpON
  .text.sleepMode
-                0x0000000008004cbc       0x48 Src/main.o
-                0x0000000008004cbc                sleepMode
+                0x0000000008004d0c       0x48 Src/main.o
+                0x0000000008004d0c                sleepMode
  .text.RUN_prog_ldr
-                0x0000000008004d04       0xcc Src/main.o
-                0x0000000008004d04                RUN_prog_ldr
+                0x0000000008004d54       0xcc Src/main.o
+                0x0000000008004d54                RUN_prog_ldr
  .text.Save_2_Eeprom
-                0x0000000008004dd0       0xcc Src/main.o
-                0x0000000008004dd0                Save_2_Eeprom
+                0x0000000008004e20       0xcc Src/main.o
+                0x0000000008004e20                Save_2_Eeprom
  .text.TEST_if_first_start_then_eeprom_set_values
-                0x0000000008004e9c       0x40 Src/main.o
-                0x0000000008004e9c                TEST_if_first_start_then_eeprom_set_values
+                0x0000000008004eec       0x40 Src/main.o
+                0x0000000008004eec                TEST_if_first_start_then_eeprom_set_values
  .text.Read_from_Eeprom
-                0x0000000008004edc       0x48 Src/main.o
-                0x0000000008004edc                Read_from_Eeprom
- .text.map2     0x0000000008004f24       0x16 Src/main.o
-                0x0000000008004f24                map2
- *fill*         0x0000000008004f3a        0x2 
+                0x0000000008004f2c       0x48 Src/main.o
+                0x0000000008004f2c                Read_from_Eeprom
+ .text.map2     0x0000000008004f74       0x16 Src/main.o
+                0x0000000008004f74                map2
+ *fill*         0x0000000008004f8a        0x2 
  .text.LED_RGB_Set
-                0x0000000008004f3c      0x178 Src/main.o
-                0x0000000008004f3c                LED_RGB_Set
+                0x0000000008004f8c      0x178 Src/main.o
+                0x0000000008004f8c                LED_RGB_Set
  .text.LDR_Value
-                0x00000000080050b4      0x104 Src/main.o
-                0x00000000080050b4                LDR_Value
+                0x0000000008005104      0x104 Src/main.o
+                0x0000000008005104                LDR_Value
  .text.progLdrSwitchValue
-                0x00000000080051b8       0xd0 Src/main.o
-                0x00000000080051b8                progLdrSwitchValue
+                0x0000000008005208       0xd0 Src/main.o
+                0x0000000008005208                progLdrSwitchValue
  .text.FLASH_IRQHandler
-                0x0000000008005288       0xf0 Src/main.o
-                0x0000000008005288                FLASH_IRQHandler
+                0x00000000080052d8       0xf0 Src/main.o
+                0x00000000080052d8                FLASH_IRQHandler
  .text.Error_Handler
-                0x0000000008005378       0x60 Src/main.o
-                0x0000000008005378                Error_Handler
+                0x00000000080053c8       0x60 Src/main.o
+                0x00000000080053c8                Error_Handler
  .text.MX_ADC_Init
-                0x00000000080053d8       0x80 Src/main.o
+                0x0000000008005428       0x80 Src/main.o
  .text.MX_IWDG_Init
-                0x0000000008005458       0x2c Src/main.o
+                0x00000000080054a8       0x2c Src/main.o
  .text.MX_TIM2_Init
-                0x0000000008005484       0xe0 Src/main.o
+                0x00000000080054d4       0xe0 Src/main.o
  .text.MX_RTC_Init
-                0x0000000008005564       0x80 Src/main.o
+                0x00000000080055b4       0x80 Src/main.o
  .text.MX_USART2_UART_Init
-                0x00000000080055e4       0x38 Src/main.o
+                0x0000000008005634       0x38 Src/main.o
  .text.MX_TIM21_Init
-                0x000000000800561c       0x74 Src/main.o
+                0x000000000800566c       0x74 Src/main.o
  .text.MX_LPTIM1_Init
-                0x0000000008005690       0x38 Src/main.o
+                0x00000000080056e0       0x38 Src/main.o
  .text.SystemClock_Config
-                0x00000000080056c8       0xb0 Src/main.o
-                0x00000000080056c8                SystemClock_Config
- .text.main     0x0000000008005778      0x118 Src/main.o
-                0x0000000008005778                main
+                0x0000000008005718       0xb0 Src/main.o
+                0x0000000008005718                SystemClock_Config
+ .text.main     0x00000000080057c8      0x118 Src/main.o
+                0x00000000080057c8                main
  .text.HAL_MspInit
-                0x0000000008005890       0x34 Src/stm32l0xx_hal_msp.o
-                0x0000000008005890                HAL_MspInit
+                0x00000000080058e0       0x34 Src/stm32l0xx_hal_msp.o
+                0x00000000080058e0                HAL_MspInit
  .text.HAL_ADC_MspInit
-                0x00000000080058c4       0x90 Src/stm32l0xx_hal_msp.o
-                0x00000000080058c4                HAL_ADC_MspInit
+                0x0000000008005914       0x90 Src/stm32l0xx_hal_msp.o
+                0x0000000008005914                HAL_ADC_MspInit
  .text.HAL_LPTIM_MspInit
-                0x0000000008005954       0x34 Src/stm32l0xx_hal_msp.o
-                0x0000000008005954                HAL_LPTIM_MspInit
+                0x00000000080059a4       0x34 Src/stm32l0xx_hal_msp.o
+                0x00000000080059a4                HAL_LPTIM_MspInit
  .text.HAL_RTC_MspInit
-                0x0000000008005988       0x20 Src/stm32l0xx_hal_msp.o
-                0x0000000008005988                HAL_RTC_MspInit
+                0x00000000080059d8       0x20 Src/stm32l0xx_hal_msp.o
+                0x00000000080059d8                HAL_RTC_MspInit
  .text.HAL_TIM_Base_MspInit
-                0x00000000080059a8       0x44 Src/stm32l0xx_hal_msp.o
-                0x00000000080059a8                HAL_TIM_Base_MspInit
+                0x00000000080059f8       0x44 Src/stm32l0xx_hal_msp.o
+                0x00000000080059f8                HAL_TIM_Base_MspInit
  .text.HAL_TIM_MspPostInit
-                0x00000000080059ec       0x88 Src/stm32l0xx_hal_msp.o
-                0x00000000080059ec                HAL_TIM_MspPostInit
+                0x0000000008005a3c       0x88 Src/stm32l0xx_hal_msp.o
+                0x0000000008005a3c                HAL_TIM_MspPostInit
  .text.HAL_UART_MspInit
-                0x0000000008005a74       0x60 Src/stm32l0xx_hal_msp.o
-                0x0000000008005a74                HAL_UART_MspInit
+                0x0000000008005ac4       0x60 Src/stm32l0xx_hal_msp.o
+                0x0000000008005ac4                HAL_UART_MspInit
  .text.SysTick_Handler
-                0x0000000008005ad4       0x14 Src/stm32l0xx_it.o
-                0x0000000008005ad4                SysTick_Handler
+                0x0000000008005b24       0x14 Src/stm32l0xx_it.o
+                0x0000000008005b24                SysTick_Handler
  .text.DMA1_Channel1_IRQHandler
-                0x0000000008005ae8       0x10 Src/stm32l0xx_it.o
-                0x0000000008005ae8                DMA1_Channel1_IRQHandler
+                0x0000000008005b38       0x10 Src/stm32l0xx_it.o
+                0x0000000008005b38                DMA1_Channel1_IRQHandler
  .text.LPTIM1_IRQHandler
-                0x0000000008005af8       0x10 Src/stm32l0xx_it.o
-                0x0000000008005af8                LPTIM1_IRQHandler
+                0x0000000008005b48       0x10 Src/stm32l0xx_it.o
+                0x0000000008005b48                LPTIM1_IRQHandler
  .text.TIM21_IRQHandler
-                0x0000000008005b08       0xac Src/stm32l0xx_it.o
-                0x0000000008005b08                TIM21_IRQHandler
+                0x0000000008005b58       0xac Src/stm32l0xx_it.o
+                0x0000000008005b58                TIM21_IRQHandler
  .text.SystemInit
-                0x0000000008005bb4       0x5c Src/system_stm32l0xx.o
-                0x0000000008005bb4                SystemInit
+                0x0000000008005c04       0x5c Src/system_stm32l0xx.o
+                0x0000000008005c04                SystemInit
  .text.Reset_Handler
-                0x0000000008005c10       0x50 startup/startup_stm32l031xx.o
-                0x0000000008005c10                Reset_Handler
+                0x0000000008005c60       0x50 startup/startup_stm32l031xx.o
+                0x0000000008005c60                Reset_Handler
  .text.Default_Handler
-                0x0000000008005c60        0x2 startup/startup_stm32l031xx.o
-                0x0000000008005c60                HardFault_Handler
-                0x0000000008005c60                ADC1_COMP_IRQHandler
-                0x0000000008005c60                PVD_IRQHandler
-                0x0000000008005c60                PendSV_Handler
-                0x0000000008005c60                NMI_Handler
-                0x0000000008005c60                I2C1_IRQHandler
-                0x0000000008005c60                SPI1_IRQHandler
-                0x0000000008005c60                EXTI2_3_IRQHandler
-                0x0000000008005c60                RTC_IRQHandler
-                0x0000000008005c60                DMA1_Channel4_5_6_7_IRQHandler
-                0x0000000008005c60                EXTI4_15_IRQHandler
-                0x0000000008005c60                RCC_IRQHandler
-                0x0000000008005c60                Default_Handler
-                0x0000000008005c60                TIM22_IRQHandler
-                0x0000000008005c60                EXTI0_1_IRQHandler
-                0x0000000008005c60                SVC_Handler
-                0x0000000008005c60                WWDG_IRQHandler
-                0x0000000008005c60                LPUART1_IRQHandler
-                0x0000000008005c60                TIM2_IRQHandler
-                0x0000000008005c60                DMA1_Channel2_3_IRQHandler
-                0x0000000008005c60                USART2_IRQHandler
- *fill*         0x0000000008005c62        0x2 
+                0x0000000008005cb0        0x2 startup/startup_stm32l031xx.o
+                0x0000000008005cb0                HardFault_Handler
+                0x0000000008005cb0                ADC1_COMP_IRQHandler
+                0x0000000008005cb0                PVD_IRQHandler
+                0x0000000008005cb0                PendSV_Handler
+                0x0000000008005cb0                NMI_Handler
+                0x0000000008005cb0                I2C1_IRQHandler
+                0x0000000008005cb0                SPI1_IRQHandler
+                0x0000000008005cb0                EXTI2_3_IRQHandler
+                0x0000000008005cb0                RTC_IRQHandler
+                0x0000000008005cb0                DMA1_Channel4_5_6_7_IRQHandler
+                0x0000000008005cb0                EXTI4_15_IRQHandler
+                0x0000000008005cb0                RCC_IRQHandler
+                0x0000000008005cb0                Default_Handler
+                0x0000000008005cb0                TIM22_IRQHandler
+                0x0000000008005cb0                EXTI0_1_IRQHandler
+                0x0000000008005cb0                SVC_Handler
+                0x0000000008005cb0                WWDG_IRQHandler
+                0x0000000008005cb0                LPUART1_IRQHandler
+                0x0000000008005cb0                TIM2_IRQHandler
+                0x0000000008005cb0                DMA1_Channel2_3_IRQHandler
+                0x0000000008005cb0                USART2_IRQHandler
+ *fill*         0x0000000008005cb2        0x2 
  .text.__libc_init_array
-                0x0000000008005c64       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-init.o)
-                0x0000000008005c64                __libc_init_array
- .text.memset   0x0000000008005cac       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-memset.o)
-                0x0000000008005cac                memset
- .text._free_r  0x0000000008005cbc       0x94 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-nano-freer.o)
-                0x0000000008005cbc                _free_r
+                0x0000000008005cb4       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-init.o)
+                0x0000000008005cb4                __libc_init_array
+ .text.memset   0x0000000008005cfc       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-memset.o)
+                0x0000000008005cfc                memset
+ .text._free_r  0x0000000008005d0c       0x94 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-nano-freer.o)
+                0x0000000008005d0c                _free_r
  .text._malloc_r
-                0x0000000008005d50       0xbc /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-nano-mallocr.o)
-                0x0000000008005d50                _malloc_r
- .text._puts_r  0x0000000008005e0c       0xc0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-puts.o)
-                0x0000000008005e0c                _puts_r
- .text.puts     0x0000000008005ecc       0x14 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-puts.o)
-                0x0000000008005ecc                puts
- .text._sbrk_r  0x0000000008005ee0       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-sbrkr.o)
-                0x0000000008005ee0                _sbrk_r
+                0x0000000008005da0       0xbc /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-nano-mallocr.o)
+                0x0000000008005da0                _malloc_r
+ .text._puts_r  0x0000000008005e5c       0xc0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-puts.o)
+                0x0000000008005e5c                _puts_r
+ .text.puts     0x0000000008005f1c       0x14 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-puts.o)
+                0x0000000008005f1c                puts
+ .text._sbrk_r  0x0000000008005f30       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-sbrkr.o)
+                0x0000000008005f30                _sbrk_r
  .text.__swbuf_r
-                0x0000000008005f04       0xac /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-wbuf.o)
-                0x0000000008005f04                __swbuf_r
+                0x0000000008005f54       0xac /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-wbuf.o)
+                0x0000000008005f54                __swbuf_r
  .text.__swsetup_r
-                0x0000000008005fb0       0xec /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-wsetup.o)
-                0x0000000008005fb0                __swsetup_r
+                0x0000000008006000       0xec /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-wsetup.o)
+                0x0000000008006000                __swsetup_r
  .text.__sflush_r
-                0x000000000800609c      0x114 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fflush.o)
-                0x000000000800609c                __sflush_r
+                0x00000000080060ec      0x114 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fflush.o)
+                0x00000000080060ec                __sflush_r
  .text._fflush_r
-                0x00000000080061b0       0x58 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fflush.o)
-                0x00000000080061b0                _fflush_r
- .text.std      0x0000000008006208       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+                0x0000000008006200       0x58 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fflush.o)
+                0x0000000008006200                _fflush_r
+ .text.std      0x0000000008006258       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
  .text._cleanup_r
-                0x0000000008006250       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
-                0x0000000008006250                _cleanup_r
+                0x00000000080062a0       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+                0x00000000080062a0                _cleanup_r
  .text.__sfmoreglue
-                0x0000000008006260       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
-                0x0000000008006260                __sfmoreglue
- .text.__sinit  0x000000000800628c       0x68 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
-                0x000000000800628c                __sinit
- .text.__sfp    0x00000000080062f4       0x7c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
-                0x00000000080062f4                __sfp
+                0x00000000080062b0       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+                0x00000000080062b0                __sfmoreglue
+ .text.__sinit  0x00000000080062dc       0x68 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+                0x00000000080062dc                __sinit
+ .text.__sfp    0x0000000008006344       0x7c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+                0x0000000008006344                __sfp
  .text._fwalk_reent
-                0x0000000008006370       0x42 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fwalk.o)
-                0x0000000008006370                _fwalk_reent
- *fill*         0x00000000080063b2        0x2 
+                0x00000000080063c0       0x42 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fwalk.o)
+                0x00000000080063c0                _fwalk_reent
+ *fill*         0x0000000008006402        0x2 
  .text.__swhatbuf_r
-                0x00000000080063b4       0x50 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-makebuf.o)
-                0x00000000080063b4                __swhatbuf_r
+                0x0000000008006404       0x50 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-makebuf.o)
+                0x0000000008006404                __swhatbuf_r
  .text.__smakebuf_r
-                0x0000000008006404       0x88 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-makebuf.o)
-                0x0000000008006404                __smakebuf_r
+                0x0000000008006454       0x88 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-makebuf.o)
+                0x0000000008006454                __smakebuf_r
  .text.__malloc_lock
-                0x000000000800648c        0x2 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-mlock.o)
-                0x000000000800648c                __malloc_lock
+                0x00000000080064dc        0x2 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-mlock.o)
+                0x00000000080064dc                __malloc_lock
  .text.__malloc_unlock
-                0x000000000800648e        0x2 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-mlock.o)
-                0x000000000800648e                __malloc_unlock
- .text.__sread  0x0000000008006490       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
-                0x0000000008006490                __sread
+                0x00000000080064de        0x2 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-mlock.o)
+                0x00000000080064de                __malloc_unlock
+ .text.__sread  0x00000000080064e0       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
+                0x00000000080064e0                __sread
  .text.__swrite
-                0x00000000080064b8       0x38 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
-                0x00000000080064b8                __swrite
- .text.__sseek  0x00000000080064f0       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
-                0x00000000080064f0                __sseek
+                0x0000000008006508       0x38 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
+                0x0000000008006508                __swrite
+ .text.__sseek  0x0000000008006540       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
+                0x0000000008006540                __sseek
  .text.__sclose
-                0x000000000800651c        0xc /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
-                0x000000000800651c                __sclose
+                0x000000000800656c        0xc /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
+                0x000000000800656c                __sclose
  .text._write_r
-                0x0000000008006528       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-writer.o)
-                0x0000000008006528                _write_r
+                0x0000000008006578       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-writer.o)
+                0x0000000008006578                _write_r
  .text._close_r
-                0x0000000008006550       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-closer.o)
-                0x0000000008006550                _close_r
+                0x00000000080065a0       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-closer.o)
+                0x00000000080065a0                _close_r
  .text._fstat_r
-                0x0000000008006574       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fstatr.o)
-                0x0000000008006574                _fstat_r
+                0x00000000080065c4       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fstatr.o)
+                0x00000000080065c4                _fstat_r
  .text._isatty_r
-                0x0000000008006598       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-isattyr.o)
-                0x0000000008006598                _isatty_r
+                0x00000000080065e8       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-isattyr.o)
+                0x00000000080065e8                _isatty_r
  .text._lseek_r
-                0x00000000080065bc       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-lseekr.o)
-                0x00000000080065bc                _lseek_r
- .text._read_r  0x00000000080065e4       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-readr.o)
-                0x00000000080065e4                _read_r
- .text._close   0x000000000800660c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(close.o)
-                0x000000000800660c                _close
- .text._fstat   0x000000000800661c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(fstat.o)
-                0x000000000800661c                _fstat
- .text._isatty  0x000000000800662c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(isatty.o)
-                0x000000000800662c                _isatty
- .text._lseek   0x000000000800663c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(lseek.o)
-                0x000000000800663c                _lseek
- .text._read    0x000000000800664c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(read.o)
-                0x000000000800664c                _read
- .text._sbrk    0x000000000800665c       0x1c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(sbrk.o)
-                0x000000000800665c                _sbrk
- .text._write   0x0000000008006678       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(write.o)
-                0x0000000008006678                _write
+                0x000000000800660c       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-lseekr.o)
+                0x000000000800660c                _lseek_r
+ .text._read_r  0x0000000008006634       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-readr.o)
+                0x0000000008006634                _read_r
+ .text._close   0x000000000800665c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(close.o)
+                0x000000000800665c                _close
+ .text._fstat   0x000000000800666c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(fstat.o)
+                0x000000000800666c                _fstat
+ .text._isatty  0x000000000800667c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(isatty.o)
+                0x000000000800667c                _isatty
+ .text._lseek   0x000000000800668c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(lseek.o)
+                0x000000000800668c                _lseek
+ .text._read    0x000000000800669c       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(read.o)
+                0x000000000800669c                _read
+ .text._sbrk    0x00000000080066ac       0x1c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(sbrk.o)
+                0x00000000080066ac                _sbrk
+ .text._write   0x00000000080066c8       0x10 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(write.o)
+                0x00000000080066c8                _write
  *(.glue_7)
- .glue_7        0x0000000008006688        0x0 linker stubs
+ .glue_7        0x00000000080066d8        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x0000000008006688        0x0 linker stubs
+ .glue_7t       0x00000000080066d8        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x0000000008006688        0x0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
+ .eh_frame      0x00000000080066d8        0x0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
  *(.init)
- .init          0x0000000008006688        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crti.o
-                0x0000000008006688                _init
- .init          0x000000000800668c        0x8 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtn.o
+ .init          0x00000000080066d8        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crti.o
+                0x00000000080066d8                _init
+ .init          0x00000000080066dc        0x8 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtn.o
  *(.fini)
- .fini          0x0000000008006694        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crti.o
-                0x0000000008006694                _fini
- .fini          0x0000000008006698        0x8 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtn.o
-                0x00000000080066a0                . = ALIGN (0x4)
-                0x00000000080066a0                _etext = .
+ .fini          0x00000000080066e4        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crti.o
+                0x00000000080066e4                _fini
+ .fini          0x00000000080066e8        0x8 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtn.o
+                0x00000000080066f0                . = ALIGN (0x4)
+                0x00000000080066f0                _etext = .
 
-.vfp11_veneer   0x00000000080066a0        0x0
- .vfp11_veneer  0x00000000080066a0        0x0 linker stubs
+.vfp11_veneer   0x00000000080066f0        0x0
+ .vfp11_veneer  0x00000000080066f0        0x0 linker stubs
 
-.v4_bx          0x00000000080066a0        0x0
- .v4_bx         0x00000000080066a0        0x0 linker stubs
+.v4_bx          0x00000000080066f0        0x0
+ .v4_bx         0x00000000080066f0        0x0 linker stubs
 
-.iplt           0x00000000080066a0        0x0
- .iplt          0x00000000080066a0        0x0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
+.iplt           0x00000000080066f0        0x0
+ .iplt          0x00000000080066f0        0x0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
 
-.rodata         0x00000000080066a0      0x194
-                0x00000000080066a0                . = ALIGN (0x4)
+.rodata         0x00000000080066f0      0x194
+                0x00000000080066f0                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x00000000080066a0       0x48 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.o
- .rodata        0x00000000080066e8       0x24 Src/system_stm32l0xx.o
-                0x00000000080066e8                PLLMulTable
-                0x00000000080066f4                AHBPrescTable
-                0x0000000008006704                APBPrescTable
- .rodata        0x000000000800670c       0x40 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(divdf3.o)
+ .rodata        0x00000000080066f0       0x48 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.o
+ .rodata        0x0000000008006738       0x24 Src/system_stm32l0xx.o
+                0x0000000008006738                PLLMulTable
+                0x0000000008006744                AHBPrescTable
+                0x0000000008006754                APBPrescTable
+ .rodata        0x000000000800675c       0x40 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(divdf3.o)
  *(.rodata*)
  .rodata.str1.4
-                0x000000000800674c       0x84 Src/main.o
+                0x000000000800679c       0x84 Src/main.o
                                          0x81 (size before relaxing)
  .rodata._global_impure_ptr
-                0x00000000080067d0        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-impure.o)
-                0x00000000080067d0                _global_impure_ptr
+                0x0000000008006820        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-impure.o)
+                0x0000000008006820                _global_impure_ptr
  .rodata.__sf_fake_stderr
-                0x00000000080067d4       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
-                0x00000000080067d4                __sf_fake_stderr
+                0x0000000008006824       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+                0x0000000008006824                __sf_fake_stderr
  .rodata.__sf_fake_stdin
-                0x00000000080067f4       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
-                0x00000000080067f4                __sf_fake_stdin
+                0x0000000008006844       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+                0x0000000008006844                __sf_fake_stdin
  .rodata.__sf_fake_stdout
-                0x0000000008006814       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
-                0x0000000008006814                __sf_fake_stdout
-                0x0000000008006834                . = ALIGN (0x4)
+                0x0000000008006864       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+                0x0000000008006864                __sf_fake_stdout
+                0x0000000008006884                . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x0000000008006834        0x8
-                0x0000000008006834                __exidx_start = .
+.ARM            0x0000000008006884        0x8
+                0x0000000008006884                __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x0000000008006834        0x8 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(_udivmoddi4.o)
-                0x000000000800683c                __exidx_end = .
+ .ARM.exidx     0x0000000008006884        0x8 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(_udivmoddi4.o)
+                0x000000000800688c                __exidx_end = .
 
-.rel.dyn        0x000000000800683c        0x0
- .rel.iplt      0x000000000800683c        0x0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
+.rel.dyn        0x000000000800688c        0x0
+ .rel.iplt      0x000000000800688c        0x0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
 
-.preinit_array  0x000000000800683c        0x0
-                0x000000000800683c                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x000000000800688c        0x0
+                0x000000000800688c                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x000000000800683c                PROVIDE (__preinit_array_end = .)
+                0x000000000800688c                PROVIDE (__preinit_array_end = .)
 
-.init_array     0x000000000800683c        0x4
-                0x000000000800683c                PROVIDE (__init_array_start = .)
+.init_array     0x000000000800688c        0x4
+                0x000000000800688c                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x000000000800683c        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
-                0x0000000008006840                PROVIDE (__init_array_end = .)
+ .init_array    0x000000000800688c        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
+                0x0000000008006890                PROVIDE (__init_array_end = .)
 
-.fini_array     0x0000000008006840        0x4
+.fini_array     0x0000000008006890        0x4
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0000000008006840        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
+ .fini_array    0x0000000008006890        0x4 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x0000000008006844                _sidata = LOADADDR (.data)
+                0x0000000008006894                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000      0x160 load address 0x0000000008006844
+.data           0x0000000020000000      0x160 load address 0x0000000008006894
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -5766,11 +5771,11 @@ LOAD /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.l
                 0x0000000020000160                . = ALIGN (0x4)
                 0x0000000020000160                _edata = .
 
-.igot.plt       0x0000000020000160        0x0 load address 0x00000000080069a4
+.igot.plt       0x0000000020000160        0x0 load address 0x00000000080069f4
  .igot.plt      0x0000000020000160        0x0 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtbegin.o
                 0x0000000020000160                . = ALIGN (0x4)
 
-.bss            0x0000000020000160      0x594 load address 0x00000000080069a4
+.bss            0x0000000020000160      0x594 load address 0x00000000080069f4
                 0x0000000020000160                _sbss = .
                 0x0000000020000160                __bss_start__ = _sbss
  *(.bss)
@@ -5829,7 +5834,7 @@ LOAD /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.l
                 0x00000000200006f4                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x00000000200006f4      0x604 load address 0x00000000080069a4
+                0x00000000200006f4      0x604 load address 0x00000000080069f4
                 0x00000000200006f8                . = ALIGN (0x8)
  *fill*         0x00000000200006f4        0x4 
                 0x00000000200006f8                PROVIDE (end = .)
@@ -5996,7 +6001,7 @@ LOAD /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.l
                 0x0000000000000c7e       0x1e /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/crtn.o
 OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000    0x17ca3
+.debug_info     0x0000000000000000    0x17d01
  .debug_info    0x0000000000000000      0x7f1 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
  .debug_info    0x00000000000007f1      0xf2c Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc.o
  .debug_info    0x000000000000171d      0x7b9 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.o
@@ -6015,12 +6020,12 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
  .debug_info    0x000000000000c63c     0x1480 Src/FwSmConfig.o
  .debug_info    0x000000000000dabc     0x1046 Src/FwSmCore.o
  .debug_info    0x000000000000eb02      0xc66 Src/FwSmSCreate.o
- .debug_info    0x000000000000f768     0x2469 Src/MainFsm.o
- .debug_info    0x0000000000011bd1     0x3c0b Src/main.o
- .debug_info    0x00000000000157dc     0x1758 Src/stm32l0xx_hal_msp.o
- .debug_info    0x0000000000016f34      0x9b8 Src/stm32l0xx_it.o
- .debug_info    0x00000000000178ec      0x395 Src/system_stm32l0xx.o
- .debug_info    0x0000000000017c81       0x22 startup/startup_stm32l031xx.o
+ .debug_info    0x000000000000f768     0x24a3 Src/MainFsm.o
+ .debug_info    0x0000000000011c0b     0x3c2f Src/main.o
+ .debug_info    0x000000000001583a     0x1758 Src/stm32l0xx_hal_msp.o
+ .debug_info    0x0000000000016f92      0x9b8 Src/stm32l0xx_it.o
+ .debug_info    0x000000000001794a      0x395 Src/system_stm32l0xx.o
+ .debug_info    0x0000000000017cdf       0x22 startup/startup_stm32l031xx.o
 
 .debug_abbrev   0x0000000000000000     0x3145
  .debug_abbrev  0x0000000000000000      0x236 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
@@ -6072,7 +6077,7 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
  .debug_loc     0x000000000000b9a7      0x217 Src/stm32l0xx_hal_msp.o
  .debug_loc     0x000000000000bbbe      0x1de Src/system_stm32l0xx.o
 
-.debug_aranges  0x0000000000000000     0x12a0
+.debug_aranges  0x0000000000000000     0x12b0
  .debug_aranges
                 0x0000000000000000       0xf8 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
  .debug_aranges
@@ -6112,17 +6117,17 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
  .debug_aranges
                 0x0000000000000f60      0x118 Src/MainFsm.o
  .debug_aranges
-                0x0000000000001078      0x128 Src/main.o
+                0x0000000000001078      0x138 Src/main.o
  .debug_aranges
-                0x00000000000011a0       0x78 Src/stm32l0xx_hal_msp.o
+                0x00000000000011b0       0x78 Src/stm32l0xx_hal_msp.o
  .debug_aranges
-                0x0000000000001218       0x38 Src/stm32l0xx_it.o
+                0x0000000000001228       0x38 Src/stm32l0xx_it.o
  .debug_aranges
-                0x0000000000001250       0x28 Src/system_stm32l0xx.o
+                0x0000000000001260       0x28 Src/system_stm32l0xx.o
  .debug_aranges
-                0x0000000000001278       0x28 startup/startup_stm32l031xx.o
+                0x0000000000001288       0x28 startup/startup_stm32l031xx.o
 
-.debug_ranges   0x0000000000000000     0x11e8
+.debug_ranges   0x0000000000000000     0x11f8
  .debug_ranges  0x0000000000000000       0xe8 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
  .debug_ranges  0x00000000000000e8       0xf0 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc.o
  .debug_ranges  0x00000000000001d8       0xb0 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.o
@@ -6142,11 +6147,11 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
  .debug_ranges  0x0000000000000e38       0x80 Src/FwSmCore.o
  .debug_ranges  0x0000000000000eb8       0x18 Src/FwSmSCreate.o
  .debug_ranges  0x0000000000000ed0      0x108 Src/MainFsm.o
- .debug_ranges  0x0000000000000fd8      0x148 Src/main.o
- .debug_ranges  0x0000000000001120       0x68 Src/stm32l0xx_hal_msp.o
- .debug_ranges  0x0000000000001188       0x28 Src/stm32l0xx_it.o
- .debug_ranges  0x00000000000011b0       0x18 Src/system_stm32l0xx.o
- .debug_ranges  0x00000000000011c8       0x20 startup/startup_stm32l031xx.o
+ .debug_ranges  0x0000000000000fd8      0x158 Src/main.o
+ .debug_ranges  0x0000000000001130       0x68 Src/stm32l0xx_hal_msp.o
+ .debug_ranges  0x0000000000001198       0x28 Src/stm32l0xx_it.o
+ .debug_ranges  0x00000000000011c0       0x18 Src/system_stm32l0xx.o
+ .debug_ranges  0x00000000000011d8       0x20 startup/startup_stm32l031xx.o
 
 .debug_macro    0x0000000000000000    0x133f6
  .debug_macro   0x0000000000000000      0x21d Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
@@ -6225,7 +6230,7 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
  .debug_macro   0x0000000000012fe5      0x212 Src/stm32l0xx_it.o
  .debug_macro   0x00000000000131f7      0x1ff Src/system_stm32l0xx.o
 
-.debug_line     0x0000000000000000     0xfe56
+.debug_line     0x0000000000000000     0xfe7f
  .debug_line    0x0000000000000000      0xa42 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
  .debug_line    0x0000000000000a42      0xd36 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc.o
  .debug_line    0x0000000000001778      0x99d Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.o
@@ -6244,14 +6249,14 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
  .debug_line    0x000000000000b77f      0x6d9 Src/FwSmConfig.o
  .debug_line    0x000000000000be58      0x542 Src/FwSmCore.o
  .debug_line    0x000000000000c39a      0x4a7 Src/FwSmSCreate.o
- .debug_line    0x000000000000c841      0xbd0 Src/MainFsm.o
- .debug_line    0x000000000000d411      0xf46 Src/main.o
- .debug_line    0x000000000000e357      0x98c Src/stm32l0xx_hal_msp.o
- .debug_line    0x000000000000ece3      0x892 Src/stm32l0xx_it.o
- .debug_line    0x000000000000f575      0x85e Src/system_stm32l0xx.o
- .debug_line    0x000000000000fdd3       0x83 startup/startup_stm32l031xx.o
+ .debug_line    0x000000000000c841      0xbd5 Src/MainFsm.o
+ .debug_line    0x000000000000d416      0xf6a Src/main.o
+ .debug_line    0x000000000000e380      0x98c Src/stm32l0xx_hal_msp.o
+ .debug_line    0x000000000000ed0c      0x892 Src/stm32l0xx_it.o
+ .debug_line    0x000000000000f59e      0x85e Src/system_stm32l0xx.o
+ .debug_line    0x000000000000fdfc       0x83 startup/startup_stm32l031xx.o
 
-.debug_str      0x0000000000000000    0x7a5df
+.debug_str      0x0000000000000000    0x7a5f1
  .debug_str     0x0000000000000000    0x706d6 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
                                       0x70af8 (size before relaxing)
  .debug_str     0x00000000000706d6      0x740 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc.o
@@ -6288,17 +6293,17 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
                                        0x64a4 (size before relaxing)
  .debug_str     0x0000000000077bec      0x5f8 Src/FwSmSCreate.o
                                        0x698c (size before relaxing)
- .debug_str     0x00000000000781e4      0x8da Src/MainFsm.o
-                                      0x743f0 (size before relaxing)
- .debug_str     0x0000000000078abe     0x19e7 Src/main.o
-                                      0x76a91 (size before relaxing)
- .debug_str     0x000000000007a4a5       0x25 Src/stm32l0xx_hal_msp.o
+ .debug_str     0x00000000000781e4      0x8ec Src/MainFsm.o
+                                      0x74402 (size before relaxing)
+ .debug_str     0x0000000000078ad0     0x19e7 Src/main.o
+                                      0x76aa3 (size before relaxing)
+ .debug_str     0x000000000007a4b7       0x25 Src/stm32l0xx_hal_msp.o
                                       0x71538 (size before relaxing)
- .debug_str     0x000000000007a4ca       0x74 Src/stm32l0xx_it.o
+ .debug_str     0x000000000007a4dc       0x74 Src/stm32l0xx_it.o
                                       0x70cd7 (size before relaxing)
- .debug_str     0x000000000007a53e       0x72 Src/system_stm32l0xx.o
+ .debug_str     0x000000000007a550       0x72 Src/system_stm32l0xx.o
                                       0x7051d (size before relaxing)
- .debug_str     0x000000000007a5b0       0x2f startup/startup_stm32l031xx.o
+ .debug_str     0x000000000007a5c2       0x2f startup/startup_stm32l031xx.o
                                          0x81 (size before relaxing)
 
 .comment        0x0000000000000000       0x7f
@@ -6327,7 +6332,7 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
  .comment       0x000000000000007f       0x80 Src/stm32l0xx_it.o
  .comment       0x000000000000007f       0x80 Src/system_stm32l0xx.o
 
-.debug_frame    0x0000000000000000     0x38a8
+.debug_frame    0x0000000000000000     0x38d0
  .debug_frame   0x0000000000000000      0x1f4 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
  .debug_frame   0x00000000000001f4      0x2bc Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc.o
  .debug_frame   0x00000000000004b0       0xe4 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.o
@@ -6346,51 +6351,51 @@ OUTPUT(2019-01-10-pflamiku_3er_fwfsm.elf elf32-littlearm)
  .debug_frame   0x0000000000002468      0x20c Src/FwSmConfig.o
  .debug_frame   0x0000000000002674      0x148 Src/FwSmCore.o
  .debug_frame   0x00000000000027bc       0x48 Src/FwSmSCreate.o
- .debug_frame   0x0000000000002804      0x2ac Src/MainFsm.o
- .debug_frame   0x0000000000002ab0      0x334 Src/main.o
- .debug_frame   0x0000000000002de4      0x130 Src/stm32l0xx_hal_msp.o
- .debug_frame   0x0000000000002f14       0x70 Src/stm32l0xx_it.o
- .debug_frame   0x0000000000002f84       0x38 Src/system_stm32l0xx.o
- .debug_frame   0x0000000000002fbc       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(_udivsi3.o)
- .debug_frame   0x0000000000002fdc       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(_fixunssfsi.o)
- .debug_frame   0x0000000000003004       0x3c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(_udivmoddi4.o)
- .debug_frame   0x0000000000003040       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(eqsf2.o)
- .debug_frame   0x000000000000306c       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(gesf2.o)
- .debug_frame   0x0000000000003098       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(lesf2.o)
- .debug_frame   0x00000000000030c4       0x38 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(subsf3.o)
- .debug_frame   0x00000000000030fc       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(fixsfsi.o)
- .debug_frame   0x000000000000311c       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(floatunsisf.o)
- .debug_frame   0x0000000000003148       0x3c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(divdf3.o)
- .debug_frame   0x0000000000003184       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(fixdfsi.o)
- .debug_frame   0x00000000000031b0       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(extendsfdf2.o)
- .debug_frame   0x00000000000031dc       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-init.o)
- .debug_frame   0x0000000000003208       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-memset.o)
- .debug_frame   0x0000000000003228       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-nano-freer.o)
- .debug_frame   0x0000000000003254       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-nano-mallocr.o)
- .debug_frame   0x0000000000003280       0x44 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-puts.o)
- .debug_frame   0x00000000000032c4       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-sbrkr.o)
- .debug_frame   0x00000000000032f0       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-wbuf.o)
- .debug_frame   0x0000000000003338       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-wsetup.o)
- .debug_frame   0x0000000000003364       0x68 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fflush.o)
- .debug_frame   0x00000000000033cc      0x140 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
- .debug_frame   0x000000000000350c       0x58 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fwalk.o)
- .debug_frame   0x0000000000003564       0x54 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-makebuf.o)
- .debug_frame   0x00000000000035b8       0x30 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-mlock.o)
- .debug_frame   0x00000000000035e8       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-reent.o)
- .debug_frame   0x0000000000003630       0x90 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
- .debug_frame   0x00000000000036c0       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-writer.o)
- .debug_frame   0x00000000000036ec       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-closer.o)
- .debug_frame   0x0000000000003718       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fstatr.o)
- .debug_frame   0x0000000000003744       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-isattyr.o)
- .debug_frame   0x0000000000003770       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-lseekr.o)
- .debug_frame   0x000000000000379c       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-readr.o)
- .debug_frame   0x00000000000037c8       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(close.o)
- .debug_frame   0x00000000000037e8       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(fstat.o)
- .debug_frame   0x0000000000003808       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(isatty.o)
- .debug_frame   0x0000000000003828       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(lseek.o)
- .debug_frame   0x0000000000003848       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(read.o)
- .debug_frame   0x0000000000003868       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(sbrk.o)
- .debug_frame   0x0000000000003888       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(write.o)
+ .debug_frame   0x0000000000002804      0x2b4 Src/MainFsm.o
+ .debug_frame   0x0000000000002ab8      0x354 Src/main.o
+ .debug_frame   0x0000000000002e0c      0x130 Src/stm32l0xx_hal_msp.o
+ .debug_frame   0x0000000000002f3c       0x70 Src/stm32l0xx_it.o
+ .debug_frame   0x0000000000002fac       0x38 Src/system_stm32l0xx.o
+ .debug_frame   0x0000000000002fe4       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(_udivsi3.o)
+ .debug_frame   0x0000000000003004       0x28 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(_fixunssfsi.o)
+ .debug_frame   0x000000000000302c       0x3c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(_udivmoddi4.o)
+ .debug_frame   0x0000000000003068       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(eqsf2.o)
+ .debug_frame   0x0000000000003094       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(gesf2.o)
+ .debug_frame   0x00000000000030c0       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(lesf2.o)
+ .debug_frame   0x00000000000030ec       0x38 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(subsf3.o)
+ .debug_frame   0x0000000000003124       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(fixsfsi.o)
+ .debug_frame   0x0000000000003144       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(floatunsisf.o)
+ .debug_frame   0x0000000000003170       0x3c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(divdf3.o)
+ .debug_frame   0x00000000000031ac       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(fixdfsi.o)
+ .debug_frame   0x00000000000031d8       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v6-m/libgcc.a(extendsfdf2.o)
+ .debug_frame   0x0000000000003204       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-init.o)
+ .debug_frame   0x0000000000003230       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-memset.o)
+ .debug_frame   0x0000000000003250       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x000000000000327c       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x00000000000032a8       0x44 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-puts.o)
+ .debug_frame   0x00000000000032ec       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-sbrkr.o)
+ .debug_frame   0x0000000000003318       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-wbuf.o)
+ .debug_frame   0x0000000000003360       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-wsetup.o)
+ .debug_frame   0x000000000000338c       0x68 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fflush.o)
+ .debug_frame   0x00000000000033f4      0x140 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-findfp.o)
+ .debug_frame   0x0000000000003534       0x58 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fwalk.o)
+ .debug_frame   0x000000000000358c       0x54 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-makebuf.o)
+ .debug_frame   0x00000000000035e0       0x30 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-mlock.o)
+ .debug_frame   0x0000000000003610       0x48 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-reent.o)
+ .debug_frame   0x0000000000003658       0x90 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-stdio.o)
+ .debug_frame   0x00000000000036e8       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-writer.o)
+ .debug_frame   0x0000000000003714       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-closer.o)
+ .debug_frame   0x0000000000003740       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-fstatr.o)
+ .debug_frame   0x000000000000376c       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-isattyr.o)
+ .debug_frame   0x0000000000003798       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-lseekr.o)
+ .debug_frame   0x00000000000037c4       0x2c /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libc_nano.a(lib_a-readr.o)
+ .debug_frame   0x00000000000037f0       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(close.o)
+ .debug_frame   0x0000000000003810       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(fstat.o)
+ .debug_frame   0x0000000000003830       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(isatty.o)
+ .debug_frame   0x0000000000003850       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(lseek.o)
+ .debug_frame   0x0000000000003870       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(read.o)
+ .debug_frame   0x0000000000003890       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(sbrk.o)
+ .debug_frame   0x00000000000038b0       0x20 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(write.o)
 
 .stab           0x0000000000000000       0x9c
  .stab          0x0000000000000000       0x24 /home/achim/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/libnosys.a(close.o)

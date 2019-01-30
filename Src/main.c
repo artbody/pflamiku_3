@@ -1112,7 +1112,12 @@ void HX712_run(void) {
 		weightkg=(int)(weight/125.51);
 	}
 }
-
+void reducePwr(void){
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+}
+void fullPwr(void){
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+}
 void pumpOFF(void) {
 	*pMesswert_long_time_average = piface->hx = *phx;
 	HAL_GPIO_WritePin(mot_out_GPIO_Port, mot_out_Pin, GPIO_PIN_RESET);
