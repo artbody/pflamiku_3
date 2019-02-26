@@ -272,6 +272,7 @@ void HX712_run(void);
 
 // pump run
 void pumpOFF(void);
+void afterPOff_newMw(void);
 void pumpON(void);
 void sleepMode(void);
 void progLdrSwitchValue(void);
@@ -856,7 +857,7 @@ void fsm_init(FsmIFace* iface) {
 	iface->eepromPmax = *(uint32_t *) (DATA_E2_ADDR + 8);
 
 	//measurement values HX712
-	iface->mittelwert = 8001271;//average weight
+	iface->mittelwert = 0;//average weight
 	iface->hx = 0;//one measurement value of weight
 
 	//timers for the fsm
@@ -1106,11 +1107,11 @@ void HX712_run(void) {
 	HX712_stop();
 
 	//do the calibration at startup - very first time
-	if(*(uint32_t *) (DATA_E2_ADDR + 12)==0){
-		//weightzero=8563970;
-		float weight= (float)*phx-(float)weightzero;
-		weightkg=(int)(weight/125.51);
-	}
+//	if(*(uint32_t *) (DATA_E2_ADDR + 12)==0){
+//		//weightzero=8563970;
+//		float weight= (float)*phx-(float)weightzero;
+//		weightkg=(int)(weight/125.51);
+//	}
 }
 void reducePwr(void){
 	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
@@ -1119,11 +1120,19 @@ void fullPwr(void){
 	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 }
 void pumpOFF(void) {
-	*pMesswert_long_time_average = piface->hx = *phx;
+	*pMesswert_long_time_average =  *phx;
+			piface->hx = *phx;
+			piface->mittelwert = *phx;
 	HAL_GPIO_WritePin(mot_out_GPIO_Port, mot_out_Pin, GPIO_PIN_RESET);
+}
+void afterPOff_newMw(void){
+	*pMesswert_long_time_average =  *phx;
+		piface->hx = *phx;
+		piface->mittelwert = *phx;
 }
 void pumpON(void) {
 	HAL_GPIO_WritePin(mot_out_GPIO_Port, mot_out_Pin, GPIO_PIN_SET);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, bright[2]);
 }
 void sleepMode(void) {
 	//assume its night and so do nothing, switch off RGB_LED and go in standby mode

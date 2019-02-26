@@ -12,7 +12,7 @@
  * @image html MainFsm.png
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 30 2019 11:4:52
+ * @date Created on: Feb 1 2019 19:18:44
  */
 
 /* Make sure to include this header file only once */
@@ -59,6 +59,7 @@ extern void Error_Handler(void);
 extern uint32_t shift_test_switch_is_ON(void);
 extern void reducePwr(void);
 extern void fullPwr(void);
+extern void afterPOff_newMw(void);
 
 /* The identifiers of transition commands (triggers) */
 #define Execute (0) /**< The identifier of the Execute transition trigger */

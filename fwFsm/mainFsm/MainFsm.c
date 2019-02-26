@@ -2,7 +2,7 @@
  * @file MainFsm.c
  *
  * @author FW Profile code generator version 5.22
- * @date Created on: Jan 30 2019 11:4:52
+ * @date Created on: Feb 1 2019 19:18:44
  */
 
 /** MainFsm function definitions */
@@ -144,13 +144,15 @@ void f_waterProg_stop(FwSmDesc_t smDesc)
 {
 	pumpOFF();
 		piface->bPumpOn=0;
-		piface->eepromPmax=HAL_GetTick()-piface->timeOutWater;
+		//make timeoutvalue *3
+		piface->eepromPmax=(HAL_GetTick()-piface->timeOutWater)*3;
 		
 		HX712_run();
 		//this is set only after //watering a plant
+		afterPOff_newMw();
 		piface->eepromMax=piface->hx;
 		if(piface->eepromMax>(piface->eepromMin+3000)){
-		//Save_2_Eeprom();
+		Save_2_Eeprom();
 		}else{
 			Error_Handler();
 		};
@@ -208,6 +210,7 @@ void f_getTime(FwSmDesc_t smDesc)
 	piface->sw1_value=shift_test_switch_is_ON();
 	piface->started =1;
 	reducePwr();
+	//piface->run_mode = 1;
 }
 
 /** Entry Action for the state S_progLdrSwitchValue. */
@@ -268,9 +271,6 @@ FwSmBool_t G_runHX712_atTime(FwSmDesc_t smDesc)
 /** Guard on the transition from C_HX_prog_or_run to S_getLdrValue. */
 FwSmBool_t G_runLDR_atTime(FwSmDesc_t smDesc)
 {
-	/*do only enter this State when time has passed */
-	/*do only enter this State when time has passed */
-	
 	
 	if (piface->timeOut - piface->startTimLDR > piface->timeLDR) {
 		fullPwr();	piface->startTimLDR=HAL_GetTick();
